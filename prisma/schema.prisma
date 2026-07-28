@@ -3,13 +3,13 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// SQLite has no native enums; enum-like fields are strings validated by Zod
-// at the boundary and by the domain layer. Postgres migration swaps these to
-// real enums without touching application code.
+// Enum-like fields are kept as strings, validated by Zod at the boundary and
+// by the domain layer, rather than native Postgres enums — avoids migration
+// friction (ALTER TYPE) when a status list needs to grow.
 
 model Farm {
   id        String   @id @default(cuid())
