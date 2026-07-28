@@ -1,0 +1,215 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite has no native enums; enum-like fields are strings validated by Zod
+// at the boundary and by the domain layer. Postgres migration swaps these to
+// real enums without touching application code.
+
+model Farm {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users         User[]
+  pigs          Pig[]
+  settings      Setting[]
+  breeds        Breed[]
+  auditLogs     AuditLog[]
+  notifications Notification[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  farmId       String
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("FARM_USER") // ADMIN | FARM_USER
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  farm          Farm           @relation(fields: [farmId], references: [id])
+  weightRecords WeightRecord[]
+  notes         Note[]
+  auditLogs     AuditLog[]
+}
+
+model Breed {
+  id     String @id @default(cuid())
+  farmId String
+  name   String
+
+  farm Farm @relation(fields: [farmId], references: [id])
+
+  @@unique([farmId, name])
+}
+
+model Pig {
+  id               String    @id @default(cuid())
+  farmId           String
+  tagId            String
+  breed            String
+  sex              String // MALE | FEMALE
+  dateOfBirth      DateTime
+  motherId         String?
+  fatherId         String?
+  litterId         String?
+  status           String    @default("HEALTHY") // materialized via resolveStatus()
+  readyForCrossing Boolean   @default(false) // manual eligibility flag
+  breedingStock    Boolean   @default(false) // suppresses READY_FOR_MARKET
+  castrated        Boolean? // males only; null for females
+  soldAt           DateTime?
+  diedAt           DateTime?
+  deletedAt        DateTime?
+  currentWeightId  String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  farm     Farm  @relation(fields: [farmId], references: [id])
+  mother   Pig?  @relation("Mother", fields: [motherId], references: [id])
+  father   Pig?  @relation("Father", fields: [fatherId], references: [id])
+  childrenOfMother Pig[] @relation("Mother")
+  childrenOfFather Pig[] @relation("Father")
+  litter   Litter? @relation(fields: [litterId], references: [id])
+
+  weightRecords WeightRecord[]
+  breedingsAsSow  Breeding[] @relation("Sow")
+  breedingsAsBoar Breeding[] @relation("Boar")
+  notes         Note[]
+  notifications Notification[]
+
+  @@unique([farmId, tagId])
+  @@index([farmId, status])
+  @@index([farmId, sex])
+  @@index([farmId, breed])
+  @@index([motherId])
+  @@index([fatherId])
+}
+
+model WeightRecord {
+  id           String   @id @default(cuid())
+  farmId       String
+  pigId        String
+  weightKg     Float
+  measuredAt   DateTime
+  recordedById String?
+  createdAt    DateTime @default(now())
+
+  pig        Pig   @relation(fields: [pigId], references: [id])
+  recordedBy User? @relation(fields: [recordedById], references: [id])
+
+  @@index([pigId, measuredAt])
+  @@index([farmId, measuredAt])
+}
+
+model Breeding {
+  id           String   @id @default(cuid())
+  farmId       String
+  sowId        String
+  boarId       String?
+  crossingDate DateTime
+  status       String   @default("ACTIVE") // ACTIVE | FARROWED | FAILED | ABORTED
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  sow    Pig     @relation("Sow", fields: [sowId], references: [id])
+  boar   Pig?    @relation("Boar", fields: [boarId], references: [id])
+  litter Litter?
+
+  @@index([farmId, status])
+  @@index([sowId])
+}
+
+model Litter {
+  id         String   @id @default(cuid())
+  farmId     String
+  breedingId String   @unique
+  farrowedAt DateTime
+  bornAlive  Int
+  stillborn  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  breeding Breeding @relation(fields: [breedingId], references: [id])
+  piglets  Pig[]
+}
+
+model Setting {
+  id     String @id @default(cuid())
+  farmId String
+  key    String
+  value  String // JSON-encoded
+
+  farm Farm @relation(fields: [farmId], references: [id])
+
+  @@unique([farmId, key])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  farmId     String
+  userId     String?
+  action     String // CREATE | UPDATE | DELETE | STATUS_CHANGE | IMPORT | LOGIN | ...
+  entityType String
+  entityId   String
+  summary    String
+  before     String? // JSON
+  after      String? // JSON
+  createdAt  DateTime @default(now())
+
+  farm Farm  @relation(fields: [farmId], references: [id])
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([farmId, createdAt])
+  @@index([entityType, entityId])
+}
+
+model Notification {
+  id         String    @id @default(cuid())
+  farmId     String
+  type       String // READY_FOR_MARKET | PREGNANCY_ENDING | OVERDUE_PREGNANCY | STALE_WEIGHT | READY_FOR_CROSSING | DUPLICATE_ID
+  pigId      String?
+  message    String
+  severity   String    @default("info") // info | warning | critical | success
+  dedupeKey  String
+  readAt     DateTime?
+  resolvedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  farm Farm @relation(fields: [farmId], references: [id])
+  pig  Pig? @relation(fields: [pigId], references: [id])
+
+  @@unique([farmId, dedupeKey])
+  @@index([farmId, readAt])
+}
+
+model FarmInvite {
+  id            String    @id @default(cuid())
+  code          String    @unique
+  note          String?
+  usedByFarmId  String?
+  usedAt        DateTime?
+  expiresAt     DateTime?
+  createdAt     DateTime  @default(now())
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  farmId    String
+  pigId     String
+  authorId  String?
+  body      String
+  createdAt DateTime @default(now())
+
+  pig    Pig   @relation(fields: [pigId], references: [id])
+  author User? @relation(fields: [authorId], references: [id])
+
+  @@index([pigId, createdAt])
+}

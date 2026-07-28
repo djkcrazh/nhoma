@@ -1,0 +1,537 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   NHOMA · Ironwood (refined) — dark-native iron & bone, burnished copper.
+   Brand mark: Tenor Sans "N" in a thin circle, drawn in currentColor
+   (white on these surfaces). Layered surfaces, machined details, calm motion.
+--------------------------------------------------------------------------- */
+
+:root {
+  /* iron surface stack — three clear elevation steps */
+  --ground: #141618;
+  --ground-raised: #1c1f22;
+  --ground-sunken: #0e1012;
+  --ink: #ece7dd;
+  --ink-soft: #a8a196;
+  --ink-faint: #6e695f;
+  --rule: #282c30;
+  --rule-strong: #3a3f44;
+
+  /* burnished copper, slightly deepened for the refined pass */
+  --accent: #c1703f;
+  --accent-hover: #d5824e;
+  --accent-soft: #c1703f26;
+  --accent-ink: #141618;
+
+  --ok: #7fae7c;   --ok-soft: #7fae7c22;
+  --due: #d3a54e;  --due-soft: #d3a54e22;
+  --overdue: #d16a6a; --overdue-soft: #d16a6a22;
+  --breeding: #8fa5b8; --breeding-soft: #8fa5b822;
+
+  --sidebar-ink: #f4f0e8;
+  --shadow: 0 1px 2px rgba(0,0,0,.5), 0 6px 18px rgba(0,0,0,.38);
+  --shadow-lg: 0 4px 10px rgba(0,0,0,.55), 0 20px 50px rgba(0,0,0,.6);
+}
+
+.dark {
+  /* Ironwood is dark-native; explicit dark mode drops one step deeper */
+  --ground: #0d0f10;
+  --ground-raised: #15181a;
+  --ground-sunken: #090a0b;
+  --ink: #f1ede4;
+  --ink-soft: #b0a99d;
+  --ink-faint: #736d62;
+  --rule: #212528;
+  --rule-strong: #33383c;
+  --accent: #d08052;
+  --accent-hover: #e09363;
+  --accent-soft: #d0805226;
+  --accent-ink: #0d0f10;
+  --ok: #86b583; --ok-soft: #86b58326;
+  --due: #dcb05c; --due-soft: #dcb05c26;
+  --overdue: #da7878; --overdue-soft: #da787826;
+  --breeding: #9ab0c2; --breeding-soft: #9ab0c226;
+  --sidebar-ink: #f8f5ee;
+  --shadow: 0 1px 2px rgba(0,0,0,.6), 0 6px 18px rgba(0,0,0,.5);
+  --shadow-lg: 0 4px 10px rgba(0,0,0,.65), 0 20px 50px rgba(0,0,0,.7);
+}
+
+@theme inline {
+  --color-ground: var(--ground);
+  --color-raised: var(--ground-raised);
+  --color-sunken: var(--ground-sunken);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-due: var(--due);
+  --color-due-soft: var(--due-soft);
+  --color-overdue: var(--overdue);
+  --color-overdue-soft: var(--overdue-soft);
+  --color-breeding: var(--breeding);
+  --color-breeding-soft: var(--breeding-soft);
+  --font-display: "Rockwell", var(--font-roboto-slab), "Roboto Slab", serif;
+  --font-body: var(--font-source-sans), -apple-system, "Segoe UI", sans-serif;
+  --font-tag: var(--font-plex-mono), "SF Mono", ui-monospace, monospace;
+}
+
+html {
+  background: var(--ground);
+}
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.font-tag {
+  font-family: var(--font-tag);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Card — the paper stock of the ledger */
+.card {
+  background: var(--ground-raised);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+/* Ear-tag chip: pig identity rendered as a physical livestock tag */
+.ear-tag {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-tag);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 3px 10px 3px 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 4px 10px 10px 4px;
+  white-space: nowrap;
+}
+.ear-tag::before {
+  content: "";
+  position: absolute;
+  left: 4.5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4.5px;
+  height: 4.5px;
+  border-radius: 50%;
+  background: var(--ground-raised);
+  border: 1.2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.ear-tag--neutral {
+  background: var(--ground-sunken);
+  color: var(--ink-soft);
+  border-color: var(--rule-strong);
+}
+.ear-tag--neutral::before {
+  border-color: var(--rule-strong);
+}
+
+/* Ledger rows — numbered audit entries with dashed rules */
+.ledger-row {
+  display: flex;
+  gap: 12px;
+  padding: 10px 2px;
+  border-bottom: 1px dashed var(--rule);
+}
+.ledger-row:last-child {
+  border-bottom: none;
+}
+.ledger-num {
+  font-family: var(--font-tag);
+  font-size: 11px;
+  color: var(--ink-faint);
+  min-width: 26px;
+  padding-top: 2px;
+  text-align: right;
+}
+.verb-stamp {
+  display: inline-block;
+  font-family: var(--font-tag);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid currentColor;
+  opacity: 0.85;
+}
+
+/* Status badges: color + shape, never color alone */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 2.5px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.status-badge .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px; /* square = neutral */
+  background: currentColor;
+  flex: none;
+}
+.status-badge--ok { background: var(--ok-soft); color: var(--ok); }
+.status-badge--ok .dot { border-radius: 50%; }
+.status-badge--due { background: var(--due-soft); color: var(--due); }
+.status-badge--due .dot { border-radius: 1px; transform: rotate(45deg); }
+.status-badge--overdue { background: var(--overdue-soft); color: var(--overdue); border-color: color-mix(in srgb, var(--overdue) 40%, transparent); }
+.status-badge--overdue .dot { clip-path: polygon(50% 0, 100% 100%, 0 100%); border-radius: 0; }
+.status-badge--breeding { background: var(--breeding-soft); color: var(--breeding); }
+.status-badge--breeding .dot { border-radius: 50%; }
+.status-badge--neutral { background: var(--ground-sunken); color: var(--ink-soft); }
+.status-badge--accent { background: var(--accent-soft); color: var(--accent); }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-weight: 600;
+  font-size: 13.5px;
+  border-radius: 10px;
+  padding: 9px 16px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+  min-height: 40px;
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+.btn-secondary {
+  background: var(--ground-raised);
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+.btn-secondary:hover:not(:disabled) { background: var(--ground-sunken); }
+.btn-ghost { background: transparent; color: var(--ink-soft); }
+.btn-ghost:hover:not(:disabled) { background: var(--ground-sunken); color: var(--ink); }
+.btn-danger { background: var(--overdue-soft); color: var(--overdue); border-color: color-mix(in srgb, var(--overdue) 35%, transparent); }
+.btn-danger:hover:not(:disabled) { background: color-mix(in srgb, var(--overdue) 24%, transparent); }
+.btn-sm { min-height: 32px; padding: 5px 11px; font-size: 12.5px; border-radius: 8px; }
+
+/* Inputs */
+.input, .select {
+  width: 100%;
+  background: var(--ground-raised);
+  border: 1px solid var(--rule-strong);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 14px;
+  color: var(--ink);
+  min-height: 40px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.input:focus, .select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.input::placeholder { color: var(--ink-faint); }
+.input-error { border-color: var(--overdue) !important; }
+
+/* Checkbox — themed to sit quietly in the Ironwood surfaces instead of the
+   browser's bright default white box. The check is drawn with a background
+   SVG so there are no pseudo-element parsing quirks. */
+.checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border: 1px solid var(--rule-strong);
+  border-radius: 5px;
+  background-color: var(--ground-sunken);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px 10px;
+  cursor: pointer;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+.checkbox:hover { border-color: var(--ink-faint); }
+.checkbox:checked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23141618' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M2.5 6.5l2.5 2.5 4.5-5'/%3E%3C/svg%3E");
+}
+.checkbox:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 5px;
+}
+.field-error { font-size: 12px; color: var(--overdue); margin-top: 4px; }
+
+/* Table */
+.data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.data-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--rule-strong);
+  white-space: nowrap;
+  user-select: none;
+}
+.data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.data-table tbody tr { transition: background 0.1s ease; }
+.data-table tbody tr:hover { background: var(--ground-sunken); }
+
+/* Severity stripes on alerts (shape + color) */
+.alert-stripe { border-left: 4px solid var(--rule-strong); }
+.alert-stripe--critical { border-left-color: var(--overdue); border-left-style: double; border-left-width: 6px; }
+.alert-stripe--warning { border-left-color: var(--due); }
+.alert-stripe--success { border-left-color: var(--ok); }
+.alert-stripe--info { border-left-color: var(--breeding); border-left-style: dashed; }
+
+/* Skeletons */
+.skeleton {
+  background: linear-gradient(90deg, var(--ground-sunken) 25%, var(--ground-raised) 50%, var(--ground-sunken) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fade-up 0.25s ease both; }
+
+/* Scrollbars in keeping with the paper */
+* { scrollbar-width: thin; scrollbar-color: var(--rule-strong) transparent; }
+
+::selection { background: var(--accent-soft); }
+
+/* =========================================================================
+   Ironwood refinements
+   ========================================================================= */
+
+/* Icons — white strokes that dim subtly on hover */
+.nhoma-icon {
+  opacity: 0.92;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+a:hover .nhoma-icon,
+button:hover .nhoma-icon,
+.nhoma-icon:hover {
+  opacity: 0.66;
+  transform: translateY(0.5px);
+}
+
+/* Brand mark (Tenor Sans N) — white on iron, copper-warms on hover */
+.brand-mark {
+  color: var(--sidebar-ink);
+  transition: color 0.2s ease;
+}
+a:hover .brand-mark { color: var(--accent-hover); }
+
+/* Cards — machined top glint + hover lift.
+   The `position: relative` default exists only to anchor `.card::before`, so it
+   must never clobber a positioning utility the markup asked for: `.card:not(...)`
+   is a 2-class selector and would otherwise outrank single-class `.fixed` /
+   `.absolute`, silently dropping dropdown panels back into normal flow.
+   `fixed` and `absolute` each establish their own containing block, so the
+   glint stays correctly positioned either way. */
+.card:not(.fixed):not(.absolute) { position: relative; }
+.card { transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+.card::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 1px;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(90deg, transparent 8%, rgba(255,255,255,0.08), transparent 92%);
+  pointer-events: none;
+}
+.card:hover { border-color: var(--rule-strong); }
+
+/* Primary button — subtle copper sheen, pressed feel retained */
+.btn-primary {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--accent) 92%, white 8%),
+    var(--accent));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 2px 8px rgba(0,0,0,0.35);
+}
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--accent-hover) 92%, white 8%),
+    var(--accent-hover));
+}
+
+/* Active nav — copper rail on the left edge (works with existing markup:
+   the active link already carries .bg-accent-soft) */
+nav a.bg-accent-soft, nav a[class*="bg-accent-soft"] {
+  position: relative;
+}
+nav a[class*="bg-accent-soft"]::before {
+  content: ""; position: absolute; left: -3px; top: 22%; bottom: 22%;
+  width: 2.5px; border-radius: 3px; background: var(--accent);
+}
+
+/* Sidebar — one step below ground, hairline seam on its right edge */
+aside {
+  background: var(--ground-sunken) !important;
+  border-right-color: var(--rule) !important;
+}
+
+/* Inputs — copper focus halo tightened, iron wells */
+.input, .select { background: var(--ground-sunken); }
+.input:focus, .select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft), inset 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Tables — sunken header band instead of heavy underline */
+.data-table th {
+  background: var(--ground-sunken);
+  border-bottom: 1px solid var(--rule-strong);
+}
+.data-table th:first-child { border-radius: 8px 0 0 0; }
+.data-table th:last-child { border-radius: 0 8px 0 0; }
+
+/* Ear tags — read as stamped metal on iron */
+.ear-tag { box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); }
+
+/* Selection + scroll match the copper */
+::selection { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+
+/* Calm motion for reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+  .nhoma-icon, .card, .brand-mark { transition: none; }
+}
+
+/* =========================================================================
+   Family tree explorer
+   ========================================================================= */
+
+/* Fixed-size node — never reflows, so tap targets stay put on mobile */
+.tree-node {
+  flex: 0 0 auto;
+  width: 84px;
+  scroll-snap-align: center;
+}
+.tree-node__ring {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ground-sunken);
+  border: 1.5px solid var(--rule-strong);
+  color: var(--ink-soft);
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+button.tree-node__btn { all: unset; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; width: 100%; }
+button.tree-node__btn:hover .tree-node__ring { border-color: var(--accent); transform: translateY(-1px); }
+button.tree-node__btn:focus-visible .tree-node__ring { box-shadow: 0 0 0 3px var(--accent-soft); }
+button.tree-node__btn:disabled { cursor: default; }
+
+.tree-node--self .tree-node__ring {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.tree-node--empty .tree-node__ring { border-style: dashed; opacity: 0.5; }
+
+/* Snap-scrolling rows keep sibling icons in fixed slots on narrow screens
+   instead of wrapping — you pan, the icons never rearrange. */
+.tree-row {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding: 0 24px;
+  padding: 4px 24px 10px;
+  -webkit-overflow-scrolling: touch;
+}
+.tree-row::-webkit-scrollbar { height: 5px; }
+
+/* This-generation row: self sits in a fixed left column (never scrolls away),
+   a hairline divider marks the litter boundary, siblings scroll in the rest. */
+.tree-node-col {
+  flex: 0 0 auto;
+  width: 84px;
+  padding: 4px 0 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tree-node-col__divider {
+  flex: 0 0 auto;
+  align-self: center;
+  width: 1px;
+  height: 56px;
+  margin: 0 14px;
+  background: var(--rule);
+}
+.tree-row--inline { padding-left: 0; }
+
+.tree-connector {
+  stroke: var(--rule-strong);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+@keyframes tree-snap {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+.tree-snap { animation: tree-snap 0.18s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tree-node__ring, button.tree-node__btn .tree-node__ring { transition: none; }
+  .tree-snap { animation: none; }
+}

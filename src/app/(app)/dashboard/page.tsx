@@ -1,0 +1,181 @@
+import Link from "next/link";
+import { requireCtx } from "@/server/auth/auth";
+import { dashboardStats, analyticsData } from "@/server/services/stats.service";
+import { listNotifications } from "@/server/services/notification.service";
+import { recentActivity } from "@/server/services/audit.service";
+import { recentWeightUpdates } from "@/server/services/weight.service";
+import { StatCard } from "@/components/dashboard/StatCard";
+import { EarTag } from "@/components/ui/EarTag";
+
+export const dynamic = "force-dynamic";
+
+const VERB_COLOR: Record<string, string> = {
+  CREATE: "var(--ok)",
+  UPDATE: "var(--breeding)",
+  WEIGHT: "var(--due)",
+  BREEDING: "var(--breeding)",
+  FARROW: "var(--ok)",
+  DELETE: "var(--overdue)",
+  STATUS_CHANGE: "var(--accent)",
+  IMPORT: "var(--breeding)",
+  NOTE: "var(--ink-faint)",
+};
+
+function relTime(iso: string | Date) {
+  const d = typeof iso === "string" ? new Date(iso) : iso;
+  const mins = Math.floor((Date.now() - d.getTime()) / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  if (days < 30) return `${days}d ago`;
+  return d.toLocaleDateString("en", { month: "short", day: "numeric" });
+}
+
+export default async function DashboardPage() {
+  const ctx = await requireCtx();
+  const [stats, analytics, alerts, activity, weightUpdates] = await Promise.all([
+    dashboardStats(ctx),
+    analyticsData(ctx),
+    listNotifications(ctx, { limit: 8 }),
+    recentActivity(ctx.farmId, 10),
+    recentWeightUpdates(ctx.farmId, 6),
+  ]);
+
+  const growthSpark = analytics.growth.map((g) => g.count);
+  const birthsSpark = analytics.births.map((b) => b.count);
+  const weightSpark = analytics.avgWeightOverTime.map((w) => w.avg);
+
+  const cards = [
+    { label: "Total pigs", value: stats.total, href: "/pigs", spark: growthSpark, accent: true },
+    { label: "Males", value: stats.males, href: "/pigs?quick=male" },
+    { label: "Females", value: stats.females, href: "/pigs?quick=female" },
+    { label: "Piglets", value: stats.piglets, href: "/pigs?quick=piglets" },
+    { label: "Adults", value: stats.adults, href: "/pigs?quick=adults" },
+    { label: "Pregnant sows", value: stats.pregnant, href: "/breeding", sparkColor: "var(--breeding)" },
+    { label: "Ready for crossing", value: stats.readyForCrossing, href: "/pigs?quick=crossing" },
+    { label: "Ready to farrow", value: stats.readyToFarrow, href: "/breeding" },
+    { label: "Market ready", value: stats.readyForMarket, href: "/pigs?quick=market", sparkColor: "var(--ok)" },
+    {
+      label: "Avg weight",
+      value: stats.avgWeightKg != null ? `${stats.avgWeightKg.toFixed(1)} kg` : "—",
+      spark: weightSpark,
+      sparkColor: "var(--due)",
+    },
+    {
+      label: "Avg age",
+      value: stats.avgAgeDays != null ? `${(stats.avgAgeDays / 30.44).toFixed(1)} mo` : "—",
+    },
+    { label: "New this month", value: stats.newThisMonth, href: "/pigs?quick=recent", spark: birthsSpark },
+  ];
+
+  return (
+    <div className="space-y-6 fade-up">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="font-display text-2xl font-bold">Farm overview</h1>
+          <p className="mt-0.5 text-sm text-ink-soft">
+            {new Date().toLocaleDateString("en", { weekday: "long", month: "long", day: "numeric" })} —{" "}
+            {stats.total} pigs on the ledger
+          </p>
+        </div>
+        <Link href="/analytics" className="btn btn-secondary btn-sm">
+          View analytics →
+        </Link>
+      </div>
+
+      {/* Stat grid */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        {cards.map((c) => (
+          <StatCard key={c.label} {...c} />
+        ))}
+      </div>
+
+      {/* Two-column: alerts / ledger */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <section className="card p-5">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="font-display text-base font-bold">Needs attention</h2>
+            <Link href="/notifications" className="-my-1 py-1 text-xs font-semibold text-accent hover:underline">
+              All alerts →
+            </Link>
+          </div>
+          {alerts.length === 0 ? (
+            <p className="rounded-lg bg-sunken px-4 py-6 text-center text-sm text-ink-faint">
+              Nothing needs attention right now.
+            </p>
+          ) : (
+            <ul className="space-y-2">
+              {alerts.map((a) => (
+                <li
+                  key={a.id}
+                  className={`alert-stripe alert-stripe--${a.severity} card flex items-center gap-3 rounded-lg px-3.5 py-2.5`}
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm">{a.message}</p>
+                    <p className="font-tag text-[10px] uppercase tracking-wider text-ink-faint">
+                      {a.type.replaceAll("_", " ").toLowerCase()} · {relTime(a.createdAt)}
+                    </p>
+                  </div>
+                  {a.pigTag && <EarTag tagId={a.pigTag} />}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="card p-5">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="font-display text-base font-bold">Recent activity</h2>
+            <span className="font-tag text-[10px] uppercase tracking-widest text-ink-faint">
+              audit ledger
+            </span>
+          </div>
+          {activity.length === 0 ? (
+            <p className="rounded-lg bg-sunken px-4 py-6 text-center text-sm text-ink-faint">
+              No entries yet — add your first pig to start the ledger.
+            </p>
+          ) : (
+            <div>
+              {activity.map((a, i) => (
+                <div key={a.id} className="ledger-row">
+                  <span className="ledger-num">{String(activity.length - i).padStart(2, "0")}</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm">{a.summary}</p>
+                    <p className="mt-0.5 text-[11px] text-ink-faint">
+                      {a.user?.name ?? "System"} · {relTime(a.createdAt)}
+                    </p>
+                  </div>
+                  <span className="verb-stamp self-start" style={{ color: VERB_COLOR[a.action] ?? "var(--ink-faint)" }}>
+                    {a.action}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
+
+      {/* Recent weight updates */}
+      <section className="card p-5">
+        <h2 className="mb-3 font-display text-base font-bold">Recent weight updates</h2>
+        {weightUpdates.length === 0 ? (
+          <p className="rounded-lg bg-sunken px-4 py-6 text-center text-sm text-ink-faint">
+            No weights recorded yet.
+          </p>
+        ) : (
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {weightUpdates.map((w) => (
+              <div key={w.id} className="flex items-center gap-3 rounded-lg border border-rule px-3 py-2">
+                <EarTag tagId={w.pigTag} />
+                <span className="font-tag text-sm font-semibold">{w.weightKg} kg</span>
+                <span className="ml-auto text-[11px] text-ink-faint">{relTime(w.measuredAt)}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
