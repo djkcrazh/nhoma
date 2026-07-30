@@ -19,12 +19,9 @@ export default function LoginPage() {
           </Suspense>
         </div>
         <p className="mt-4 text-center text-xs text-ink-faint">
-          Accounts are created by your farm administrator.
-        </p>
-        <p className="mt-2 text-center text-xs text-ink-faint">
-          Have an invite code?{" "}
+          New here?{" "}
           <a className="text-accent" href="/onboarding">
-            Set up your farm →
+            Create or join a farm →
           </a>
         </p>
       </div>

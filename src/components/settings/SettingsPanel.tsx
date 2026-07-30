@@ -10,6 +10,7 @@ import {
   createUserAction,
   deleteBreedAction,
   deleteUserAction,
+  regenerateJoinCodeAction,
   renameBreedAction,
   updateSettingsAction,
   updateUserAction,
@@ -49,11 +50,13 @@ export function SettingsPanel({
   users,
   breeds,
   currentUserId,
+  joinCode,
 }: {
   settings: FarmSettings;
   users: UserRow[];
   breeds: BreedRow[];
   currentUserId: string;
+  joinCode: string;
 }) {
   const router = useRouter();
   const [values, setValues] = useState<Record<string, string>>(
@@ -63,6 +66,20 @@ export function SettingsPanel({
   const [userModal, setUserModal] = useState<"create" | UserRow | null>(null);
   const [deleting, setDeleting] = useState<UserRow | null>(null);
   const [busy, setBusy] = useState(false);
+  const [code, setCode] = useState(joinCode);
+  const [regenConfirm, setRegenConfirm] = useState(false);
+  const [regenerating, setRegenerating] = useState(false);
+
+  async function regenerateCode() {
+    setRegenerating(true);
+    const res = await regenerateJoinCodeAction();
+    setRegenerating(false);
+    setRegenConfirm(false);
+    if (res.ok) {
+      setCode(res.data);
+      toast.success("New join code issued — the old one no longer works");
+    } else toast.error(res.error);
+  }
 
   async function saveThresholds() {
     setSavingThresholds(true);
@@ -110,6 +127,29 @@ export function SettingsPanel({
 
       {/* Breeds */}
       <BreedManager breeds={breeds} />
+
+      {/* Team join code */}
+      <section className="card p-5">
+        <h2 className="mb-1 font-display text-base font-bold">Invite workers</h2>
+        <p className="mb-4 text-sm text-ink-soft">
+          Share this code — anyone can enter it at <span className="font-tag">/onboarding</span> to join this farm as a worker.
+        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="ear-tag ear-tag--neutral font-tag text-base tracking-widest">{code}</span>
+          <button
+            className="btn btn-secondary btn-sm"
+            onClick={() => {
+              navigator.clipboard.writeText(code);
+              toast.success("Join code copied");
+            }}
+          >
+            Copy
+          </button>
+          <button className="btn btn-ghost btn-sm text-overdue" onClick={() => setRegenConfirm(true)}>
+            Regenerate
+          </button>
+        </div>
+      </section>
 
       {/* Users */}
       <section className="card p-5">
@@ -188,6 +228,18 @@ export function SettingsPanel({
             else toast.error(res.error);
             router.refresh();
           }}
+        />
+      )}
+      {regenConfirm && (
+        <ConfirmDialog
+          open
+          onOpenChange={setRegenConfirm}
+          title="Regenerate join code?"
+          message="The current code stops working immediately. Anyone who hasn't joined yet will need the new one."
+          danger
+          busy={regenerating}
+          confirmLabel="Regenerate"
+          onConfirm={regenerateCode}
         />
       )}
     </div>

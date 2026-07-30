@@ -2,16 +2,18 @@ import { requireCtx } from "@/server/auth/auth";
 import { getSettings } from "@/server/services/settings.service";
 import { listUsers } from "@/server/services/user.service";
 import { listBreeds } from "@/server/services/breed.service";
+import { getJoinCode } from "@/server/services/farm.service";
 import { SettingsPanel } from "@/components/settings/SettingsPanel";
 
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
   const ctx = await requireCtx();
-  const [settings, users, breeds] = await Promise.all([
+  const [settings, users, breeds, joinCode] = await Promise.all([
     getSettings(ctx.farmId),
     listUsers(ctx),
     listBreeds(ctx),
+    getJoinCode(ctx),
   ]);
   return (
     <div className="fade-up">
@@ -26,6 +28,7 @@ export default async function SettingsPage() {
         users={users.map((u) => ({ ...u, createdAt: u.createdAt.toISOString() }))}
         breeds={breeds.map((b) => ({ id: b.id, name: b.name }))}
         currentUserId={ctx.userId}
+        joinCode={joinCode}
       />
     </div>
   );

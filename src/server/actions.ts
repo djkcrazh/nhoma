@@ -16,7 +16,7 @@ import {
   pigCreateSchema, pigUpdateSchema, weightCreateSchema, breedingCreateSchema,
   farrowSchema, breedingCloseSchema, noteCreateSchema,
 } from "@/lib/validations/pig";
-import { userCreateSchema, userUpdateSchema, settingsUpdateSchema, onboardingSchema } from "@/lib/validations/user";
+import { userCreateSchema, userUpdateSchema, settingsUpdateSchema, createFarmSchema, joinFarmSchema } from "@/lib/validations/user";
 import { breedCreateSchema, breedRenameSchema } from "@/lib/validations/breed";
 import { z } from "zod";
 import { Sex } from "@/lib/domain/types";
@@ -279,6 +279,16 @@ export async function deleteUserAction(userId: string) {
   });
 }
 
+export async function regenerateJoinCodeAction() {
+  return run(async () => {
+    const ctx = await requireCtx();
+    const { regenerateJoinCode } = await import("@/server/services/farm.service");
+    const joinCode = await regenerateJoinCode(ctx);
+    revalidatePath("/settings");
+    return joinCode;
+  });
+}
+
 // ---------- settings ----------
 
 export async function updateSettingsAction(input: unknown) {
@@ -329,12 +339,20 @@ export async function importPigsAction(rows: unknown[], dryRun: boolean) {
   });
 }
 
-// ---------- onboarding (no auth required — new farm signup via invite code) ----------
+// ---------- onboarding (no auth required — public self-serve signup) ----------
 
-export async function redeemInviteAction(input: unknown) {
+export async function createFarmAction(input: unknown) {
   return run(async () => {
-    const data = onboardingSchema.parse(input);
+    const data = createFarmSchema.parse(input);
     const { createFarmWithAdmin } = await import("@/server/services/farm.service");
     return createFarmWithAdmin(data);
+  });
+}
+
+export async function joinFarmAction(input: unknown) {
+  return run(async () => {
+    const data = joinFarmSchema.parse(input);
+    const { joinFarmAsWorker } = await import("@/server/services/farm.service");
+    return joinFarmAsWorker(data);
   });
 }

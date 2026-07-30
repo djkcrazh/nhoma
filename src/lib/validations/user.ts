@@ -21,10 +21,16 @@ export const userUpdateSchema = z.object({
   isActive: z.boolean().optional(),
 });
 
-export const onboardingSchema = z.object({
-  code: z.string().trim().min(1, "Invite code is required"),
+export const createFarmSchema = z.object({
   farmName: z.string().trim().min(1, "Farm name is required").max(120),
   adminName: z.string().trim().min(1, "Your name is required").max(80),
+  email: z.string().email("Enter a valid email"),
+  password: z.string().min(8, "At least 8 characters"),
+});
+
+export const joinFarmSchema = z.object({
+  joinCode: z.string().trim().min(1, "Farm code is required"),
+  name: z.string().trim().min(1, "Your name is required").max(80),
   email: z.string().email("Enter a valid email"),
   password: z.string().min(8, "At least 8 characters"),
 });

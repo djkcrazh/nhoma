@@ -10,8 +10,8 @@ export default function OnboardingPage() {
           <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center text-accent">
             <BrandMark size={56} />
           </div>
-          <h1 className="font-display text-2xl font-bold">Set up your farm</h1>
-          <p className="mt-1 text-sm text-ink-soft">Redeem your invite code to get started</p>
+          <h1 className="font-display text-2xl font-bold">Get started with Nhoma</h1>
+          <p className="mt-1 text-sm text-ink-soft">Create a new farm, or join one with a code</p>
         </div>
         <div className="card p-6">
           <Suspense>

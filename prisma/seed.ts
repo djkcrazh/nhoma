@@ -11,7 +11,7 @@ const daysAgo = (n: number) => new Date(Date.now() - n * DAY);
 async function main() {
   const farm = await db.farm.upsert({
     where: { id: "farm_main" },
-    create: { id: "farm_main", name: "Hillside Piggery" },
+    create: { id: "farm_main", name: "Hillside Piggery", joinCode: "DEMOFARM" },
     update: {},
   });
 
