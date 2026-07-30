@@ -289,6 +289,17 @@ export async function regenerateJoinCodeAction() {
   });
 }
 
+export async function renameFarmAction(name: string) {
+  return run(async () => {
+    const ctx = await requireCtx();
+    const { renameFarm } = await import("@/server/services/farm.service");
+    const farmName = await renameFarm(ctx, name);
+    revalidatePath("/settings");
+    revalidatePath("/dashboard");
+    return farmName;
+  });
+}
+
 // ---------- settings ----------
 
 export async function updateSettingsAction(input: unknown) {

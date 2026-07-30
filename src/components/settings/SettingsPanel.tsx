@@ -12,6 +12,7 @@ import {
   deleteUserAction,
   regenerateJoinCodeAction,
   renameBreedAction,
+  renameFarmAction,
   updateSettingsAction,
   updateUserAction,
 } from "@/server/actions";
@@ -51,12 +52,14 @@ export function SettingsPanel({
   breeds,
   currentUserId,
   joinCode,
+  farmName,
 }: {
   settings: FarmSettings;
   users: UserRow[];
   breeds: BreedRow[];
   currentUserId: string;
   joinCode: string;
+  farmName: string;
 }) {
   const router = useRouter();
   const [values, setValues] = useState<Record<string, string>>(
@@ -69,6 +72,8 @@ export function SettingsPanel({
   const [code, setCode] = useState(joinCode);
   const [regenConfirm, setRegenConfirm] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
+  const [name, setName] = useState(farmName);
+  const [savingName, setSavingName] = useState(false);
 
   async function regenerateCode() {
     setRegenerating(true);
@@ -78,6 +83,17 @@ export function SettingsPanel({
     if (res.ok) {
       setCode(res.data);
       toast.success("New join code issued — the old one no longer works");
+    } else toast.error(res.error);
+  }
+
+  async function saveFarmName() {
+    setSavingName(true);
+    const res = await renameFarmAction(name);
+    setSavingName(false);
+    if (res.ok) {
+      setName(res.data);
+      toast.success("Farm renamed");
+      router.refresh();
     } else toast.error(res.error);
   }
 
@@ -95,6 +111,27 @@ export function SettingsPanel({
 
   return (
     <div className="space-y-6">
+      {/* Farm identity */}
+      <section className="card p-5">
+        <h2 className="mb-1 font-display text-base font-bold">Farm name</h2>
+        <p className="mb-4 text-sm text-ink-soft">Shown in the sidebar and shared with everyone on this farm.</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <input
+            className="input max-w-xs"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            maxLength={120}
+          />
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={saveFarmName}
+            disabled={savingName || !name.trim() || name.trim() === farmName}
+          >
+            {savingName ? "Saving…" : "Save"}
+          </button>
+        </div>
+      </section>
+
       {/* Thresholds */}
       <section className="card p-5">
         <h2 className="mb-1 font-display text-base font-bold">Automation thresholds</h2>

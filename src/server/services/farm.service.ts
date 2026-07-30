@@ -102,6 +102,11 @@ export async function joinFarmAsWorker(input: {
   return { farmId: farm.id, email: user.email };
 }
 
+export async function getFarmName(ctx: Ctx) {
+  const farm = await db.farm.findUniqueOrThrow({ where: { id: ctx.farmId }, select: { name: true } });
+  return farm.name;
+}
+
 /** Admin-only: reveal the farm's current join code so it can be shared with workers. */
 export async function getJoinCode(ctx: Ctx) {
   assertCan(ctx.role, "user:manage");
@@ -115,4 +120,13 @@ export async function regenerateJoinCode(ctx: Ctx) {
   const joinCode = await uniqueJoinCode();
   await db.farm.update({ where: { id: ctx.farmId }, data: { joinCode } });
   return joinCode;
+}
+
+/** Admin-only: rename the farm — shown in the sidebar and shared with everyone on it. */
+export async function renameFarm(ctx: Ctx, name: string) {
+  assertCan(ctx.role, "settings:manage");
+  const trimmed = name.trim();
+  if (!trimmed) throw new ServiceError("INVALID_INPUT", "Farm name is required");
+  await db.farm.update({ where: { id: ctx.farmId }, data: { name: trimmed } });
+  return trimmed;
 }

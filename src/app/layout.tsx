@@ -25,7 +25,7 @@ const tenorSans = Tenor_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Nhoma — Hillside Piggery",
+  title: "Nhoma",
   description: "Nhoma · pig farm management",
 };
 
