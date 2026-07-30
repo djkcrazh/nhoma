@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireCtx } from "@/server/auth/auth";
+import { assertCan } from "@/server/auth/permissions";
 import * as pigs from "@/server/services/pig.service";
 import * as weights from "@/server/services/weight.service";
 import * as breeding from "@/server/services/breeding.service";
@@ -130,6 +131,7 @@ export async function suggestTagAction() {
 export async function checkTagAction(tagId: string) {
   return run(async () => {
     const ctx = await requireCtx();
+    assertCan(ctx.role, "pig:view");
     const existing = await db.pig.findFirst({
       where: { farmId: ctx.farmId, tagId },
       select: { id: true },
@@ -232,6 +234,7 @@ export async function closeBreedingAction(input: unknown) {
 export async function addNoteAction(input: unknown) {
   return run(async () => {
     const ctx = await requireCtx();
+    assertCan(ctx.role, "note:create");
     const data = noteCreateSchema.parse(input);
     const pig = await db.pig.findFirst({ where: { id: data.pigId, farmId: ctx.farmId } });
     if (!pig) throw new pigs.ServiceError("NOT_FOUND", "Pig not found");

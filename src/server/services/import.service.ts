@@ -3,7 +3,7 @@ import { Ctx } from "@/server/auth/auth";
 import { assertCan } from "@/server/auth/permissions";
 import { logAudit } from "./audit.service";
 import { getSettings } from "./settings.service";
-import { enrichPig, syncStatus } from "./pig.service";
+import { enrichPig, syncStatus, pigInclude } from "./pig.service";
 import { pigCreateSchema } from "@/lib/validations/pig";
 
 export interface ImportRow {
@@ -175,12 +175,7 @@ export async function exportPigs(ctx: Ctx) {
   const settings = await getSettings(ctx.farmId);
   const pigs = await db.pig.findMany({
     where: { farmId: ctx.farmId, deletedAt: null },
-    include: {
-      mother: { select: { id: true, tagId: true, breed: true, deletedAt: true } },
-      father: { select: { id: true, tagId: true, breed: true, deletedAt: true } },
-      weightRecords: { orderBy: { measuredAt: "desc" as const }, take: 1 },
-      breedingsAsSow: { where: { status: "ACTIVE" }, orderBy: { crossingDate: "desc" as const }, take: 1 },
-    },
+    include: pigInclude,
     orderBy: { tagId: "asc" },
   });
   return pigs.map((p) => {

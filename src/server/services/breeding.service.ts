@@ -23,7 +23,7 @@ export async function recordCrossing(
     throw new ServiceError("INVALID_INPUT", "Sow is no longer active on the farm");
 
   const active = await db.breeding.findFirst({
-    where: { sowId: sow.id, status: "ACTIVE" },
+    where: { sowId: sow.id, status: "ACTIVE", farmId: ctx.farmId },
   });
   if (active)
     throw new ServiceError("INVALID_INPUT", `${sow.tagId} already has an active pregnancy`);

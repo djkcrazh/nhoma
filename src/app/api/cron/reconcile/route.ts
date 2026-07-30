@@ -10,7 +10,11 @@ import { reconcileFarm } from "@/server/services/notification.service";
  */
 export async function GET(req: NextRequest) {
   const secret = process.env.CRON_SECRET;
-  if (secret && req.headers.get("authorization") !== `Bearer ${secret}`) {
+  if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json({ error: "Cron not configured" }, { status: 503 });
+    }
+  } else if (req.headers.get("authorization") !== `Bearer ${secret}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const farms = await db.farm.findMany({ select: { id: true } });

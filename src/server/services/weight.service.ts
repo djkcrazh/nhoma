@@ -31,7 +31,7 @@ export async function recordWeight(
 
   // Keep the denormalized latest-weight pointer accurate
   const latest = await db.weightRecord.findFirst({
-    where: { pigId: pig.id },
+    where: { pigId: pig.id, farmId: ctx.farmId },
     orderBy: { measuredAt: "desc" },
   });
   await db.pig.update({

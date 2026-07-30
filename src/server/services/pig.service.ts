@@ -22,11 +22,9 @@ export class ServiceError extends Error {
   }
 }
 
-// ---------- shared includes & mapping ----------
-
-const pigInclude = {
-  mother: { select: { id: true, tagId: true, breed: true, deletedAt: true } },
-  father: { select: { id: true, tagId: true, breed: true, deletedAt: true } },
+export const pigInclude = {
+  mother: { select: { id: true, tagId: true, breed: true, deletedAt: true, farmId: true } },
+  father: { select: { id: true, tagId: true, breed: true, deletedAt: true, farmId: true } },
   weightRecords: { orderBy: { measuredAt: "desc" as const }, take: 1 },
   breedingsAsSow: {
     where: { status: "ACTIVE" },
@@ -73,8 +71,14 @@ export function enrichPig(pig: PigRow, settings: FarmSettings, now = new Date())
     status: resolveStatus(d, settings, now),
     weightKg: d.currentWeightKg,
     lastWeighedAt: d.lastWeighedAt?.toISOString() ?? null,
-    mother: pig.mother ? { id: pig.mother.id, tagId: pig.mother.tagId, breed: pig.mother.breed, removed: !!pig.mother.deletedAt } : null,
-    father: pig.father ? { id: pig.father.id, tagId: pig.father.tagId, breed: pig.father.breed, removed: !!pig.father.deletedAt } : null,
+    mother:
+      pig.mother && pig.mother.farmId === pig.farmId
+        ? { id: pig.mother.id, tagId: pig.mother.tagId, breed: pig.mother.breed, removed: !!pig.mother.deletedAt }
+        : null,
+    father:
+      pig.father && pig.father.farmId === pig.farmId
+        ? { id: pig.father.id, tagId: pig.father.tagId, breed: pig.father.breed, removed: !!pig.father.deletedAt }
+        : null,
     readyForCrossing: pig.readyForCrossing,
     breedingStock: pig.breedingStock,
     castrated: pig.castrated,
@@ -137,7 +141,7 @@ async function validateParents(
       let frontier = [parentId];
       while (frontier.length) {
         const rows = await db.pig.findMany({
-          where: { id: { in: frontier } },
+          where: { id: { in: frontier }, farmId },
           select: { motherId: true, fatherId: true },
         });
         frontier = [];
@@ -265,21 +269,27 @@ export async function getPigByTag(ctx: Ctx, tagId: string) {
   });
   if (!pig) return null;
 
+  const safePig = {
+    ...pig,
+    mother: pig.mother && pig.mother.farmId === pig.farmId ? pig.mother : null,
+    father: pig.father && pig.father.farmId === pig.farmId ? pig.father : null,
+  };
+
   const [offspring, siblings, activity] = await Promise.all([
     db.pig.findMany({
       where: { farmId: ctx.farmId, deletedAt: null, OR: [{ motherId: pig.id }, { fatherId: pig.id }] },
       include: pigInclude,
       orderBy: { dateOfBirth: "desc" },
     }),
-    pig.motherId || pig.fatherId
+    safePig.motherId || safePig.fatherId
       ? db.pig.findMany({
           where: {
             farmId: ctx.farmId,
             deletedAt: null,
             id: { not: pig.id },
             OR: [
-              ...(pig.motherId ? [{ motherId: pig.motherId }] : []),
-              ...(pig.fatherId ? [{ fatherId: pig.fatherId }] : []),
+              ...(safePig.motherId ? [{ motherId: safePig.motherId }] : []),
+              ...(safePig.fatherId ? [{ fatherId: safePig.fatherId }] : []),
             ],
           },
           include: pigInclude,
@@ -294,16 +304,16 @@ export async function getPigByTag(ctx: Ctx, tagId: string) {
     }),
   ]);
 
-  const activeBreedingRow = pig.breedingsAsSow.find((b) => b.status === "ACTIVE") ?? null;
+  const activeBreedingRow = safePig.breedingsAsSow.find((b) => b.status === "ACTIVE") ?? null;
   return {
-    ...enrichPig({ ...pig, breedingsAsSow: activeBreedingRow ? [activeBreedingRow] : [] } as PigRow, settings),
-    deletedAt: pig.deletedAt?.toISOString() ?? null,
-    weightHistory: pig.weightRecords.map((w) => ({
+    ...enrichPig({ ...safePig, breedingsAsSow: activeBreedingRow ? [activeBreedingRow] : [] } as PigRow, settings),
+    deletedAt: safePig.deletedAt?.toISOString() ?? null,
+    weightHistory: safePig.weightRecords.map((w) => ({
       id: w.id,
       weightKg: w.weightKg,
       measuredAt: w.measuredAt.toISOString(),
     })),
-    breedingHistory: pig.breedingsAsSow.map((b) => ({
+    breedingHistory: safePig.breedingsAsSow.map((b) => ({
       id: b.id,
       crossingDate: b.crossingDate.toISOString(),
       boarTag: b.boar?.tagId ?? null,
@@ -312,7 +322,7 @@ export async function getPigByTag(ctx: Ctx, tagId: string) {
         ? { farrowedAt: b.litter.farrowedAt.toISOString(), bornAlive: b.litter.bornAlive, stillborn: b.litter.stillborn }
         : null,
     })),
-    siredBreedings: pig.breedingsAsBoar.map((b) => ({
+    siredBreedings: safePig.breedingsAsBoar.map((b) => ({
       id: b.id,
       crossingDate: b.crossingDate.toISOString(),
       sowTag: b.sow.tagId,
@@ -320,7 +330,7 @@ export async function getPigByTag(ctx: Ctx, tagId: string) {
     })),
     offspring: offspring.map((o) => enrichPig(o, settings)),
     siblings: siblings.map((s) => enrichPig(s, settings)),
-    notes: pig.notes.map((n) => ({
+    notes: safePig.notes.map((n) => ({
       id: n.id,
       body: n.body,
       author: n.author?.name ?? "Unknown",
@@ -344,6 +354,7 @@ const lineageSelect = {
   dateOfBirth: true,
   status: true,
   deletedAt: true,
+  farmId: true,
 };
 
 type LineageRow = Prisma.PigGetPayload<{ select: typeof lineageSelect }>;
@@ -369,16 +380,19 @@ export async function getPigLineage(ctx: Ctx, tagId: string) {
   });
   if (!pig) return null;
 
+  const motherId = pig.mother && pig.mother.farmId === ctx.farmId ? pig.motherId : null;
+  const fatherId = pig.father && pig.father.farmId === ctx.farmId ? pig.fatherId : null;
+
   const [siblings, offspring] = await Promise.all([
-    pig.motherId || pig.fatherId
+    motherId || fatherId
       ? db.pig.findMany({
           where: {
             farmId: ctx.farmId,
             deletedAt: null,
             id: { not: pig.id },
             OR: [
-              ...(pig.motherId ? [{ motherId: pig.motherId }] : []),
-              ...(pig.fatherId ? [{ fatherId: pig.fatherId }] : []),
+              ...(motherId ? [{ motherId }] : []),
+              ...(fatherId ? [{ fatherId }] : []),
             ],
           },
           select: lineageSelect,
@@ -394,8 +408,8 @@ export async function getPigLineage(ctx: Ctx, tagId: string) {
 
   return {
     self: toLineageNode(pig),
-    mother: pig.mother ? toLineageNode(pig.mother) : null,
-    father: pig.father ? toLineageNode(pig.father) : null,
+    mother: pig.mother && pig.mother.farmId === ctx.farmId ? toLineageNode(pig.mother) : null,
+    father: pig.father && pig.father.farmId === ctx.farmId ? toLineageNode(pig.father) : null,
     siblings: siblings.map(toLineageNode),
     offspring: offspring.map(toLineageNode),
   };
@@ -420,6 +434,7 @@ export async function searchPigOptions(ctx: Ctx, query: string, sex?: Sex) {
 }
 
 export async function suggestNextTagId(ctx: Ctx): Promise<string> {
+  assertCan(ctx.role, "pig:view");
   const rows = await db.pig.findMany({
     where: { farmId: ctx.farmId },
     select: { tagId: true },
@@ -522,9 +537,9 @@ export async function updatePig(ctx: Ctx, pigId: string, input: PigUpdateInput) 
   }
   if (input.sex && input.sex !== existing.sex) {
     const [asMother, asFather, asSow] = await Promise.all([
-      db.pig.count({ where: { motherId: pigId } }),
-      db.pig.count({ where: { fatherId: pigId } }),
-      db.breeding.count({ where: { sowId: pigId } }),
+      db.pig.count({ where: { motherId: pigId, farmId: ctx.farmId } }),
+      db.pig.count({ where: { fatherId: pigId, farmId: ctx.farmId } }),
+      db.breeding.count({ where: { sowId: pigId, farmId: ctx.farmId } }),
     ]);
     if ((input.sex === "MALE" && (asMother > 0 || asSow > 0)) || (input.sex === "FEMALE" && asFather > 0))
       throw new ServiceError("INVALID_INPUT", "Cannot change sex: pig has lineage or breeding records as the other sex");
@@ -577,7 +592,9 @@ async function closePig(
   if (!pig) throw new ServiceError("NOT_FOUND", "Pig not found");
 
   // A pregnant sow being closed must have its active breeding resolved
-  const active = await db.breeding.findFirst({ where: { sowId: pigId, status: "ACTIVE" } });
+  const active = await db.breeding.findFirst({
+    where: { sowId: pigId, status: "ACTIVE", farmId: ctx.farmId },
+  });
   if (active) {
     await db.breeding.update({ where: { id: active.id }, data: { status: "FAILED" } });
   }

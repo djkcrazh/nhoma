@@ -7,6 +7,7 @@ import { ageDays } from "@/lib/domain/compute";
 const OPEN = { notIn: ["SOLD", "DEAD", "INACTIVE"] };
 
 export async function dashboardStats(ctx: Ctx) {
+  assertCan(ctx.role, "analytics:view");
   const settings = await getSettings(ctx.farmId);
   const farmId = ctx.farmId;
   const monthStart = new Date();
@@ -65,6 +66,7 @@ export async function dashboardStats(ctx: Ctx) {
 }
 
 export async function analyticsData(ctx: Ctx) {
+  assertCan(ctx.role, "analytics:view");
   const farmId = ctx.farmId;
   const settings = await getSettings(ctx.farmId);
   const pigs = await db.pig.findMany({

@@ -2,7 +2,7 @@ import { db } from "@/server/db";
 import { Ctx } from "@/server/auth/auth";
 import { getSettings } from "./settings.service";
 import { computeWarnings, resolveStatus } from "@/lib/domain/compute";
-import { toDomainPig } from "./pig.service";
+import { toDomainPig, pigInclude } from "./pig.service";
 
 const SEVERITY_BY_TYPE: Record<string, string> = {
   OVERDUE_PREGNANCY: "critical",
@@ -22,12 +22,7 @@ export async function reconcileFarm(farmId: string) {
   const settings = await getSettings(farmId);
   const pigs = await db.pig.findMany({
     where: { farmId, deletedAt: null, status: { notIn: ["SOLD", "DEAD", "INACTIVE"] } },
-    include: {
-      weightRecords: { orderBy: { measuredAt: "desc" }, take: 1 },
-      breedingsAsSow: { where: { status: "ACTIVE" }, take: 1 },
-      mother: { select: { id: true, tagId: true, breed: true, deletedAt: true } },
-      father: { select: { id: true, tagId: true, breed: true, deletedAt: true } },
-    },
+    include: pigInclude,
   });
 
   const now = new Date();
