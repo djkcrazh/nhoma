@@ -13,7 +13,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  await maybeReconcile(session.user.farmId);
+  try {
+    await maybeReconcile(session.user.farmId);
+  } catch (err) {
+    // A stale session pointing at a deleted/mismatched farm must not take
+    // down every page in the app shell — reconcile is a background nicety.
+    console.error(`maybeReconcile failed for farm ${session.user.farmId}:`, err);
+  }
 
   const [farm, unread] = await Promise.all([
     db.farm.findUnique({ where: { id: session.user.farmId } }),

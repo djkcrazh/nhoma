@@ -17,10 +17,30 @@ export async function GET(req: NextRequest) {
   } else if (req.headers.get("authorization") !== `Bearer ${secret}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const farms = await db.farm.findMany({ select: { id: true } });
-  const results = [];
-  for (const farm of farms) {
-    results.push({ farmId: farm.id, ...(await reconcileFarm(farm.id)) });
+  try {
+    const farms = await db.farm.findMany({ select: { id: true } });
+    const results = [];
+    // One bad farm (bad data, a constraint violation) must not stop the rest
+    // from reconciling — this runs unattended, so a single failure shouldn't
+    // silently starve every farm after it in the list.
+    for (const farm of farms) {
+      try {
+        results.push({ farmId: farm.id, ok: true, ...(await reconcileFarm(farm.id)) });
+      } catch (err) {
+        console.error(`Reconcile failed for farm ${farm.id}:`, err);
+        results.push({
+          farmId: farm.id,
+          ok: false,
+          error: err instanceof Error ? err.message : "Unknown error",
+        });
+      }
+    }
+    return NextResponse.json({ ok: true, results });
+  } catch (err) {
+    console.error("Cron reconcile failed:", err);
+    return NextResponse.json(
+      { ok: false, error: err instanceof Error ? err.message : "Unknown error" },
+      { status: 500 }
+    );
   }
-  return NextResponse.json({ ok: true, results });
 }
