@@ -383,27 +383,40 @@ export async function getPigLineage(ctx: Ctx, tagId: string) {
   const motherId = pig.mother && pig.mother.farmId === ctx.farmId ? pig.motherId : null;
   const fatherId = pig.father && pig.father.farmId === ctx.farmId ? pig.fatherId : null;
 
-  const [siblings, offspring] = await Promise.all([
+  const LINEAGE_ROW_CAP = 30; // a large litter/breeder history shouldn't blow up the scroll row
+
+  const siblingsWhere = {
+    farmId: ctx.farmId,
+    deletedAt: null,
+    id: { not: pig.id },
+    OR: [
+      ...(motherId ? [{ motherId }] : []),
+      ...(fatherId ? [{ fatherId }] : []),
+    ],
+  };
+  const offspringWhere = {
+    farmId: ctx.farmId,
+    deletedAt: null,
+    OR: [{ motherId: pig.id }, { fatherId: pig.id }],
+  };
+
+  const [siblings, siblingCount, offspring, offspringCount] = await Promise.all([
     motherId || fatherId
       ? db.pig.findMany({
-          where: {
-            farmId: ctx.farmId,
-            deletedAt: null,
-            id: { not: pig.id },
-            OR: [
-              ...(motherId ? [{ motherId }] : []),
-              ...(fatherId ? [{ fatherId }] : []),
-            ],
-          },
+          where: siblingsWhere,
           select: lineageSelect,
           orderBy: { dateOfBirth: "desc" as const },
+          take: LINEAGE_ROW_CAP,
         })
       : Promise.resolve([]),
+    motherId || fatherId ? db.pig.count({ where: siblingsWhere }) : Promise.resolve(0),
     db.pig.findMany({
-      where: { farmId: ctx.farmId, deletedAt: null, OR: [{ motherId: pig.id }, { fatherId: pig.id }] },
+      where: offspringWhere,
       select: lineageSelect,
       orderBy: { dateOfBirth: "desc" as const },
+      take: LINEAGE_ROW_CAP,
     }),
+    db.pig.count({ where: offspringWhere }),
   ]);
 
   return {
@@ -411,7 +424,9 @@ export async function getPigLineage(ctx: Ctx, tagId: string) {
     mother: pig.mother && pig.mother.farmId === ctx.farmId ? toLineageNode(pig.mother) : null,
     father: pig.father && pig.father.farmId === ctx.farmId ? toLineageNode(pig.father) : null,
     siblings: siblings.map(toLineageNode),
+    siblingCount,
     offspring: offspring.map(toLineageNode),
+    offspringCount,
   };
 }
 

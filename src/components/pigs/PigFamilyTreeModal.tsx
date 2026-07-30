@@ -60,6 +60,8 @@ export function PigFamilyTreeModal({
 
   const siblings = lineage?.siblings ?? [];
   const offspring = lineage?.offspring ?? [];
+  const siblingCount = lineage?.siblingCount ?? siblings.length;
+  const offspringCount = lineage?.offspringCount ?? offspring.length;
 
   return (
     <Modal
@@ -110,6 +112,7 @@ export function PigFamilyTreeModal({
                     {siblings.map((s) => (
                       <TreeNode key={s.id} node={s} onSelect={goTo} />
                     ))}
+                    {siblingCount > siblings.length && <MoreNode count={siblingCount - siblings.length} />}
                   </div>
                 </>
               )}
@@ -121,13 +124,14 @@ export function PigFamilyTreeModal({
                 <div className="tree-node-col">
                   <Connector />
                   <div className="mt-1 text-[10px] font-semibold uppercase tracking-widest text-ink-faint">
-                    Children ({offspring.length})
+                    Children ({offspringCount})
                   </div>
                 </div>
                 <div className="tree-row">
                   {offspring.map((c) => (
                     <TreeNode key={c.id} node={c} onSelect={goTo} />
                   ))}
+                  {offspringCount > offspring.length && <MoreNode count={offspringCount - offspring.length} />}
                 </div>
               </>
             )}
@@ -146,6 +150,17 @@ export function PigFamilyTreeModal({
 
 function Connector() {
   return <div className="mx-auto h-5 w-px bg-[var(--rule-strong)]" aria-hidden />;
+}
+
+function MoreNode({ count }: { count: number }) {
+  return (
+    <div className="tree-node">
+      <div className="flex flex-col items-center gap-1.5">
+        <div className="tree-node__ring font-tag text-sm font-semibold text-ink-faint">+{count}</div>
+        <span className="text-center text-[10px] leading-tight text-ink-faint">more</span>
+      </div>
+    </div>
+  );
 }
 
 function TreeNode({

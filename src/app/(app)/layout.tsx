@@ -13,23 +13,27 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  try {
-    await maybeReconcile(session.user.farmId);
-  } catch (err) {
-    // A stale session pointing at a deleted/mismatched farm must not take
-    // down every page in the app shell — reconcile is a background nicety.
-    console.error(`maybeReconcile failed for farm ${session.user.farmId}:`, err);
+  const farm = await db.farm.findUnique({ where: { id: session.user.farmId } });
+
+  // A stale session can point at a farm that no longer exists (only reachable
+  // today via manual DB surgery — there's no farm-deletion feature yet — but
+  // cheap to guard). Skip reconcile outright rather than let it hit the
+  // Setting_farmId_fkey constraint; the try/catch stays as defense-in-depth
+  // for unrelated reconcile failures (e.g. a transient DB error).
+  if (farm) {
+    try {
+      await maybeReconcile(session.user.farmId);
+    } catch (err) {
+      console.error(`maybeReconcile failed for farm ${session.user.farmId}:`, err);
+    }
   }
 
-  const [farm, unread] = await Promise.all([
-    db.farm.findUnique({ where: { id: session.user.farmId } }),
-    unreadCount({
-      userId: session.user.id,
-      farmId: session.user.farmId,
-      role: session.user.role,
-      userName: session.user.name,
-    }),
-  ]);
+  const unread = await unreadCount({
+    userId: session.user.id,
+    farmId: session.user.farmId,
+    role: session.user.role,
+    userName: session.user.name,
+  });
 
   return (
     <Providers>
