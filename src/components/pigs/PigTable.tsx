@@ -36,6 +36,7 @@ const QUICK_FILTERS = [
   { key: "recent", label: "Recently Added" },
   { key: "sold", label: "Sold" },
   { key: "inactive", label: "Inactive" },
+  { key: "dead", label: "Deceased" },
 ];
 
 interface Params {
@@ -476,7 +477,7 @@ export function PigTable({
               checked={params.closed}
               onChange={(e) => setParam({ closed: e.target.checked ? "1" : undefined, page: undefined })}
             />
-            Include sold / inactive
+            Include sold / inactive / deceased
           </label>
         </div>
         <div className="flex flex-wrap gap-1.5">

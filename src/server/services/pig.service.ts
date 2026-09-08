@@ -216,10 +216,11 @@ export async function listPigs(ctx: Ctx, params: PigListParams) {
     case "recent": where.createdAt = { gte: new Date(Date.now() - 30 * 86_400_000) }; break;
     case "sold": where.status = "SOLD"; break;
     case "inactive": where.status = "INACTIVE"; break;
+    case "dead": where.status = "DEAD"; break;
     case "adults": where.status = { notIn: ["PIGLET"] }; break;
   }
   // Hide closed pigs by default unless explicitly requested
-  if (!params.includeClosed && !["sold", "inactive"].includes(params.quick ?? "") && !params.status?.some((s) => ["SOLD", "DEAD", "INACTIVE"].includes(s))) {
+  if (!params.includeClosed && !["sold", "inactive", "dead"].includes(params.quick ?? "") && !params.status?.some((s) => ["SOLD", "DEAD", "INACTIVE"].includes(s))) {
     where.AND = [{ status: { notIn: ["SOLD", "DEAD", "INACTIVE"] } }];
   }
 
