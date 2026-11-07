@@ -17,6 +17,7 @@ npm install
 npx prisma migrate dev   # creates prisma/dev.db
 npx prisma db seed       # demo farm, users, herd
 npm run dev              # http://localhost:3000
+npm test                 # unit tests (Vitest)
 ```
 
 Seeded accounts:
