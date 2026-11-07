@@ -24,13 +24,18 @@ export const metadata: Metadata = {
   description: "Nhoma · pig farm management",
 };
 
-// Apply saved theme before paint; manual choice overrides OS preference.
-const themeScript = `
+// Restore saved UI preferences before first paint so nothing flashes.
+// - Theme: light is the default; dark only when the user explicitly chose it,
+//   regardless of the OS preference.
+// - Agent panel: mirror the saved mode onto <html data-agent> (CSS lays the
+//   panel out from it). Keep the mode list in sync with stores/agentPanel.ts.
+const preferencesScript = `
 (function () {
   try {
-    var t = localStorage.getItem("theme");
-    var dark = t ? t === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (dark) document.documentElement.classList.add("dark");
+    var d = document.documentElement;
+    if (localStorage.getItem("theme") === "dark") d.classList.add("dark");
+    var a = localStorage.getItem("agent-mode");
+    if (["docked", "minimized", "maximized", "closed"].indexOf(a) > -1) d.dataset.agent = a;
   } catch (e) {}
 })();
 `;
@@ -39,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: preferencesScript }} />
       </head>
       <body
         className={`${outfit.variable} ${geistMono.variable} ${tenorSans.variable} antialiased`}

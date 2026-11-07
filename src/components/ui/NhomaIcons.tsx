@@ -290,6 +290,60 @@ export function Menu(props: IconProps) {
   );
 }
 
+/* Sparkle — the agent */
+export function Sparkle(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z" />
+      <path d="M18.5 16l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" />
+    </Base>
+  );
+}
+
+/* Arrow up — send */
+export function ArrowUp(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M12 19V5" />
+      <path d="M6 11l6-6 6 6" />
+    </Base>
+  );
+}
+
+/* Panel right — collapse a docked side panel to its rail */
+export function PanelRight(props: IconProps) {
+  return (
+    <Base {...props}>
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2.5" />
+      <path d="M15 4.5v15" />
+    </Base>
+  );
+}
+
+/* Maximize — corners pointing out */
+export function Maximize(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M14 4h6v6" />
+      <path d="M10 20H4v-6" />
+      <path d="M20 4l-7 7" />
+      <path d="M4 20l7-7" />
+    </Base>
+  );
+}
+
+/* Restore — corners pointing in */
+export function Restore(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M20 10h-6V4" />
+      <path d="M4 14h6v6" />
+      <path d="M14 10l7-7" />
+      <path d="M3 21l7-7" />
+    </Base>
+  );
+}
+
 export const Icon = {
   LogoMark,
   Overview,
@@ -316,4 +370,9 @@ export const Icon = {
   Litter,
   Menu,
   FamilyTree,
+  Sparkle,
+  ArrowUp,
+  PanelRight,
+  Maximize,
+  Restore,
 };

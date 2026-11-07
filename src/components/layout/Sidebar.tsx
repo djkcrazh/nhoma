@@ -6,29 +6,100 @@ import { useQuickAddStore } from "@/stores/quickAdd";
 import { BrandMark } from "@/components/brand/BrandMark";
 import { Icon } from "@/components/ui/NhomaIcons";
 
-const NAV = [
-  { href: "/dashboard", label: "Overview", icon: Icon.Overview },
-  { href: "/pigs", label: "Pigs", icon: Icon.Pigs },
-  { href: "/breeding", label: "Breeding", icon: Icon.Breeding },
-  { href: "/analytics", label: "Analytics", icon: Icon.Analytics },
-  { href: "/notifications", label: "Alerts", icon: Icon.Alerts },
+interface NavItem {
+  href: string;
+  label: string;
+  icon: (typeof Icon)[keyof typeof Icon];
+  /** Key into the counts prop; shown as a quiet number beside the label. */
+  count?: "pigs" | "pregnant";
+  /** Alerts use the unread count and a brand-colored badge. */
+  unread?: boolean;
+}
+
+const OVERVIEW: NavItem = { href: "/dashboard", label: "Overview", icon: Icon.Overview };
+
+const GROUPS: { label: string; items: NavItem[]; adminOnly?: boolean }[] = [
+  {
+    label: "Herd",
+    items: [
+      { href: "/pigs", label: "Pigs", icon: Icon.Pigs, count: "pigs" },
+      { href: "/breeding", label: "Breeding", icon: Icon.Breeding, count: "pregnant" },
+    ],
+  },
+  {
+    label: "Review",
+    items: [
+      { href: "/analytics", label: "Analytics", icon: Icon.Analytics },
+      { href: "/notifications", label: "Alerts", icon: Icon.Alerts, unread: true },
+    ],
+  },
+  {
+    label: "Farm",
+    adminOnly: true,
+    items: [{ href: "/settings", label: "Settings", icon: Icon.Settings }],
+  },
 ];
 
-const ADMIN_NAV = [{ href: "/settings", label: "Settings", icon: Icon.Settings }];
+export interface SidebarCounts {
+  pigs: number;
+  pregnant: number;
+  unread: number;
+}
 
-export function Sidebar({ isAdmin, farmName }: { isAdmin: boolean; farmName: string }) {
+export function Sidebar({
+  isAdmin,
+  farmName,
+  counts,
+}: {
+  isAdmin: boolean;
+  farmName: string;
+  counts: SidebarCounts;
+}) {
   const pathname = usePathname();
   const openQuickAdd = useQuickAddStore((s) => s.open);
-  const items = isAdmin ? [...NAV, ...ADMIN_NAV] : NAV;
+
+  const groups = GROUPS.filter((g) => !g.adminOnly || isAdmin);
+  // The phone bottom bar has room for four destinations plus Add.
+  const mobileItems = [OVERVIEW, ...groups.flatMap((g) => g.items)].slice(0, 4);
+
+  function renderLink(item: NavItem) {
+    const active = pathname.startsWith(item.href);
+    const ItemIcon = item.icon;
+    const n = item.unread ? counts.unread : item.count ? counts[item.count] : 0;
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        title={item.label}
+        aria-current={active ? "page" : undefined}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors max-[900px]:justify-center max-[900px]:px-0 ${
+          active ? "bg-accent-soft text-accent" : "text-ink-soft hover:bg-sunken hover:text-ink"
+        }`}
+      >
+        <span className="flex w-5 items-center justify-center" aria-hidden>
+          <ItemIcon className="nhoma-icon" size={17} />
+        </span>
+        <span className="max-[900px]:hidden">{item.label}</span>
+        {n > 0 &&
+          (item.unread ? (
+            <span className="ml-auto min-w-[18px] rounded-full bg-accent px-1.5 text-center font-tag text-[10px] font-bold leading-[18px] text-accent-ink max-[900px]:hidden">
+              {n > 99 ? "99+" : n}
+            </span>
+          ) : (
+            <span className="ml-auto font-tag text-[11px] text-ink-faint max-[900px]:hidden">{n}</span>
+          ))}
+      </Link>
+    );
+  }
 
   return (
     <>
-      {/* Desktop / tablet sidebar — collapses to icon rail below 900px */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-56 flex-col border-r border-rule bg-raised max-[900px]:w-16 min-[560px]:flex">
-        <div className="flex items-center gap-2.5 px-5 py-5 max-[900px]:justify-center max-[900px]:px-0">
-          <BrandMark size={38} />
-          <div className="max-[900px]:hidden">
-            <div className="font-display text-[15px] font-bold leading-tight">{farmName}</div>
+      {/* Desktop / tablet sidebar — collapses to an icon rail below 900px */}
+      <aside className="app-sidebar fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-rule max-[900px]:w-16 min-[560px]:flex">
+        <div className="flex items-center gap-2.5 px-4 py-[18px] max-[900px]:justify-center max-[900px]:px-0">
+          <BrandMark size={36} />
+          <div className="min-w-0 max-[900px]:hidden">
+            <div className="truncate font-display text-[15px] font-bold leading-tight">{farmName}</div>
             <div
               className="font-tenor text-[10px] uppercase text-ink-faint"
               style={{ fontFamily: "var(--font-tenor), 'Tenor Sans', serif", letterSpacing: "0.32em" }}
@@ -38,7 +109,7 @@ export function Sidebar({ isAdmin, farmName }: { isAdmin: boolean; farmName: str
           </div>
         </div>
 
-        <div className="px-3 pb-4 max-[900px]:px-2">
+        <div className="px-3 pb-3 max-[900px]:px-2">
           <button
             onClick={() => openQuickAdd()}
             className="btn btn-primary w-full max-[900px]:h-11 max-[900px]:min-h-0 max-[900px]:px-0"
@@ -49,29 +120,16 @@ export function Sidebar({ isAdmin, farmName }: { isAdmin: boolean; farmName: str
           </button>
         </div>
 
-        <nav className="flex-1 space-y-0.5 px-3 max-[900px]:px-2">
-          {items.map((item) => {
-            const active = pathname.startsWith(item.href);
-            const ItemIcon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                title={item.label}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors max-[900px]:justify-center max-[900px]:px-0 ${
-                  active
-                    ? "bg-accent-soft text-accent"
-                    : "text-ink-soft hover:bg-sunken hover:text-ink"
-                }`}
-              >
-                <span className="flex w-5 items-center justify-center" aria-hidden>
-                  <ItemIcon className="nhoma-icon" size={17} />
-                </span>
-                <span className="max-[900px]:hidden">{item.label}</span>
-                {active && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent max-[900px]:hidden" />}
-              </Link>
-            );
-          })}
+        <nav className="flex-1 overflow-y-auto px-3 max-[900px]:px-2" aria-label="Main">
+          <div className="space-y-0.5 pt-1">{renderLink(OVERVIEW)}</div>
+          {groups.map((g) => (
+            <div key={g.label} className="space-y-0.5 pt-4">
+              <div className="px-3 pb-1 font-tag text-[10px] uppercase tracking-[0.16em] text-ink-faint max-[900px]:hidden">
+                {g.label}
+              </div>
+              {g.items.map(renderLink)}
+            </div>
+          ))}
         </nav>
 
         <div className="border-t border-dashed border-rule px-5 py-3 font-tag text-[10px] uppercase tracking-widest text-ink-faint max-[900px]:hidden">
@@ -80,14 +138,18 @@ export function Sidebar({ isAdmin, farmName }: { isAdmin: boolean; farmName: str
       </aside>
 
       {/* Mobile bottom nav below 560px */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 flex items-stretch justify-around border-t border-rule bg-raised pb-[env(safe-area-inset-bottom)] min-[560px]:hidden">
-        {items.slice(0, 4).map((item) => {
+      <nav
+        className="fixed inset-x-0 bottom-0 z-30 flex items-stretch justify-around border-t border-rule bg-raised pb-[env(safe-area-inset-bottom)] min-[560px]:hidden"
+        aria-label="Main"
+      >
+        {mobileItems.map((item) => {
           const active = pathname.startsWith(item.href);
           const ItemIcon = item.icon;
           return (
             <Link
               key={item.href}
               href={item.href}
+              aria-current={active ? "page" : undefined}
               className={`flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-semibold ${
                 active ? "text-accent" : "text-ink-faint"
               }`}

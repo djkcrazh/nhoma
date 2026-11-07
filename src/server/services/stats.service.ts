@@ -6,6 +6,16 @@ import { ageDays } from "@/lib/domain/compute";
 
 const OPEN = { notIn: ["SOLD", "DEAD", "INACTIVE"] };
 
+/** Cheap counts for the sidebar badges. No permission gate: counts only, and
+ *  the layout already requires a signed-in user for the farm. */
+export async function navCounts(farmId: string) {
+  const [pigs, pregnant] = await Promise.all([
+    db.pig.count({ where: { farmId, deletedAt: null, status: OPEN } }),
+    db.pig.count({ where: { farmId, deletedAt: null, status: { in: ["PREGNANT", "READY_TO_FARROW"] } } }),
+  ]);
+  return { pigs, pregnant };
+}
+
 export async function dashboardStats(ctx: Ctx) {
   assertCan(ctx.role, "analytics:view");
   const settings = await getSettings(ctx.farmId);
