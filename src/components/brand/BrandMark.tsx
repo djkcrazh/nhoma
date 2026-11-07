@@ -1,7 +1,7 @@
 /**
  * Nhoma brand mark — a live recreation of the logo (Tenor Sans "N" inside a
  * thin circle, hairline rule above), rendered in `currentColor` so it's
- * WHITE on Ironwood's dark surfaces and crisp at any size, unlike the PNG.
+ * theme-aware (sidebar foreground) and crisp at any size, unlike the PNG.
  *
  * Requires Tenor Sans loaded in layout.tsx:
  *   import { Tenor_Sans } from "next/font/google";
