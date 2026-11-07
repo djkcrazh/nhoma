@@ -164,7 +164,7 @@ export function Sidebar({
         </nav>
 
         <div className="border-t border-dashed border-rule px-5 py-3 font-tag text-[10px] uppercase tracking-widest text-ink-faint max-[900px]:hidden">
-          Nhoma v1
+          Nhoma v2
         </div>
       </aside>
 
