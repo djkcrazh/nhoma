@@ -6,6 +6,16 @@ import { ageDays } from "@/lib/domain/compute";
 
 const OPEN = { notIn: ["SOLD", "DEAD", "INACTIVE"] };
 
+/** Cheap counts for the sidebar badges. No permission gate: counts only, and
+ *  the layout already requires a signed-in user for the farm. */
+export async function navCounts(farmId: string) {
+  const [pigs, pregnant] = await Promise.all([
+    db.pig.count({ where: { farmId, deletedAt: null, status: OPEN } }),
+    db.pig.count({ where: { farmId, deletedAt: null, status: { in: ["PREGNANT", "READY_TO_FARROW"] } } }),
+  ]);
+  return { pigs, pregnant };
+}
+
 export async function dashboardStats(ctx: Ctx) {
   assertCan(ctx.role, "analytics:view");
   const settings = await getSettings(ctx.farmId);
@@ -73,6 +83,7 @@ export async function analyticsData(ctx: Ctx) {
     where: { farmId, deletedAt: null },
     select: {
       breed: true, sex: true, status: true, dateOfBirth: true, createdAt: true,
+      soldAt: true, diedAt: true,
       weightRecords: { orderBy: { measuredAt: "desc" }, take: 1, select: { weightKg: true } },
     },
   });
@@ -126,6 +137,20 @@ export async function analyticsData(ctx: Ctx) {
     return { month: m.label, count: pigs.filter((p) => p.createdAt <= end).length };
   });
 
+  // Herd size at each month end: born by then and not yet sold or dead. Uses
+  // date of birth (not createdAt) so a herd imported later still shows its
+  // real history. Unlike `growth`, which counts every pig ever added.
+  const herdSize = months.map((m) => {
+    const end = new Date(Number(m.key.slice(0, 4)), Number(m.key.slice(5)), 0, 23, 59, 59);
+    const alive = (p: (typeof pigs)[number]) =>
+      p.dateOfBirth <= end && !(p.soldAt && p.soldAt <= end) && !(p.diedAt && p.diedAt <= end);
+    return { month: m.label, count: pigs.filter(alive).length };
+  });
+  const sold = months.map((m) => ({
+    month: m.label,
+    count: pigs.filter((p) => p.soldAt && monthKey(p.soldAt) === m.key).length,
+  }));
+
   // Average weight over time from all weight records (monthly mean)
   const allWeights = await db.weightRecord.findMany({
     where: { farmId },
@@ -170,6 +195,8 @@ export async function analyticsData(ctx: Ctx) {
     ageDistribution,
     births,
     growth,
+    herdSize,
+    sold,
     avgWeightOverTime,
     breedingSuccessRate,
     breedingCounts: {
@@ -193,6 +220,8 @@ export async function exportAnalyticsSummary(ctx: Ctx) {
   for (const a of data.ageDistribution) rows.push({ metric: "Age distribution", label: a.range, value: a.count });
   for (const m of data.births) rows.push({ metric: "Monthly births", label: m.month, value: m.count });
   for (const g of data.growth) rows.push({ metric: "Population growth", label: g.month, value: g.count });
+  for (const h of data.herdSize) rows.push({ metric: "Herd size", label: h.month, value: h.count });
+  for (const m of data.sold) rows.push({ metric: "Pigs sold", label: m.month, value: m.count });
   for (const a of data.avgWeightOverTime) rows.push({ metric: "Avg weight over time (kg)", label: a.month, value: a.avg ?? "" });
   rows.push({ metric: "Gender ratio", label: "Male", value: data.genderRatio.male });
   rows.push({ metric: "Gender ratio", label: "Female", value: data.genderRatio.female });

@@ -3,62 +3,167 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------------------
-   NHOMA · Ironwood (refined) — dark-native iron & bone, burnished copper.
-   Brand mark: Tenor Sans "N" in a thin circle, drawn in currentColor
-   (white on these surfaces). Layered surfaces, machined details, calm motion.
+   NHOMA theme — warm paper (light) / warm charcoal (dark), terracotta primary.
+
+   Layer 1: the imported theme tokens, verbatim (--background, --card,
+            --primary, --border, …).
+   Layer 2: the app's semantic names (--ground, --ink, --accent, …) aliased
+            onto layer 1 so every existing component re-skins without edits.
+
+   Two intentional deviations from the imported theme:
+   - Theme `--accent` is a neutral gray hover surface; the app's `--accent` is
+     the brand color. App `--accent` therefore = theme `--primary`, and the
+     theme's gray is kept as `--surface-accent`.
+   - Theme `--destructive` is near-black in light mode and `--sidebar-border`
+     is near-white in dark mode. Status colors (--overdue etc.) and the dark
+     sidebar border are set separately below so alerts and seams stay legible.
 --------------------------------------------------------------------------- */
 
 :root {
-  /* iron surface stack — three clear elevation steps */
-  --ground: #141618;
-  --ground-raised: #1c1f22;
-  --ground-sunken: #0e1012;
-  --ink: #ece7dd;
-  --ink-soft: #a8a196;
-  --ink-faint: #6e695f;
-  --rule: #282c30;
-  --rule-strong: #3a3f44;
+  color-scheme: light;
 
-  /* burnished copper, slightly deepened for the refined pass */
-  --accent: #c1703f;
-  --accent-hover: #d5824e;
-  --accent-soft: #c1703f26;
-  --accent-ink: #141618;
+  /* ---- imported theme (light) ---- */
+  --card: #f9f8f8;
+  --ring: #c96442;
+  --input: #b4b2a7;
+  --muted: #f2f1ed;
+  --surface-accent: #e8e8e8; /* theme `--accent` */
+  --border: #dad9d4;
+  --radius: 1rem;
+  --chart-1: #b05730;
+  --chart-2: #9c87f5;
+  --chart-3: #ded8c4;
+  --chart-4: #dad1ef;
+  --chart-5: #b4552d;
+  --popover: #ffffff;
+  --primary: #c96240;
+  --sidebar: #f5f4ee;
+  --spacing: 0.25rem;
+  --secondary: #fafafa;
+  --background: #fafaf7;
+  --foreground: #3d3929;
+  --destructive: #141413;
+  --shadow-blur: 3px;
+  --shadow-color: oklch(0 0 0);
+  --sidebar-ring: #b5b5b5;
+  --shadow-spread: 0px;
+  --letter-spacing: 0em;
+  --shadow-opacity: 0.1;
+  --sidebar-accent: #e9e6dc;
+  --sidebar-border: #ebebeb;
+  --card-foreground: #141413;
+  --shadow-offset-x: 0;
+  --shadow-offset-y: 1px;
+  --sidebar-primary: #c96442;
+  --muted-foreground: #6e6d68;
+  --surface-accent-foreground: #28261b; /* theme `--accent-foreground` */
+  --popover-foreground: #28261b;
+  --primary-foreground: #ffffff;
+  --sidebar-foreground: #3d3d3a;
+  --secondary-foreground: #535146;
+  --destructive-foreground: #ffffff;
+  --sidebar-accent-foreground: #343434;
+  --sidebar-primary-foreground: #fbfbfb;
 
-  --ok: #7fae7c;   --ok-soft: #7fae7c22;
-  --due: #d3a54e;  --due-soft: #d3a54e22;
-  --overdue: #d16a6a; --overdue-soft: #d16a6a22;
-  --breeding: #8fa5b8; --breeding-soft: #8fa5b822;
+  /* ---- status colors (not in the theme): darkened for cream backgrounds ---- */
+  --ok: #4a7c47;
+  --due: #8f6410;
+  --overdue: #b23b3b;
+  --breeding: #556f87;
+  --accent-hover: color-mix(in srgb, var(--primary) 86%, black);
 
-  --sidebar-ink: #f4f0e8;
-  --shadow: 0 1px 2px rgba(0,0,0,.5), 0 6px 18px rgba(0,0,0,.38);
-  --shadow-lg: 0 4px 10px rgba(0,0,0,.55), 0 20px 50px rgba(0,0,0,.6);
+  /* ---- light-only surface details ---- */
+  --glint: rgba(255, 255, 255, 0.9);
+  --shadow-lg: 0 4px 10px rgba(61, 57, 41, 0.08), 0 20px 40px rgba(61, 57, 41, 0.14);
 }
 
 .dark {
-  /* Ironwood is dark-native; explicit dark mode drops one step deeper */
-  --ground: #0d0f10;
-  --ground-raised: #15181a;
-  --ground-sunken: #090a0b;
-  --ink: #f1ede4;
-  --ink-soft: #b0a99d;
-  --ink-faint: #736d62;
-  --rule: #212528;
-  --rule-strong: #33383c;
-  --accent: #d08052;
-  --accent-hover: #e09363;
-  --accent-soft: #d0805226;
-  --accent-ink: #0d0f10;
-  --ok: #86b583; --ok-soft: #86b58326;
-  --due: #dcb05c; --due-soft: #dcb05c26;
-  --overdue: #da7878; --overdue-soft: #da787826;
-  --breeding: #9ab0c2; --breeding-soft: #9ab0c226;
-  --sidebar-ink: #f8f5ee;
-  --shadow: 0 1px 2px rgba(0,0,0,.6), 0 6px 18px rgba(0,0,0,.5);
-  --shadow-lg: 0 4px 10px rgba(0,0,0,.65), 0 20px 50px rgba(0,0,0,.7);
+  color-scheme: dark;
+
+  /* ---- imported theme (dark) ---- */
+  --card: #2c2c2b;
+  --ring: #d97757;
+  --input: #52514a;
+  --muted: #1b1b19;
+  --surface-accent: #1a1915;
+  --border: #3e3e38;
+  --radius: 1rem;
+  --chart-1: #b05730;
+  --chart-2: #9c87f5;
+  --chart-3: #1a1915;
+  --chart-4: #2f2b48;
+  --chart-5: #b4552d;
+  --popover: #30302e;
+  --primary: #d97757;
+  --sidebar: #1f1e1d;
+  --spacing: 0.25rem;
+  --secondary: #faf9f5;
+  --background: #262624;
+  --foreground: #f1f1ef;
+  --destructive: #ef4444;
+  --shadow-blur: 3px;
+  --shadow-color: oklch(0 0 0);
+  --sidebar-ring: #b5b5b5;
+  --shadow-spread: 0px;
+  --letter-spacing: 0em;
+  --shadow-opacity: 0.1;
+  --sidebar-accent: #0f0f0e;
+  --sidebar-border: #3e3e38; /* theme value #ebebeb is a bright seam on dark */
+  --card-foreground: #faf9f5;
+  --shadow-offset-x: 0;
+  --shadow-offset-y: 1px;
+  --sidebar-primary: #343434;
+  --muted-foreground: #b7b5a9;
+  --surface-accent-foreground: #f5f4ee;
+  --popover-foreground: #e5e5e2;
+  --primary-foreground: #141413;
+  --sidebar-foreground: #c3c0b6;
+  --secondary-foreground: #30302e;
+  --destructive-foreground: #ffffff;
+  --sidebar-accent-foreground: #c3c0b6;
+  --sidebar-primary-foreground: #fbfbfb;
+
+  --ok: #86b583;
+  --due: #dcb05c;
+  --overdue: #e07b7b;
+  --breeding: #9ab0c2;
+  --accent-hover: color-mix(in srgb, var(--primary) 86%, white);
+
+  --glint: rgba(255, 255, 255, 0.06);
+  --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.5), 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+/* App semantic names → theme tokens. Same element as :root/.dark, so the
+   color-mix() values below re-resolve per theme. */
+:root,
+.dark {
+  /* three elevation steps: sunken < ground < raised (cards) */
+  --ground: var(--background);
+  --ground-raised: var(--card);
+  --ground-sunken: var(--muted);
+  --ink: var(--foreground);
+  --ink-soft: var(--muted-foreground);
+  --ink-faint: color-mix(in srgb, var(--muted-foreground) 72%, var(--background));
+  --rule: var(--border);
+  --rule-strong: color-mix(in srgb, var(--border) 50%, var(--input));
+
+  --accent: var(--primary);
+  --accent-soft: color-mix(in srgb, var(--primary) 15%, transparent);
+  --accent-ink: var(--primary-foreground);
+
+  --ok-soft: color-mix(in srgb, var(--ok) 15%, transparent);
+  --due-soft: color-mix(in srgb, var(--due) 16%, transparent);
+  --overdue-soft: color-mix(in srgb, var(--overdue) 13%, transparent);
+  --breeding-soft: color-mix(in srgb, var(--breeding) 16%, transparent);
+
+  --sidebar-ink: var(--sidebar-foreground);
+
+  --shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-spread)
+    oklch(0 0 0 / var(--shadow-opacity));
 }
 
 @theme inline {
+  /* app semantic colors */
   --color-ground: var(--ground);
   --color-raised: var(--ground-raised);
   --color-sunken: var(--ground-sunken);
@@ -79,13 +184,61 @@
   --color-overdue-soft: var(--overdue-soft);
   --color-breeding: var(--breeding);
   --color-breeding-soft: var(--breeding-soft);
-  --font-display: "Rockwell", var(--font-roboto-slab), "Roboto Slab", serif;
-  --font-body: var(--font-source-sans), -apple-system, "Segoe UI", sans-serif;
-  --font-tag: var(--font-plex-mono), "SF Mono", ui-monospace, monospace;
+
+  /* theme colors, available as utilities (bg-card, text-primary, …) */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-surface-accent: var(--surface-accent);
+  --color-surface-accent-foreground: var(--surface-accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* fonts for utilities (font-sans, font-mono, font-serif) */
+  --font-sans: var(--font-outfit), Outfit, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, monospace;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
 }
 
 html {
   background: var(--ground);
+}
+
+/* Fonts (Outfit + Geist Mono, loaded via next/font in layout.tsx). Declared on
+   body, not :root: next/font defines --font-outfit / --font-geist-mono on the
+   element carrying their className, so a :root alias would resolve them as
+   undefined and silently drop to the system font. Plain custom properties, not
+   @theme inline, because Tailwind drops unused inline theme vars. */
+body {
+  --font-display: var(--font-outfit), Outfit, ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-outfit), Outfit, ui-sans-serif, system-ui, sans-serif;
+  --font-tag: var(--font-geist-mono), "Geist Mono", ui-monospace, monospace;
 }
 
 body {
@@ -112,7 +265,7 @@ body {
 .card {
   background: var(--ground-raised);
   border: 1px solid var(--rule);
-  border-radius: 14px;
+  border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
 
@@ -249,7 +402,7 @@ body {
 .input, .select {
   width: 100%;
   background: var(--ground-raised);
-  border: 1px solid var(--rule-strong);
+  border: 1px solid var(--input);
   border-radius: 10px;
   padding: 9px 12px;
   font-size: 14px;
@@ -265,7 +418,7 @@ body {
 .input::placeholder { color: var(--ink-faint); }
 .input-error { border-color: var(--overdue) !important; }
 
-/* Checkbox — themed to sit quietly in the Ironwood surfaces instead of the
+/* Checkbox — themed to sit quietly in the app surfaces instead of the
    browser's bright default white box. The check is drawn with a background
    SVG so there are no pseudo-element parsing quirks. */
 .checkbox {
@@ -287,7 +440,10 @@ body {
 .checkbox:checked {
   background-color: var(--accent);
   border-color: var(--accent);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23141618' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M2.5 6.5l2.5 2.5 4.5-5'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M2.5 6.5l2.5 2.5 4.5-5'/%3E%3C/svg%3E");
+}
+.dark .checkbox:checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23141413' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M2.5 6.5l2.5 2.5 4.5-5'/%3E%3C/svg%3E");
 }
 .checkbox:focus-visible {
   outline: none;
@@ -357,10 +513,10 @@ body {
 ::selection { background: var(--accent-soft); }
 
 /* =========================================================================
-   Ironwood refinements
+   Surface refinements
    ========================================================================= */
 
-/* Icons — white strokes that dim subtly on hover */
+/* Icons — strokes that dim subtly on hover */
 .nhoma-icon {
   opacity: 0.92;
   transition: opacity 0.15s ease, transform 0.15s ease;
@@ -372,7 +528,7 @@ button:hover .nhoma-icon,
   transform: translateY(0.5px);
 }
 
-/* Brand mark (Tenor Sans N) — white on iron, copper-warms on hover */
+/* Brand mark (Tenor Sans N) — sidebar foreground, brand color on hover */
 .brand-mark {
   color: var(--sidebar-ink);
   transition: color 0.2s ease;
@@ -390,8 +546,8 @@ a:hover .brand-mark { color: var(--accent-hover); }
 .card { transition: border-color 0.2s ease, box-shadow 0.2s ease; }
 .card::before {
   content: ""; position: absolute; inset: 0 0 auto 0; height: 1px;
-  border-radius: 14px 14px 0 0;
-  background: linear-gradient(90deg, transparent 8%, rgba(255,255,255,0.08), transparent 92%);
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: linear-gradient(90deg, transparent 8%, var(--glint), transparent 92%);
   pointer-events: none;
 }
 .card:hover { border-color: var(--rule-strong); }
@@ -401,7 +557,7 @@ a:hover .brand-mark { color: var(--accent-hover); }
   background: linear-gradient(180deg,
     color-mix(in srgb, var(--accent) 92%, white 8%),
     var(--accent));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 2px 8px rgba(0,0,0,0.35);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 1px 3px rgba(0,0,0,0.22);
 }
 .btn-primary:hover:not(:disabled) {
   background: linear-gradient(180deg,
@@ -419,17 +575,17 @@ nav a[class*="bg-accent-soft"]::before {
   width: 2.5px; border-radius: 3px; background: var(--accent);
 }
 
-/* Sidebar — one step below ground, hairline seam on its right edge */
-aside {
-  background: var(--ground-sunken) !important;
-  border-right-color: var(--rule) !important;
+/* Sidebar — theme sidebar surface, hairline seam on its right edge */
+.app-sidebar {
+  background: var(--sidebar) !important;
+  border-right-color: var(--sidebar-border) !important;
 }
 
 /* Inputs — copper focus halo tightened, iron wells */
 .input, .select { background: var(--ground-sunken); }
 .input:focus, .select:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft), inset 0 1px 2px rgba(0,0,0,0.3);
+  box-shadow: 0 0 0 3px var(--accent-soft), inset 0 1px 2px rgba(0,0,0,0.08);
 }
 
 /* Tables — sunken header band instead of heavy underline */
@@ -441,7 +597,7 @@ aside {
 .data-table th:last-child { border-radius: 0 8px 0 0; }
 
 /* Ear tags — read as stamped metal on iron */
-.ear-tag { box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); }
+.ear-tag { box-shadow: inset 0 1px 0 var(--glint); }
 
 /* Selection + scroll match the copper */
 ::selection { background: color-mix(in srgb, var(--accent) 30%, transparent); }
@@ -534,4 +690,283 @@ button.tree-node__btn:disabled { cursor: default; }
 @media (prefers-reduced-motion: reduce) {
   .tree-node__ring, button.tree-node__btn .tree-node__ring { transition: none; }
   .tree-snap { animation: none; }
+}
+
+/* =========================================================================
+   Agent panel
+   Layout is driven by <html data-agent="docked|minimized|maximized|closed">
+   (see stores/agentPanel.ts; restored pre-paint by the script in layout.tsx)
+   and <html data-agent-sheet="open"> for the small-screen sheet. No attribute
+   means docked, the default.
+   ≥1280px   docked column / slim rail / maximized over the content area
+   560–1279  right-hand drawer, opened from the "Ask agent" button
+   <560      bottom sheet
+   ========================================================================= */
+.agent-panel {
+  display: none;
+  flex-direction: column;
+  background: var(--ground);
+  border-left: 1px solid var(--rule);
+}
+.agent-rail,
+.agent-fab,
+.agent-backdrop { display: none; }
+
+.agent-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 64px;
+  flex: none;
+  padding: 0 14px 0 18px;
+  border-bottom: 1px solid var(--rule);
+}
+.agent-iconbtn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  color: var(--ink-soft);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.agent-iconbtn:hover { background: var(--ground-sunken); color: var(--ink); }
+.agent-iconbtn:focus-visible,
+.agent-chip:focus-visible,
+.agent-rail:focus-visible,
+.agent-fab:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+.agent-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+.agent-empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px 48px;
+  text-align: center;
+}
+.agent-orb {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.agent-chip {
+  padding: 9px 14px;
+  font-size: 13.5px;
+  color: var(--ink);
+  background: var(--ground-raised);
+  border: 1px solid var(--rule-strong);
+  border-radius: 10px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.agent-chip:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+.agent-thread {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 18px;
+}
+.agent-me {
+  align-self: flex-end;
+  max-width: 84%;
+  padding: 10px 14px;
+  font-size: 14px;
+  background: var(--ground-sunken);
+  border: 1px solid var(--rule);
+  border-radius: 14px 14px 4px 14px;
+}
+.agent-composer {
+  position: relative;
+  flex: none;
+  margin: 0 18px 18px;
+  background: var(--ground-raised);
+  border: 1px solid var(--rule-strong);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.agent-composer:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.agent-composer textarea {
+  display: block;
+  width: 100%;
+  min-height: 84px;
+  padding: 14px 52px 14px 16px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  outline: none;
+  resize: none;
+}
+.agent-composer textarea::placeholder { color: var(--ink-faint); }
+.agent-send {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-radius: 8px;
+  transition: opacity 0.15s ease;
+}
+.agent-send:disabled { opacity: 0.4; cursor: default; }
+
+.agent-fab {
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-radius: 999px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---- ≥1280px: docked / minimized / maximized / closed ---- */
+@media (min-width: 1280px) {
+  .agent-panel {
+    display: flex;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    flex: none;
+    width: clamp(340px, 26vw, 400px);
+    height: 100vh;
+  }
+  html[data-agent="minimized"] .agent-panel,
+  html[data-agent="closed"] .agent-panel { display: none; }
+
+  html[data-agent="minimized"] .agent-rail {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 52px;
+    height: 100vh;
+    padding-top: 20px;
+    color: var(--ink-soft);
+    background: var(--ground);
+    border-left: 1px solid var(--rule);
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  html[data-agent="minimized"] .agent-rail:hover { color: var(--accent); background: var(--ground-sunken); }
+  .agent-rail span {
+    writing-mode: vertical-rl;
+    font-family: var(--font-tag);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* Maximized: cover the content area; the sidebar (15rem) stays visible */
+  html[data-agent="maximized"] .agent-panel {
+    position: fixed;
+    /* Docked sets align-self:flex-start; with both insets set that would
+       shrink-wrap a fixed box to its content instead of filling the screen. */
+    align-self: stretch;
+    inset: 0 0 0 15rem;
+    z-index: 30;
+    width: auto;
+    height: auto;
+    border-left: 0;
+  }
+  html[data-agent="maximized"] .agent-body { max-width: 46rem; margin-inline: auto; }
+  html[data-agent="maximized"] .agent-head { padding-inline: max(18px, calc((100% - 46rem) / 2 + 18px)); }
+}
+
+/* ---- <1280px: sheet / drawer ---- */
+@media (max-width: 1279.98px) {
+  .agent-desktop-only { display: none; }
+  .agent-fab { display: flex; position: fixed; z-index: 35; right: 16px; bottom: 20px; }
+  html[data-agent="closed"] .agent-fab { display: none; }
+  html[data-agent-sheet="open"] .agent-fab { display: none; }
+
+  .agent-panel {
+    position: fixed;
+    z-index: 50;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(420px, 100vw);
+    box-shadow: var(--shadow-lg);
+  }
+  html[data-agent-sheet="open"] .agent-panel,
+  html[data-agent-sheet="full"] .agent-panel { display: flex; }
+  html[data-agent-sheet="open"] .agent-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    background: rgb(0 0 0 / 0.4);
+  }
+}
+/* Full-screen sheet (opened from the sidebar): fill the content area, sidebar
+   stays visible. Offsets match the sidebar: 15rem, 4rem icon rail, none on phones. */
+@media (max-width: 1279.98px) {
+  html[data-agent-sheet="full"] .agent-fab { display: none; }
+  html[data-agent-sheet="full"] .agent-panel {
+    top: 0;
+    left: 15rem;
+    width: auto;
+    border-left: 0;
+    box-shadow: none;
+    z-index: 30;
+  }
+  html[data-agent-sheet="full"] .agent-body { max-width: 46rem; margin-inline: auto; }
+  html[data-agent-sheet="full"] .agent-head {
+    padding-inline: max(18px, calc((100% - 46rem) / 2 + 18px));
+  }
+}
+@media (max-width: 899.98px) {
+  html[data-agent-sheet="full"] .agent-panel { left: 4rem; }
+}
+@media (max-width: 559.98px) {
+  html[data-agent-sheet="full"] .agent-panel { left: 0; border-radius: 0; }
+}
+
+@media (max-width: 559.98px) {
+  .agent-fab { bottom: calc(4.75rem + env(safe-area-inset-bottom)); }
+  .agent-panel {
+    top: 5rem;
+    left: 0;
+    width: auto;
+    background: var(--ground-raised);
+    border-left: 0;
+    border-top: 1px solid var(--rule-strong);
+    border-radius: 20px 20px 0 0;
+  }
+  .agent-composer { background: var(--ground); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-iconbtn, .agent-chip, .agent-composer, .agent-send, .agent-rail { transition: none; }
 }

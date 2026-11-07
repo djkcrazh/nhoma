@@ -2,12 +2,14 @@ import { redirect } from "next/navigation";
 import { auth } from "@/server/auth/auth";
 import { db } from "@/server/db";
 import { unreadCount } from "@/server/services/notification.service";
+import { navCounts } from "@/server/services/stats.service";
 import { maybeReconcile } from "@/server/services/notification.service";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import { Providers } from "./providers";
 import { QuickAddModal } from "@/components/pigs/QuickAddModal";
 import { FloatingBadge } from "@/components/brand/FloatingBadge";
+import { AgentPanel } from "@/components/agent/AgentPanel";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -35,16 +37,28 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     userName: session.user.name,
   });
 
+  const counts = await navCounts(session.user.farmId);
+  const farmName = farm?.name ?? "Farm";
+
   return (
     <Providers>
-      <Sidebar isAdmin={session.user.role === "ADMIN"} farmName={farm?.name ?? "Farm"} />
-      <div className="min-[560px]:pl-56 max-[900px]:min-[560px]:pl-16 pb-16 min-[560px]:pb-0">
-        <Topbar
-          userName={session.user.name}
-          role={session.user.role}
-          unreadCount={unread}
-        />
-        <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">{children}</main>
+      <Sidebar
+        isAdmin={session.user.role === "ADMIN"}
+        farmName={farmName}
+        counts={{ ...counts, unread }}
+      />
+      {/* Content column + the agent panel (docked beside it on wide screens) */}
+      <div className="flex min-[560px]:pl-60 max-[900px]:min-[560px]:pl-16 pb-16 min-[560px]:pb-0">
+        <div className="min-w-0 flex-1">
+          <Topbar
+            userName={session.user.name}
+            role={session.user.role}
+            unreadCount={unread}
+            farmName={farmName}
+          />
+          <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">{children}</main>
+        </div>
+        <AgentPanel userName={session.user.name} />
       </div>
       <QuickAddModal />
       <FloatingBadge />

@@ -5,7 +5,7 @@ import { BrandMark } from "@/components/brand/BrandMark";
 
 /**
  * The one draggable element in the app: a Nhoma badge anchored in the sidebar's
- * bottom-left, sitting just above the "NHOMA V1" footer. Grab it and it follows
+ * bottom-left, sitting just above the "NHOMA V2" footer. Grab it and it follows
  * the pointer; let go and it springs back to its home position. Hidden on the
  * mobile bottom-nav layout (< 560px) where the sidebar isn't shown.
  */
