@@ -38,15 +38,21 @@ export const RANGES = [
 
 /**
  * Average weight has no value for a month with no weigh-ins, so the series
- * arrives with nulls in it. How those gaps are drawn changes what the chart
- * claims, which is why it's a decision and not a default.
+ * arrives with nulls in it. Policy: draw a point only where there is a real
+ * measurement. A gap stays a gap (a break in the line), and we never carry a
+ * value forward or interpolate one, because that would claim a weight nobody
+ * recorded.
  *
- * TODO(human): implement this. Receives the 12 monthly points (oldest first)
- * and returns the points the chart should draw. Whatever you return that is
- * still null renders as a break in the line.
+ * "Real" means a finite number, so a NaN from an upstream division can't slip
+ * through as a point. Order is untouched: `analyticsData` already returns the
+ * months oldest-first, and `month` is a display label ("Dec", "Jan"), so
+ * sorting by it would scramble the timeline.
  */
 export function handleGaps(points: Point[]): Point[] {
-  return points; // placeholder: leaves every gap as a gap
+  return points.map((p) => ({
+    ...p,
+    value: p.value != null && Number.isFinite(p.value) ? p.value : null,
+  }));
 }
 
 /** Build every metric's 12-month series on the server; the client only slices. */
