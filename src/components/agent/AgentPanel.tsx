@@ -194,7 +194,7 @@ export function AgentPanel({ userName }: { userName: string }) {
       </button>
 
       {/* Below 1280px the panel is a sheet/drawer, opened from here */}
-      <button type="button" className="agent-fab" onClick={openSheet} aria-label="Ask agent">
+      <button type="button" className="agent-fab" onClick={() => openSheet()} aria-label="Ask agent">
         <Icon.Sparkle size={18} />
         <span>Ask agent</span>
       </button>

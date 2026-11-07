@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useQuickAddStore } from "@/stores/quickAdd";
+import { useAgentPanel, useIsDesktop } from "@/stores/agentPanel";
 import { BrandMark } from "@/components/brand/BrandMark";
 import { Icon } from "@/components/ui/NhomaIcons";
 
@@ -57,10 +58,36 @@ export function Sidebar({
 }) {
   const pathname = usePathname();
   const openQuickAdd = useQuickAddStore((s) => s.open);
+  const { mode, sheetFull, openFull, leaveFull } = useAgentPanel();
+  const isDesktop = useIsDesktop();
+  // Full-screen agent: the maximized panel on desktop, the "full" sheet below.
+  const agentActive = isDesktop ? mode === "maximized" : sheetFull;
 
   const groups = GROUPS.filter((g) => !g.adminOnly || isAdmin);
   // The phone bottom bar has room for four destinations plus Add.
   const mobileItems = [OVERVIEW, ...groups.flatMap((g) => g.items)].slice(0, 4);
+
+  function renderAgentItem() {
+    return (
+      <button
+        type="button"
+        title="Agent"
+        aria-pressed={agentActive}
+        onClick={() => (agentActive ? leaveFull() : openFull())}
+        className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors max-[900px]:justify-center max-[900px]:px-0 ${
+          agentActive ? "bg-accent-soft text-accent" : "text-ink-soft hover:bg-sunken hover:text-ink"
+        }`}
+      >
+        <span className="flex w-5 items-center justify-center" aria-hidden>
+          <Icon.Sparkle className="nhoma-icon" size={17} />
+        </span>
+        <span className="max-[900px]:hidden">Agent</span>
+        <span className="ml-auto rounded-[5px] bg-accent-soft px-1.5 py-px font-tag text-[9px] font-semibold uppercase tracking-[0.1em] text-accent max-[900px]:hidden">
+          Beta
+        </span>
+      </button>
+    );
+  }
 
   function renderLink(item: NavItem) {
     const active = pathname.startsWith(item.href);
@@ -71,9 +98,10 @@ export function Sidebar({
         key={item.href}
         href={item.href}
         title={item.label}
-        aria-current={active ? "page" : undefined}
+        aria-current={active && !agentActive ? "page" : undefined}
+        onClick={leaveFull}
         className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors max-[900px]:justify-center max-[900px]:px-0 ${
-          active ? "bg-accent-soft text-accent" : "text-ink-soft hover:bg-sunken hover:text-ink"
+          active && !agentActive ? "bg-accent-soft text-accent" : "text-ink-soft hover:bg-sunken hover:text-ink"
         }`}
       >
         <span className="flex w-5 items-center justify-center" aria-hidden>
@@ -121,7 +149,10 @@ export function Sidebar({
         </div>
 
         <nav className="flex-1 overflow-y-auto px-3 max-[900px]:px-2" aria-label="Main">
-          <div className="space-y-0.5 pt-1">{renderLink(OVERVIEW)}</div>
+          <div className="space-y-0.5 pt-1">
+            {renderLink(OVERVIEW)}
+            {renderAgentItem()}
+          </div>
           {groups.map((g) => (
             <div key={g.label} className="space-y-0.5 pt-4">
               <div className="px-3 pb-1 font-tag text-[10px] uppercase tracking-[0.16em] text-ink-faint max-[900px]:hidden">
@@ -150,6 +181,7 @@ export function Sidebar({
               key={item.href}
               href={item.href}
               aria-current={active ? "page" : undefined}
+              onClick={leaveFull}
               className={`flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-semibold ${
                 active ? "text-accent" : "text-ink-faint"
               }`}

@@ -1,3 +1,4 @@
+import { useSyncExternalStore } from "react";
 import { create } from "zustand";
 
 /**
@@ -7,7 +8,9 @@ import { create } from "zustand";
  * closed     removed entirely; re-open from the top bar
  *
  * Below DESKTOP_QUERY the panel is never docked: it opens as a bottom sheet
- * (phones) or a right drawer (tablets) driven by `sheetOpen` instead.
+ * (phones) or a right drawer (tablets) driven by `sheetOpen` instead. The
+ * sidebar's Agent item opens it full-screen: `maximized` on desktop, the
+ * "full" sheet below it (content area only, sidebar stays visible).
  *
  * The mode is mirrored onto <html data-agent> so CSS can lay the panel out and
  * the inline script in app/layout.tsx can restore it before first paint
@@ -21,6 +24,19 @@ export const DESKTOP_QUERY = "(min-width: 1280px)";
 
 const isDesktop = () => window.matchMedia(DESKTOP_QUERY).matches;
 
+/** Reactive version of the desktop breakpoint (false during SSR). */
+export function useIsDesktop() {
+  return useSyncExternalStore(
+    (notify) => {
+      const mq = window.matchMedia(DESKTOP_QUERY);
+      mq.addEventListener("change", notify);
+      return () => mq.removeEventListener("change", notify);
+    },
+    isDesktop,
+    () => false
+  );
+}
+
 function writeMode(mode: AgentMode) {
   document.documentElement.dataset.agent = mode;
   try {
@@ -30,18 +46,24 @@ function writeMode(mode: AgentMode) {
   }
 }
 
-function writeSheet(open: boolean) {
-  document.documentElement.dataset.agentSheet = open ? "open" : "closed";
+function writeSheet(open: boolean, full: boolean) {
+  document.documentElement.dataset.agentSheet = open ? (full ? "full" : "open") : "closed";
 }
 
 interface AgentPanelState {
   mode: AgentMode;
   sheetOpen: boolean;
+  /** The sheet is the full-screen variant (opened from the sidebar). */
+  sheetFull: boolean;
   /** Sync React state from what the pre-paint script already put on <html>. */
   hydrate: () => void;
   setMode: (mode: AgentMode) => void;
-  openSheet: () => void;
+  openSheet: (full?: boolean) => void;
   closeSheet: () => void;
+  /** Sidebar Agent item: show the agent full-screen, from any state. */
+  openFull: () => void;
+  /** Leave full-screen (e.g. when navigating) so the page is visible again. */
+  leaveFull: () => void;
   /** Top-bar button: open if hidden, hide if showing. */
   toggle: () => void;
   /** The panel's own × button. */
@@ -51,6 +73,7 @@ interface AgentPanelState {
 export const useAgentPanel = create<AgentPanelState>((set, get) => ({
   mode: "docked",
   sheetOpen: false,
+  sheetFull: false,
   hydrate: () => {
     const saved = document.documentElement.dataset.agent as AgentMode | undefined;
     if (saved && AGENT_MODES.includes(saved)) set({ mode: saved });
@@ -59,15 +82,27 @@ export const useAgentPanel = create<AgentPanelState>((set, get) => ({
     writeMode(mode);
     set({ mode });
   },
-  openSheet: () => {
+  openSheet: (full = false) => {
     // A sheet only makes sense if the user hasn't removed the agent outright.
     if (get().mode === "closed") get().setMode("docked");
-    writeSheet(true);
-    set({ sheetOpen: true });
+    writeSheet(true, full);
+    set({ sheetOpen: true, sheetFull: full });
   },
   closeSheet: () => {
-    writeSheet(false);
-    set({ sheetOpen: false });
+    writeSheet(false, false);
+    set({ sheetOpen: false, sheetFull: false });
+  },
+  openFull: () => {
+    if (isDesktop()) get().setMode("maximized");
+    else get().openSheet(true);
+  },
+  leaveFull: () => {
+    const { mode, sheetFull, setMode, closeSheet } = get();
+    if (isDesktop()) {
+      if (mode === "maximized") setMode("docked");
+    } else if (sheetFull) {
+      closeSheet();
+    }
   },
   toggle: () => {
     const { mode, sheetOpen, setMode, openSheet, closeSheet } = get();
