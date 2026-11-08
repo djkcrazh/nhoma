@@ -50,8 +50,10 @@ export function HerdChart({ series }: { series: Record<MetricKey, Point[]> }) {
   const known = points.filter((p) => p.value != null);
   const { value, deltaPct } = summarize(def, points);
   const lastKnown = known[known.length - 1];
-  // Gaps leave isolated points that a bare line would hide, so mark the dots.
-  const hasGaps = known.length !== points.length;
+  // The line always bridges months with no data. When samples are sparse the
+  // reader can't tell a measurement from the bridge, so mark the real points
+  // (and a lone point still shows as a dot, since a line needs two).
+  const showDots = known.length !== points.length || known.length < 4;
   const unit = value === 1 ? def.unit.replace(/s$/, "") : def.unit; // "1 pig", "12 pigs", "57 kg"
   const flat = deltaPct != null && Math.abs(deltaPct) < 0.05;
 
@@ -198,8 +200,8 @@ export function HerdChart({ series }: { series: Record<MetricKey, Point[]> }) {
                 stroke="var(--accent)"
                 strokeWidth={2.4}
                 fill="url(#herdfill)"
-                connectNulls={false}
-                dot={hasGaps ? { r: 3.5, fill: "var(--ground-raised)", stroke: "var(--accent)", strokeWidth: 2 } : false}
+                connectNulls
+                dot={showDots ? { r: 3.5, fill: "var(--ground-raised)", stroke: "var(--accent)", strokeWidth: 2 } : false}
                 activeDot={{ r: 5, fill: "var(--ground-raised)", stroke: "var(--accent)", strokeWidth: 2.5 }}
                 isAnimationActive={false}
               />
