@@ -6,6 +6,7 @@ import { logAudit } from "./audit.service";
 import { getSettings } from "./settings.service";
 import { enrichPig, syncStatus, pigInclude, ServiceError } from "./pig.service";
 import { MAX_IMPORT_ROWS, importTxTimeoutMs } from "@/lib/import/columns";
+import { applyMapping, type ImportMapping } from "@/lib/import/mapping";
 import { validateImportRows, type ExistingPig, type ImportRow, type RowResult } from "@/lib/import/validate";
 
 export type { ImportRow, RowResult };
@@ -13,14 +14,22 @@ export type { ImportRow, RowResult };
 /**
  * Two-pass CSV import: pass 1 creates pigs, pass 2 links parents by tagId,
  * so file order never matters. dryRun validates everything without writing.
- * Validation itself is pure and lives in src/lib/import/validate.ts.
+ *
+ * `records` are the raw file rows keyed by the FARM'S headers; `mapping` says
+ * how to read them. Translation (applyMapping) and validation
+ * (validateImportRows) are pure and live in src/lib/import/.
  */
-export async function importPigs(ctx: Ctx, rows: ImportRow[], dryRun: boolean) {
+export async function importPigs(
+  ctx: Ctx,
+  records: Record<string, string | undefined>[],
+  mapping: ImportMapping,
+  dryRun: boolean,
+) {
   assertCan(ctx.role, "data:import");
-  if (rows.length > MAX_IMPORT_ROWS)
+  if (records.length > MAX_IMPORT_ROWS)
     throw new ServiceError(
       "IMPORT_TOO_LARGE",
-      `This file has ${rows.length} rows. Import up to ${MAX_IMPORT_ROWS} rows at a time.`,
+      `This file has ${records.length} rows. Import up to ${MAX_IMPORT_ROWS} rows at a time.`,
     );
   const settings = await getSettings(ctx.farmId);
 
@@ -33,12 +42,13 @@ export async function importPigs(ctx: Ctx, rows: ImportRow[], dryRun: boolean) {
     existing.map((p) => [p.tagId.toLowerCase(), { id: p.id, sex: p.sex, deleted: p.deletedAt !== null }]),
   );
 
-  const { results, valid } = validateImportRows(rows, existingByTag);
+  const mapped = applyMapping(records, mapping);
+  const { results, valid } = validateImportRows(mapped.rows, existingByTag, mapped.issues);
 
   const summary = {
-    total: rows.length,
+    total: records.length,
     valid: valid.length,
-    invalid: rows.length - valid.length,
+    invalid: records.length - valid.length,
     results,
     imported: 0,
   };

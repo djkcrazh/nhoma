@@ -18,6 +18,7 @@ import {
 } from "@/lib/validations/pig";
 import { userCreateSchema, userUpdateSchema, settingsUpdateSchema, createFarmSchema, joinFarmSchema } from "@/lib/validations/user";
 import { breedCreateSchema, breedRenameSchema } from "@/lib/validations/breed";
+import { importMappingSchema } from "@/lib/import/mapping";
 import { z } from "zod";
 import { Sex } from "@/lib/domain/types";
 
@@ -340,11 +341,18 @@ export async function dismissNotificationAction(id: string) {
 
 // ---------- import ----------
 
-export async function importPigsAction(rows: unknown[], dryRun: boolean) {
+// Both arguments cross the network from the browser, so neither is trusted:
+// the mapping is a strict Zod schema (plain data, no code) and every cell must
+// be a string. Row count and size limits are enforced by the service.
+const importRecordsSchema = z.array(z.record(z.string(), z.string().optional()));
+
+export async function importPigsAction(records: unknown, mapping: unknown, dryRun: boolean) {
   return run(async () => {
     const ctx = await requireCtx();
+    const parsedMapping = importMappingSchema.parse(mapping);
+    const parsedRecords = importRecordsSchema.parse(records);
     const { importPigs } = await import("@/server/services/import.service");
-    const res = await importPigs(ctx, rows as never, dryRun);
+    const res = await importPigs(ctx, parsedRecords, parsedMapping, dryRun);
     if (!dryRun) revalidateAll();
     return res;
   });

@@ -1,4 +1,5 @@
 import { pigCreateSchema } from "@/lib/validations/pig";
+import type { MappingIssue } from "./mapping";
 
 export interface ImportRow {
   tagId: string;
@@ -63,7 +64,12 @@ export interface ValidatedImport {
  * schema reads. `existingByTag` is keyed by lower-cased tag ID and must include
  * soft-deleted pigs, because they still occupy the (farmId, tagId) unique index.
  */
-export function validateImportRows(rows: ImportRow[], existingByTag: Map<string, ExistingPig>): ValidatedImport {
+export function validateImportRows(
+  rows: ImportRow[],
+  existingByTag: Map<string, ExistingPig>,
+  /** Cell-translation problems from applyMapping, index-aligned with `rows`. */
+  mappingIssues: MappingIssue[][] = [],
+): ValidatedImport {
   const normalized = rows.map((raw, i) => ({ row: i + 2, data: normalizeImportRow(raw) })); // header is row 1
 
   // Build the file's tag index up front (first occurrence per tag wins) so a
@@ -82,6 +88,12 @@ export function validateImportRows(rows: ImportRow[], existingByTag: Map<string,
   for (const { row: rowNum, data: r } of normalized) {
     const errors: string[] = [];
 
+    // A translation problem already explains the field; drop the schema's
+    // generic complaint about the blanked-out value so users see one clear error.
+    const issues = mappingIssues[rowNum - 2] ?? [];
+    const explained = new Set<string>(issues.map((i) => i.field));
+    errors.push(...issues.map((i) => `${i.field}: ${i.message}`));
+
     const parsed = pigCreateSchema.safeParse({
       tagId: r.tagId,
       breed: r.breed,
@@ -92,7 +104,11 @@ export function validateImportRows(rows: ImportRow[], existingByTag: Map<string,
       notes: r.notes,
     });
     if (!parsed.success) {
-      errors.push(...parsed.error.issues.map((iss) => `${iss.path.join(".")}: ${iss.message}`));
+      errors.push(
+        ...parsed.error.issues
+          .filter((iss) => !explained.has(String(iss.path[0])))
+          .map((iss) => `${iss.path.join(".")}: ${iss.message}`),
+      );
     }
     const taken = r.tagId ? existingByTag.get(r.tagId.toLowerCase()) : undefined;
     if (taken)

@@ -41,33 +41,3 @@ export const MAX_IMPORT_PAYLOAD_BYTES = 900_000;
 
 export const IMPORT_TEMPLATE_CSV =
   `${IMPORT_COLUMNS.join(",")}\n` + "PIG-201,Large White,FEMALE,2026-05-01,12.5,PIG-003,PIG-001,,healthy piglet\n";
-
-const canonicalByKey = new Map<string, ImportColumn>(IMPORT_COLUMNS.map((c) => [headerKey(c), c]));
-
-function headerKey(h: string): string {
-  return h.replace(/^﻿/, "").toLowerCase().replace(/[\s_-]+/g, "");
-}
-
-/**
- * Maps a header to its canonical column name when it differs only by case,
- * spacing or separators ("Tag ID", "tag_id", "TAGID" -> "tagId"). Anything
- * unrecognised is returned trimmed so it can be reported to the user.
- */
-export function canonicalizeHeader(h: string): string {
-  return canonicalByKey.get(headerKey(h)) ?? h.replace(/^﻿/, "").trim();
-}
-
-export interface HeaderCheck {
-  missing: ImportColumn[];
-  /** Headers present in the file that the importer does not use. */
-  ignored: string[];
-}
-
-export function checkHeaders(headers: readonly string[]): HeaderCheck {
-  const present = new Set(headers);
-  const known = new Set<string>(IMPORT_COLUMNS);
-  return {
-    missing: REQUIRED_IMPORT_COLUMNS.filter((c) => !present.has(c)),
-    ignored: headers.filter((h) => h && !known.has(h)),
-  };
-}
