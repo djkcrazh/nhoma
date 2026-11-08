@@ -438,7 +438,8 @@ export function PigTable({
               </DropdownMenu.Content>
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
-          <button className="btn btn-primary btn-sm" onClick={() => openQuickAdd()}>
+          {/* The bottom bar already has Add on phones */}
+          <button className="btn btn-primary btn-sm max-[559px]:hidden" onClick={() => openQuickAdd()}>
             <Icon.Plus size={14} /> Add Pig
           </button>
         </div>
@@ -460,7 +461,7 @@ export function PigTable({
             />
           </div>
           <select
-            className="select w-44"
+            className="select w-44 max-sm:w-full"
             value={params.breed}
             onChange={(e) => setParam({ breed: e.target.value || undefined, page: undefined })}
             aria-label="Filter by breed"
@@ -470,7 +471,7 @@ export function PigTable({
               <option key={b} value={b}>{b}</option>
             ))}
           </select>
-          <label className="flex items-center gap-2 whitespace-nowrap text-sm text-ink-soft">
+          <label className="flex items-center gap-2 whitespace-nowrap text-sm text-ink-soft max-sm:w-full">
             <input
               type="checkbox"
               className="checkbox"
@@ -480,7 +481,7 @@ export function PigTable({
             Include sold / inactive / deceased
           </label>
         </div>
-        <div className="flex flex-wrap gap-1.5">
+        <div className="chip-row">
           {QUICK_FILTERS.map((f) => (
             <button
               key={f.key}
@@ -514,7 +515,7 @@ export function PigTable({
 
       {/* Table */}
       <div className="card overflow-x-auto">
-        <table className="data-table min-w-[900px]">
+        <table className="data-table data-table--ledger min-w-[900px]">
           <thead>
             {table.getHeaderGroups().map((hg) => (
               <tr key={hg.id}>

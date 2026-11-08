@@ -24,7 +24,7 @@ export function StatCard({
         <span className="font-tag text-[10.5px] font-semibold uppercase tracking-widest text-ink-faint">
           {label}
         </span>
-        {spark && spark.filter((v) => v != null).length > 1 && (
+        {spark && spark.some((v) => v != null) && (
           <Sparkline data={spark} color={sparkColor ?? "var(--accent)"} width={84} height={26} />
         )}
       </div>

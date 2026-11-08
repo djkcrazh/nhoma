@@ -81,11 +81,11 @@ export function BreedingBoard({
           </p>
         </div>
         <div className="flex gap-2">
-          <a className="btn btn-secondary" href="/api/breeding/export" download>
+          <a className="btn btn-secondary btn-sm" href="/api/breeding/export" download>
             Export CSV
           </a>
           <button
-            className="btn btn-primary"
+            className="btn btn-primary btn-sm"
             onClick={() => {
               setPresetSow(null);
               setCrossOpen(true);
@@ -115,7 +115,7 @@ export function BreedingBoard({
               return (
                 <div
                   key={p.id}
-                  className={`alert-stripe rounded-xl border border-rule p-4 ${
+                  className={`alert-stripe rounded-xl border border-rule py-4 pl-5 pr-4 ${
                     p.isOverdue
                       ? "alert-stripe--critical"
                       : p.daysRemaining <= 7
