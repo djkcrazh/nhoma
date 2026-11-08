@@ -65,7 +65,7 @@ export function NotificationList({ notifications }: { notifications: Item[] }) {
         )}
       </div>
 
-      <div className="flex flex-wrap gap-1.5">
+      <div className="chip-row">
         {FILTERS.map((f) => (
           <button
             key={f.key}
@@ -94,11 +94,12 @@ export function NotificationList({ notifications }: { notifications: Item[] }) {
           {items.map((n) => (
             <li
               key={n.id}
-              className={`alert-stripe alert-stripe--${n.severity} card flex items-center gap-3 px-4 py-3 ${
+              className={`alert-stripe alert-stripe--${n.severity} card flex flex-wrap items-center gap-x-3 gap-y-2 py-3 pl-5 pr-4 ${
                 n.readAt ? "opacity-70" : ""
               }`}
             >
-              <div className="min-w-0 flex-1">
+              {/* Phones: message on its own row, tag and actions underneath */}
+              <div className="min-w-0 basis-full sm:flex-1 sm:basis-0">
                 <p className="text-sm">{n.message}</p>
                 <p className="mt-0.5 font-tag text-[10px] uppercase tracking-wider text-ink-faint">
                   {n.type.replaceAll("_", " ").toLowerCase()} · {relTime(n.createdAt)}
@@ -106,7 +107,7 @@ export function NotificationList({ notifications }: { notifications: Item[] }) {
                 </p>
               </div>
               {n.pigTag && <EarTag tagId={n.pigTag} />}
-              <div className="flex gap-1">
+              <div className="ml-auto flex gap-1">
                 {!n.readAt && (
                   <button
                     className="btn btn-ghost btn-sm"

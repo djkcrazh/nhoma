@@ -368,8 +368,13 @@ body {
 .status-badge--accent { background: var(--accent-soft); color: var(--accent); }
 
 /* Buttons */
+/* display lives in the components layer so utilities like `hidden` and
+   `max-sm:hidden` can override it; unlayered CSS always beats layered. */
+@layer components {
+  .btn { display: inline-flex; }
+}
 .btn {
-  display: inline-flex;
+  white-space: nowrap;
   align-items: center;
   justify-content: center;
   gap: 7px;
@@ -398,9 +403,12 @@ body {
 .btn-danger:hover:not(:disabled) { background: color-mix(in srgb, var(--overdue) 24%, transparent); }
 .btn-sm { min-height: 32px; padding: 5px 11px; font-size: 12.5px; border-radius: 8px; }
 
-/* Inputs */
+/* Inputs. The default width lives in the components layer (below) so width
+   utilities such as w-44 can override it; unlayered CSS always beats layered. */
+@layer components {
+  .input, .select { width: 100%; }
+}
 .input, .select {
-  width: 100%;
   background: var(--ground-raised);
   border: 1px solid var(--input);
   border-radius: 10px;
@@ -482,12 +490,30 @@ body {
 .data-table tbody tr { transition: background 0.1s ease; }
 .data-table tbody tr:hover { background: var(--ground-sunken); }
 
-/* Severity stripes on alerts (shape + color) */
-.alert-stripe { border-left: 4px solid var(--rule-strong); }
-.alert-stripe--critical { border-left-color: var(--overdue); border-left-style: double; border-left-width: 6px; }
-.alert-stripe--warning { border-left-color: var(--due); }
-.alert-stripe--success { border-left-color: var(--ok); }
-.alert-stripe--info { border-left-color: var(--breeding); border-left-style: dashed; }
+/* Severity stripes on alerts and breeding rows. A bar flush with the left edge,
+   clipped by the rounded corners. Shape carries the severity as well as color:
+   critical is wider, info is dashed, warning and success are solid. */
+.alert-stripe {
+  --stripe: var(--rule-strong);
+  position: relative;
+  overflow: hidden;
+}
+.alert-stripe::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--stripe);
+  pointer-events: none;
+}
+.alert-stripe--critical { --stripe: var(--overdue); }
+.alert-stripe--critical::after { width: 6px; }
+.alert-stripe--warning { --stripe: var(--due); }
+.alert-stripe--success { --stripe: var(--ok); }
+.alert-stripe--info { --stripe: var(--breeding); }
+.alert-stripe--info::after {
+  background: repeating-linear-gradient(180deg, var(--stripe) 0 7px, transparent 7px 11px);
+}
 
 /* Skeletons */
 .skeleton {
@@ -970,3 +996,51 @@ button.tree-node__btn:disabled { cursor: default; }
 @media (prefers-reduced-motion: reduce) {
   .agent-iconbtn, .agent-chip, .agent-composer, .agent-send, .agent-rail { transition: none; }
 }
+
+/* =========================================================================
+   Page-level refinements
+   ========================================================================= */
+
+/* Select: drop the native chevron for one that follows the theme. Declared
+   after the input rules above so their `background` shorthand doesn't reset it. */
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 34px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ink-soft) 50%),
+    linear-gradient(135deg, var(--ink-soft) 50%, transparent 50%);
+  background-position: calc(100% - 17px) 55%, calc(100% - 12px) 55%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+/* Ledger table: one line per row, with the checkbox and Pig ID columns pinned
+   so a wide table scrolls sideways without losing which pig you're on. */
+.data-table--ledger th,
+.data-table--ledger td { white-space: nowrap; }
+.data-table--ledger th:nth-child(-n + 2),
+.data-table--ledger td:nth-child(-n + 2) { position: sticky; z-index: 1; }
+.data-table--ledger th:nth-child(1),
+.data-table--ledger td:nth-child(1) { left: 0; width: 44px; min-width: 44px; }
+.data-table--ledger th:nth-child(2),
+.data-table--ledger td:nth-child(2) { left: 44px; box-shadow: 1px 0 0 var(--rule); }
+.data-table--ledger td:nth-child(-n + 2) { background: var(--ground-raised); }
+.data-table--ledger th:nth-child(-n + 2) { background: var(--ground-sunken); z-index: 2; }
+.data-table--ledger tbody tr:hover td:nth-child(-n + 2) { background: var(--ground-sunken); }
+.data-table--ledger tbody tr.bg-accent-soft td:nth-child(-n + 2) {
+  background: color-mix(in srgb, var(--accent) 12%, var(--ground-raised));
+}
+
+/* Single-line chip row that scrolls sideways instead of wrapping to 2-3 lines. */
+.chip-row {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, #000 94%, transparent);
+}
+.chip-row::-webkit-scrollbar { display: none; }
+.chip-row > * { flex: none; }

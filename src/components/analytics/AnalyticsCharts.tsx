@@ -18,7 +18,7 @@ const PALETTE = [
 ];
 
 const tooltipStyle = {
-  background: "var(--ground-raised)",
+  background: "var(--popover)",
   border: "1px solid var(--rule-strong)",
   borderRadius: 10,
   fontSize: 13,
@@ -26,11 +26,21 @@ const tooltipStyle = {
 };
 const axisTick = { fill: "var(--ink-faint)", fontSize: 11 };
 
-function Panel({ title, children, wide }: { title: string; children: React.ReactNode; wide?: boolean }) {
+function Panel({
+  title,
+  children,
+  wide,
+  short,
+}: {
+  title: string;
+  children: React.ReactNode;
+  wide?: boolean;
+  short?: boolean;
+}) {
   return (
-    <section className={`card p-5 ${wide ? "lg:col-span-2" : ""}`}>
-      <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-wide text-ink-soft">{title}</h2>
-      <div className="h-60">{children}</div>
+    <section className={`card p-4 sm:p-5 ${wide ? "lg:col-span-2" : ""}`}>
+      <h2 className="mb-4 font-display text-[17px] font-bold">{title}</h2>
+      <div className={short ? "h-52" : "h-60"}>{children}</div>
     </section>
   );
 }
@@ -53,15 +63,15 @@ export function AnalyticsCharts({ data }: { data: Data }) {
           <AreaChart data={data.growth} margin={{ top: 5, right: 8, left: -18, bottom: 0 }}>
             <defs>
               <linearGradient id="gfill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.25} />
-                <stop offset="100%" stopColor="var(--accent)" stopOpacity={0.02} />
+                <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.24} />
+                <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="2 4" stroke="var(--rule)" />
-            <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={{ stroke: "var(--rule-strong)" }} />
+            <CartesianGrid vertical={false} strokeDasharray="3 5" stroke="var(--rule-strong)" />
+            <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={false} />
             <YAxis tick={axisTick} tickLine={false} axisLine={false} allowDecimals={false} />
             <Tooltip contentStyle={tooltipStyle} />
-            <Area type="monotone" dataKey="count" name="pigs" stroke="var(--accent)" strokeWidth={2} fill="url(#gfill)" />
+            <Area type="monotone" dataKey="count" name="pigs" stroke="var(--accent)" strokeWidth={2.4} fill="url(#gfill)" />
           </AreaChart>
         </ResponsiveContainer>
       </Panel>
@@ -69,7 +79,7 @@ export function AnalyticsCharts({ data }: { data: Data }) {
       <Panel title="Breed distribution">
         <ResponsiveContainer>
           <BarChart data={data.breedDistribution} layout="vertical" margin={{ top: 0, right: 12, left: 24, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="var(--rule)" horizontal={false} />
+            <CartesianGrid strokeDasharray="3 5" stroke="var(--rule-strong)" horizontal={false} />
             <XAxis type="number" tick={axisTick} tickLine={false} axisLine={false} allowDecimals={false} />
             <YAxis type="category" dataKey="breed" tick={{ ...axisTick, fontSize: 12 }} tickLine={false} axisLine={false} width={90} />
             <Tooltip contentStyle={tooltipStyle} />
@@ -98,11 +108,11 @@ export function AnalyticsCharts({ data }: { data: Data }) {
       <Panel title="Weight distribution (kg)">
         <ResponsiveContainer>
           <BarChart data={data.weightDistribution} margin={{ top: 5, right: 8, left: -18, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="var(--rule)" />
-            <XAxis dataKey="range" tick={axisTick} tickLine={false} axisLine={{ stroke: "var(--rule-strong)" }} />
+            <CartesianGrid vertical={false} strokeDasharray="3 5" stroke="var(--rule-strong)" />
+            <XAxis dataKey="range" tick={axisTick} tickLine={false} axisLine={false} />
             <YAxis tick={axisTick} tickLine={false} axisLine={false} allowDecimals={false} />
             <Tooltip contentStyle={tooltipStyle} />
-            <Bar dataKey="count" name="pigs" fill="var(--due)" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="count" name="pigs" fill="var(--accent)" radius={[6, 6, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </Panel>
@@ -110,8 +120,8 @@ export function AnalyticsCharts({ data }: { data: Data }) {
       <Panel title="Age distribution">
         <ResponsiveContainer>
           <BarChart data={data.ageDistribution} margin={{ top: 5, right: 8, left: -18, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="var(--rule)" />
-            <XAxis dataKey="range" tick={axisTick} tickLine={false} axisLine={{ stroke: "var(--rule-strong)" }} />
+            <CartesianGrid vertical={false} strokeDasharray="3 5" stroke="var(--rule-strong)" />
+            <XAxis dataKey="range" tick={axisTick} tickLine={false} axisLine={false} />
             <YAxis tick={axisTick} tickLine={false} axisLine={false} allowDecimals={false} />
             <Tooltip contentStyle={tooltipStyle} />
             <Bar dataKey="count" name="pigs" fill="var(--breeding)" radius={[6, 6, 0, 0]} />
@@ -122,11 +132,11 @@ export function AnalyticsCharts({ data }: { data: Data }) {
       <Panel title="Monthly births — 12 months">
         <ResponsiveContainer>
           <BarChart data={data.births} margin={{ top: 5, right: 8, left: -18, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="var(--rule)" />
-            <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={{ stroke: "var(--rule-strong)" }} />
+            <CartesianGrid vertical={false} strokeDasharray="3 5" stroke="var(--rule-strong)" />
+            <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={false} />
             <YAxis tick={axisTick} tickLine={false} axisLine={false} allowDecimals={false} />
             <Tooltip contentStyle={tooltipStyle} />
-            <Bar dataKey="count" name="born" fill="var(--ok)" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="count" name="born" fill="var(--accent)" radius={[6, 6, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </Panel>
@@ -134,16 +144,16 @@ export function AnalyticsCharts({ data }: { data: Data }) {
       <Panel title="Average weight over time">
         <ResponsiveContainer>
           <LineChart data={data.avgWeightOverTime} margin={{ top: 5, right: 8, left: -18, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="var(--rule)" />
-            <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={{ stroke: "var(--rule-strong)" }} />
+            <CartesianGrid vertical={false} strokeDasharray="3 5" stroke="var(--rule-strong)" />
+            <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={false} />
             <YAxis tick={axisTick} tickLine={false} axisLine={false} unit=" kg" />
             <Tooltip contentStyle={tooltipStyle} />
-            <Line type="monotone" dataKey="avg" name="avg kg" stroke="var(--due)" strokeWidth={2} connectNulls dot={{ r: 3, fill: "var(--due)" }} />
+            <Line type="monotone" dataKey="avg" name="avg kg" stroke="var(--accent)" strokeWidth={2.4} connectNulls dot={{ r: 3.5, fill: "var(--ground-raised)", stroke: "var(--accent)", strokeWidth: 2 }} />
           </LineChart>
         </ResponsiveContainer>
       </Panel>
 
-      <Panel title="Breeding outcomes">
+      <Panel title="Breeding outcomes" wide short>
         <ResponsiveContainer>
           <PieChart>
             <Pie data={breedingData} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="80%" paddingAngle={3} strokeWidth={0}>
