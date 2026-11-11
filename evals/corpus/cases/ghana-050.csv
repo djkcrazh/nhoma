@@ -1,0 +1,35 @@
+Pig Ref,Breed,Father,Pig Sex,Weight,Born
+A-0001,Mixed Breed,,Male,178.2,22/11/2024
+A-0002,Duroc,,Female,174.3,07/09/2024
+A-0003,Duroc,,Female,166.9,06/05/2024
+A-0004,Large White,,Female,170.1,27/03/2025
+A-0005,Landrace,,Female,251.4,22/10/2024
+A-0006,Mixed Breed,,Male,93.3,12/01/2026
+A-0007,Duroc,,Male,74.0,22/02/2026
+A-0008,Landrace,,Male,220.8,28/05/2025
+A-0009,Landrace,,Male,54.8,26/03/2026
+A-0010,Landrace,,Male,62.7,17/03/2026
+A-0011,Mixed Breed,,Female,47.7,20/04/2026
+A-0012,Duroc,A-0001,Female,43.5,16/04/2026
+A-0013,Duroc,,Male,280.0,30/01/2025
+A-0014,Local,,Male,152.9,07/10/2025
+A-0015,Duroc,,Female,125.2,17/11/2025
+A-0016,Mixed Breed,A-0001,Female,257.5,27/03/2025
+A-0017,Mixed Breed,A-0001,Female,210.3,11/06/2025
+A-0018,Duroc,A-0001,Female,195.7,23/07/2025
+A-0019,Landrace,,Female,236.2,06/05/2025
+A-0020,Large White,,Male,265.3,03/03/2025
+A-0021,Duroc,A-0001,Female,132.2,15/11/2025
+A-0022,Landrace,A-0001,Female,125.8,10/11/2025
+A-0023,Large White,,Male,218.9,24/05/2025
+A-0024,Duroc,,Male,250.3,31/03/2025
+A-0025,Local,,Female,276.7,04/02/2025
+A-0026,Mixed Breed,A-0001,Female,186.2,07/08/2025
+A-0027,Duroc,,Male,37.6,20/04/2026
+A-0028,Large White,,Male,22.7,17/05/2026
+A-0029,Local,,Female,232.9,01/05/2025
+A-0030,Large White,A-0001,Male,86.5,30/01/2026
+A-0031,Duroc,,Female,142.0,22/10/2025
+A-0032,Local,A-0001,Female,206.3,22/06/2025
+A-0033,Local,A-0001,Female,108.6,20/12/2025
+A-0034,Duroc,A-0001,Male,191.9,18/07/2025

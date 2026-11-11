@@ -1,0 +1,21 @@
+Tag No,Birth Dt,Gender,Father,Pig Breed,Sale Price (GHS),Dam,Weight,Remarks/Comments
+PIG_001,12/04/2024,Male,,Mixed Breed,1343,,204,to be sold
+PIG_002,21/01/2025,Female,,Mixed Breed,1313,,230,good mother
+PIG_003,02/02/2025,Female,,Local,643,,212,sick – treated
+PIG_004,16/09/2023,Female,,Duroc,531,,223,
+PIG_005,23/07/2025,Female,,Duroc,649,PIG_004,189,weaned at 28 days
+PIG_006,29/05/2025,Female,PIG_001,Large White,691,,223,
+PIG_007,29/07/2025,Male,,Mixed Breed,1207,PIG_002,188,vaccinated
+PIG_008,03/12/2025,Female,PIG_001,Landrace,389,PIG_004,116,pen 3
+PIG_009,26/04/2025,Male,PIG_001,Mixed Breed,859,PIG_003,239,to be sold
+PIG_010,06/12/2025,Female,,Duroc,695,PIG_003,120,good mother
+PIG_011,07/04/2026,Female,PIG_001,Duroc,906,PIG_003,47,vaccinated
+PIG_012,24/10/2025,Female,,Mixed Breed,783,PIG_004,140,pen 3
+PIG_013,06/04/2025,Male,PIG_001,Local,1281,PIG_003,252,
+PIG_014,09/02/2026,Male,,Mixed Breed,596,PIG_004,75,good mother
+PIG_015,22/02/2025,Female,,Duroc,1393,PIG_002,269,vaccinated
+PIG_016,14/01/2026,Female,,Duroc,763,,90,good mother
+PIG_017,16/10/2025,Male,,Duroc,489,PIG_004,140,
+PIG_018,09/05/2025,Male,,Mixed Breed,1096,PIG_003,227,
+PIG_019,26/01/2025,Male,,Duroc,868,,280,to be sold
+PIG_020,31/03/2025,Male,,Large White,498,PIG_004,253,

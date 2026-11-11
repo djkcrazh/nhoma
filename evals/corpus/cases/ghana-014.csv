@@ -1,0 +1,46 @@
+﻿Tag No,Genotype,Father,Date of Birth,Gender,Weight (kg)
+A-0001,Duroc,,02/08/2023,Male,255.6
+A-0002,Local,,14/04/2025,Male,153.9
+A-0003,Landrace,,22/12/2024,Female,182.2
+A-0004,Duroc,,12/12/2023,Female,187.5
+A-0005,Local,,10/02/2024,Female,217.1
+A-0006,Landrace,,18/11/2023,Female,173.5
+A-0007,Mixed Breed,,21/07/2024,Female,160.0
+A-0008,Mixed Breed,,24/03/2026,Male,56.6
+A-0009,Duroc,A-0002,10/09/2025,Male,161.8
+A-0010,Local,A-0002,09/04/2025,Male,250.2
+A-0011,Local,A-0002,05/05/2026,Male,33.6
+A-0012,Mixed Breed,A-0001,04/03/2026,Female,70.4
+A-0013,Landrace,,03/06/2025,Female,222.5
+A-0014,Local,,02/04/2026,Female,50.2
+A-0015,Large White,,28/03/2025,Male,255.5
+A-0016,Mixed Breed,,02/08/2025,Female,187.0
+A-0017,Mixed Breed,A-0002,18/12/2025,Female,110.7
+A-0018,Mixed Breed,A-0002,30/08/2025,Female,168.0
+A-0019,Local,A-0001,23/07/2025,Female,195.9
+A-0020,Large White,A-0002,10/11/2025,Female,126.8
+A-0021,Duroc,A-0002,31/03/2025,Female,246.7
+A-0022,Large White,A-0001,26/03/2025,Male,254.6
+A-0023,Mixed Breed,,06/09/2025,Male,167.2
+A-0024,Duroc,A-0001,15/03/2025,Male,265.6
+A-0025,Landrace,,07/05/2026,Male,34.5
+A-0026,Duroc,,06/03/2025,Male,272.0
+A-0027,Landrace,A-0002,05/04/2026,Female,51.1
+A-0028,Landrace,,24/11/2025,Female,120.8
+A-0029,Local,A-0001,28/05/2026,Female,17.3
+A-0030,Landrace,A-0001,11/01/2026,Male,95.4
+A-0031,Mixed Breed,A-0001,17/06/2025,Female,212.3
+A-0032,Local,A-0001,24/11/2025,Male,119.5
+A-0033,Local,A-0002,20/03/2026,Male,51.5
+A-0034,Local,,12/03/2026,Female,59.4
+A-0035,Local,,07/11/2025,Male,130.6
+A-0036,Mixed Breed,A-0001,27/06/2025,Female,210.2
+A-0037,Landrace,,11/01/2026,Female,97.0
+A-0038,Duroc,,31/07/2025,Male,185.5
+A-0039,Local,A-0002,07/09/2025,Male,169.6
+A-0040,Large White,A-0002,15/06/2025,Male,208.1
+A-0041,Landrace,A-0001,20/04/2026,Male,41.8
+A-0042,Mixed Breed,A-0002,06/01/2025,Male,280.0
+A-0043,Duroc,A-0002,24/05/2025,Male,224.0
+A-0044,Local,,27/05/2025,Female,222.4
+A-0045,Landrace,A-0002,02/07/2025,Female,198.7

@@ -1,0 +1,23 @@
+Notes,Pig Tag,Weaning Weight (kg),Date Sold,Born On,Sex,Sire
+good mother,A-0001,7.0,,31/10/2023,Boar,
+pen 3,A-0002,8.7,,07/12/2023,Sow,
+sow’s first litter,A-0003,8.9,,27/07/2024,Sow,
+vaccinated,A-0004,8.6,,07/03/2024,Sow,
+,A-0005,7.5,,14/05/2025,Boar,A-0001
+,A-0006,9.6,,18/12/2025,Boar,
+to be sold,A-0007,7.4,,22/01/2025,Sow,A-0001
+good mother,A-0008,10.0,,18/02/2025,Boar,
+pen 3,A-0009,8.7,,04/12/2025,Boar,A-0001
+sow’s first litter,A-0010,9.8,,16/02/2026,Boar,
+weaned at 28 days,A-0011,8.8,,08/02/2025,Boar,A-0001
+,A-0012,6.3,,31/05/2026,Sow,
+sick – treated,A-0013,7.2,,20/01/2025,Sow,
+sick – treated,A-0014,6.9,,19/11/2025,Sow,A-0001
+,A-0015,6.4,,03/11/2025,Sow,A-0001
+,A-0016,9.3,,31/10/2025,Boar,A-0001
+,A-0017,7.8,,27/05/2026,Sow,
+,A-0018,8.1,,06/06/2025,Boar,A-0001
+sick – treated,A-0019,6.7,,30/11/2025,Sow,A-0001
+sick – treated,A-0020,8.7,,28/09/2025,Sow,
+vaccinated,A-0021,9.4,,15/05/2026,Sow,A-0001
+,A-0022,8.5,,16/06/2025,Sow,

@@ -1,0 +1,365 @@
+{
+ "id": "ghana-045",
+ "category": "ghana",
+ "split": "dev",
+ "tags": [
+  "date:dd/MM/yyyy",
+  "sex:sow_boar_only",
+  "enc:utf-8",
+  "unseen_headers",
+  "no_breed",
+  "no_weight",
+  "junk_columns"
+ ],
+ "gap_reasons": [],
+ "encoding": "utf-8",
+ "style": {
+  "date_fmt": "dd/MM/yyyy",
+  "number_fmt": "en",
+  "weight_unit": "kg",
+  "delimiter": ",",
+  "n_pigs": 22,
+  "columns": [
+   "notes",
+   "tagId",
+   "junk:Weaning Weight (kg)",
+   "junk:Date Sold",
+   "dateOfBirth",
+   "sex",
+   "fatherTagId"
+  ],
+  "headers": {
+   "tagId": "Pig Tag",
+   "sex": "Sex",
+   "dateOfBirth": "Born On",
+   "fatherTagId": "Sire",
+   "notes": "Notes",
+   "junk:Weaning Weight (kg)": "Weaning Weight (kg)",
+   "junk:Date Sold": "Date Sold"
+  },
+  "sex_set": "sow_boar_only",
+  "castrated_set": "y_n"
+ },
+ "mapping": {
+  "version": 1,
+  "fields": {
+   "tagId": {
+    "source": "Pig Tag"
+   },
+   "breed": {
+    "source": null,
+    "default": "Mixed Breed"
+   },
+   "sex": {
+    "source": "Sex"
+   },
+   "dateOfBirth": {
+    "source": "Born On"
+   },
+   "weightKg": {
+    "source": null
+   },
+   "motherTagId": {
+    "source": null
+   },
+   "fatherTagId": {
+    "source": "Sire"
+   },
+   "castrated": {
+    "source": null
+   },
+   "notes": {
+    "source": "Notes"
+   }
+  },
+  "transforms": {
+   "sexValues": {
+    "Sow": "FEMALE",
+    "Boar": "MALE"
+   },
+   "dateFormat": "dd/MM/yyyy",
+   "dateFormatConfirmed": true,
+   "weightUnit": "kg",
+   "numberFormat": "en",
+   "numberFormatConfirmed": true,
+   "castratedValues": {
+    "Y": true,
+    "N": false
+   }
+  }
+ },
+ "sex_words": {
+  "Sow": "FEMALE",
+  "Boar": "MALE"
+ },
+ "castrated_words": {
+  "Y": true,
+  "N": false
+ },
+ "pigs": [
+  {
+   "tag": "A-0001",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2023-10-31",
+   "weight_kg": null,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "good mother"
+  },
+  {
+   "tag": "A-0002",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2023-12-07",
+   "weight_kg": null,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "pen 3"
+  },
+  {
+   "tag": "A-0003",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2024-07-27",
+   "weight_kg": null,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "sow’s first litter"
+  },
+  {
+   "tag": "A-0004",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2024-03-07",
+   "weight_kg": null,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "vaccinated"
+  },
+  {
+   "tag": "A-0005",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-05-14",
+   "weight_kg": null,
+   "mother": null,
+   "father": "A-0001",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "A-0006",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-12-18",
+   "weight_kg": null,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "A-0007",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-01-22",
+   "weight_kg": null,
+   "mother": null,
+   "father": "A-0001",
+   "castrated": null,
+   "notes": "to be sold"
+  },
+  {
+   "tag": "A-0008",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-02-18",
+   "weight_kg": null,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "good mother"
+  },
+  {
+   "tag": "A-0009",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-12-04",
+   "weight_kg": null,
+   "mother": null,
+   "father": "A-0001",
+   "castrated": null,
+   "notes": "pen 3"
+  },
+  {
+   "tag": "A-0010",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2026-02-16",
+   "weight_kg": null,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "sow’s first litter"
+  },
+  {
+   "tag": "A-0011",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-02-08",
+   "weight_kg": null,
+   "mother": null,
+   "father": "A-0001",
+   "castrated": null,
+   "notes": "weaned at 28 days"
+  },
+  {
+   "tag": "A-0012",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-05-31",
+   "weight_kg": null,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "A-0013",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-01-20",
+   "weight_kg": null,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "sick – treated"
+  },
+  {
+   "tag": "A-0014",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-11-19",
+   "weight_kg": null,
+   "mother": null,
+   "father": "A-0001",
+   "castrated": null,
+   "notes": "sick – treated"
+  },
+  {
+   "tag": "A-0015",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-11-03",
+   "weight_kg": null,
+   "mother": null,
+   "father": "A-0001",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "A-0016",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-10-31",
+   "weight_kg": null,
+   "mother": null,
+   "father": "A-0001",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "A-0017",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-05-27",
+   "weight_kg": null,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "A-0018",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-06-06",
+   "weight_kg": null,
+   "mother": null,
+   "father": "A-0001",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "A-0019",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-11-30",
+   "weight_kg": null,
+   "mother": null,
+   "father": "A-0001",
+   "castrated": null,
+   "notes": "sick – treated"
+  },
+  {
+   "tag": "A-0020",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-09-28",
+   "weight_kg": null,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "sick – treated"
+  },
+  {
+   "tag": "A-0021",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-05-15",
+   "weight_kg": null,
+   "mother": null,
+   "father": "A-0001",
+   "castrated": null,
+   "notes": "vaccinated"
+  },
+  {
+   "tag": "A-0022",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-06-16",
+   "weight_kg": null,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  }
+ ]
+}

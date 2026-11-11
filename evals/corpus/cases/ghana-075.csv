@@ -1,0 +1,20 @@
+﻿Pig Number,Dam,Wt (kg),Breed,Pig Sex,Birth Date,Sire No
+GH-001,,150.4,Local,Male,16/07/2023,
+GH-002,,165.5,Landrace,Female,26/03/2025,
+GH-003,,161.7,Local,Female,14/10/2023,
+GH-004,,259.8,Landrace,Female,05/04/2024,
+GH-005,GH-003,190.8,Local,Male,16/07/2025,
+GH-006,GH-003,223.3,Local,Female,29/05/2025,
+GH-007,,36.8,Landrace,Female,22/04/2026,
+GH-008,GH-004,237.3,Local,Female,20/04/2025,
+GH-009,GH-004,35.6,Mixed Breed,Female,25/04/2026,
+GH-010,,88.7,Landrace,Male,22/01/2026,
+GH-011,GH-002,55.0,Mixed Breed,Female,30/03/2026,
+GH-012,GH-004,13.5,Large White,Female,31/05/2026,
+GH-013,GH-004,280.0,Landrace,Female,09/01/2025,
+GH-014,GH-002,29.2,Mixed Breed,Male,09/05/2026,
+GH-015,,264.4,Local,Female,11/03/2025,
+GH-016,GH-003,218.1,Mixed Breed,Male,26/05/2025,
+GH-017,GH-002,163.9,Local,Male,06/09/2025,GH-001
+GH-018,GH-003,275.5,Large White,Male,06/03/2025,GH-001
+GH-019,GH-002,242.2,Local,Female,20/04/2025,

@@ -1,0 +1,60 @@
+﻿Pig No,Sex,Date Born,Weight,Cast.,Breed Type,Observation,Mother
+GH-001,M,16/07/2024,167.3,No,Local,sow’s first litter,
+GH-002,M,08/12/2024,152.9,No,Large White,sow’s first litter,
+GH-003,M,24/11/2023,234.7,No,Landrace,good mother,
+GH-004,F,16/02/2025,166.6,n/a,Landrace,to be sold,
+GH-005,F,04/10/2024,176.6,n/a,Local,to be sold,
+GH-006,F,21/10/2024,241.5,n/a,Mixed Breed,,
+GH-007,F,25/06/2024,180.8,n/a,Landrace,,
+GH-008,F,10/10/2023,216.3,n/a,Large White,sick – treated,
+GH-009,F,16/05/2024,243.1,n/a,Duroc,,
+GH-010,M,22/10/2025,144.7,Yes,Duroc,sick – treated,GH-009
+GH-011,M,20/06/2025,208.8,Yes,Landrace,vaccinated,GH-007
+GH-012,F,22/05/2026,21.1,n/a,Local,to be sold,GH-008
+GH-013,M,07/02/2026,81.9,No,Large White,,GH-005
+GH-014,F,20/06/2025,208.6,n/a,Local,to be sold,
+GH-015,F,08/09/2025,162.6,n/a,Large White,,GH-009
+GH-016,F,15/05/2026,23.4,n/a,Local,,GH-004
+GH-017,F,17/11/2025,122.6,n/a,Duroc,pen 3,
+GH-018,M,19/07/2025,192.6,No,Landrace,pen 3,GH-006
+GH-019,F,30/10/2025,133.9,n/a,Duroc,,GH-008
+GH-020,F,26/09/2025,153.7,n/a,Local,sick – treated,GH-007
+GH-021,F,14/02/2025,277.3,n/a,Duroc,sow’s first litter,GH-008
+GH-022,F,25/11/2025,124.9,n/a,Landrace,,GH-008
+GH-023,M,18/02/2026,75.8,No,Large White,vaccinated,GH-009
+GH-024,M,02/09/2025,162.1,Yes,Mixed Breed,,GH-008
+GH-025,M,29/10/2025,134.1,No,Local,good mother,GH-007
+GH-026,M,17/05/2025,223.1,Yes,Mixed Breed,,GH-007
+GH-027,M,04/02/2026,84.8,No,Mixed Breed,,GH-006
+GH-028,M,19/01/2026,91.4,Yes,Large White,vaccinated,GH-008
+GH-029,F,23/04/2025,237.1,n/a,Large White,,GH-004
+GH-030,F,11/12/2025,113.3,n/a,Duroc,vaccinated,GH-009
+GH-031,M,21/08/2025,171.8,Yes,Large White,sick – treated,GH-004
+GH-032,M,17/01/2026,94.5,No,Local,,GH-007
+GH-033,F,30/03/2026,55.9,n/a,Local,,GH-006
+GH-034,F,25/10/2025,143.2,n/a,Landrace,,
+GH-035,M,20/02/2026,73.6,Yes,Large White,pen 3,
+GH-036,M,09/09/2025,161.5,No,Duroc,to be sold,GH-009
+GH-037,M,29/12/2025,103.4,Yes,Local,,GH-008
+GH-038,M,16/01/2026,92.5,No,Landrace,,
+GH-039,F,21/10/2025,139.8,n/a,Mixed Breed,weaned at 28 days,GH-009
+GH-040,M,22/06/2025,204.9,No,Large White,sow’s first litter,
+GH-041,F,14/02/2026,77.0,n/a,Mixed Breed,sow’s first litter,GH-007
+GH-042,M,19/06/2025,209.3,Yes,Mixed Breed,vaccinated,GH-008
+GH-043,F,06/03/2025,264.9,n/a,Duroc,,GH-007
+GH-044,F,15/05/2025,230.9,n/a,Mixed Breed,,GH-009
+GH-045,F,02/06/2025,218.7,n/a,Large White,good mother,GH-006
+GH-046,M,06/06/2025,212.9,No,Duroc,sick – treated,GH-009
+GH-047,F,02/10/2025,144.8,n/a,Duroc,,GH-006
+GH-048,M,10/01/2026,97.3,No,Large White,to be sold,
+GH-049,M,12/01/2026,95.0,No,Duroc,pen 3,
+GH-050,M,26/02/2026,77.8,No,Large White,,
+GH-051,F,12/03/2026,68.7,n/a,Landrace,,GH-007
+GH-052,F,21/06/2025,204.3,n/a,Duroc,to be sold,
+GH-053,M,29/12/2025,105.4,No,Landrace,to be sold,
+GH-054,F,01/04/2025,247.4,n/a,Duroc,good mother,GH-004
+GH-055,M,24/07/2025,188.1,Yes,Duroc,,GH-004
+GH-056,M,05/03/2026,68.3,Yes,Mixed Breed,good mother,GH-008
+GH-057,F,31/03/2025,251.4,n/a,Duroc,,GH-008
+GH-058,M,02/09/2025,169.7,No,Landrace,,
+GH-059,F,02/04/2026,47.4,n/a,Mixed Breed,,GH-006

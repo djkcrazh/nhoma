@@ -1,0 +1,33 @@
+Pig No,Gender,Dam,Live Wt (kg),Genotype,Born On,Neutered,Comments
+NP-001,Boar,,207.9,Local,2024-10-11,N,
+NP-002,Sow,,212.5,Mixed Breed,2024-01-16,,vaccinated
+NP-003,Sow,,158.9,Local,2024-04-09,,weaned at 28 days
+NP-004,Sow,,224.4,Mixed Breed,2024-01-07,,
+NP-005,Sow,,228.7,Duroc,2023-12-05,,sow’s first litter
+NP-006,Sow,,204.4,Mixed Breed,2025-06-20,,sick – treated
+NP-007,Gilt,NP-005,134.4,Mixed Breed,2025-11-06,,sick – treated
+NP-008,Sow,,267.8,Landrace,2025-03-02,,good mother
+NP-009,Sow,NP-003,262.6,Large White,2025-03-19,,
+NP-010,Gilt,,113.5,Local,2025-12-06,,pen 3
+NP-011,Boar,NP-004,51.7,Duroc,2026-04-07,N,weaned at 28 days
+NP-012,Gilt,NP-004,69.2,Duroc,2026-02-24,,
+NP-013,Barrow,NP-002,53.0,Duroc,2026-04-01,Y,
+NP-014,Barrow,NP-003,240.1,Mixed Breed,2025-04-28,Y,
+NP-015,Boar,NP-003,67.8,Local,2026-03-07,N,sick – treated
+NP-016,Boar,,211.0,Mixed Breed,2025-06-05,N,
+NP-017,Sow,NP-003,280.0,Large White,2025-02-02,,sow’s first litter
+NP-018,Boar,NP-003,190.8,Large White,2025-07-24,N,
+NP-019,Sow,,262.5,Local,2025-03-22,,weaned at 28 days
+NP-020,Gilt,NP-005,160.1,Duroc,2025-09-09,,good mother
+NP-021,Sow,NP-003,262.4,Large White,2025-03-02,,good mother
+NP-022,Gilt,,189.8,Large White,2025-07-19,,
+NP-023,Gilt,NP-005,22.9,Mixed Breed,2026-05-26,,good mother
+NP-024,Boar,NP-004,120.5,Mixed Breed,2025-12-06,N,vaccinated
+NP-025,Sow,NP-003,213.3,Local,2025-06-02,,
+NP-026,Barrow,,61.3,Landrace,2026-03-19,Y,sick – treated
+NP-027,Gilt,NP-005,54.0,Mixed Breed,2026-04-02,,
+NP-028,Barrow,NP-002,238.3,Duroc,2025-04-24,Y,weaned at 28 days
+NP-029,Sow,NP-002,280.0,Landrace,2025-01-17,,sick – treated
+NP-030,Barrow,,149.9,Duroc,2025-10-01,Y,weaned at 28 days
+NP-031,Gilt,NP-003,166.5,Duroc,2025-09-07,,vaccinated
+NP-032,Boar,,240.3,Large White,2025-04-18,N,

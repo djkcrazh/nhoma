@@ -1,0 +1,59 @@
+Dam Breed,Date of Farrowing,Animal Tag,S/N,Mother's Tag,Breed Type,Sex (M/F),Live Weight (lb)
+Duroc,18/01/2025,GH-001,1,,Landrace,Boar,365.5
+Local,23/12/2023,GH-002,2,,Local,Boar,442.2
+Landrace,19/12/2024,GH-003,3,,Mixed Breed,Boar,359.1
+Duroc,21/08/2024,GH-004,4,,Duroc,Sow,458.3
+Mixed Breed,23/09/2024,GH-005,5,,Duroc,Sow,384.9
+Duroc,07/06/2024,GH-006,6,,Local,Sow,436.7
+Landrace,29/10/2024,GH-007,7,,Mixed Breed,Sow,490.5
+Large White,02/02/2025,GH-008,8,,Large White,Sow,511.5
+Landrace,25/04/2024,GH-009,9,,Duroc,Sow,530.9
+Large White,06/05/2025,GH-010,10,GH-007,Large White,Boar,502.2
+Local,10/12/2025,GH-011,11,,Duroc,Hog,246.7
+Mixed Breed,27/01/2025,GH-012,12,GH-008,Duroc,Sow,617.3
+Large White,04/04/2026,GH-013,13,GH-007,Duroc,Gilt,106.3
+Local,28/08/2025,GH-014,14,GH-005,Local,Gilt,382.5
+Landrace,18/09/2025,GH-015,15,,Large White,Gilt,351.4
+Duroc,12/11/2025,GH-016,16,GH-009,Duroc,Boar,289.9
+Mixed Breed,04/01/2026,GH-017,17,GH-005,Duroc,Boar,221.3
+Mixed Breed,07/09/2025,GH-018,18,,Mixed Breed,Gilt,354.1
+Mixed Breed,27/11/2025,GH-019,19,,Local,Boar,265.0
+Duroc,16/09/2025,GH-020,20,GH-009,Duroc,Hog,346.8
+Large White,27/01/2026,GH-021,21,GH-008,Local,Hog,192.2
+Landrace,29/03/2025,GH-022,22,,Landrace,Hog,555.8
+Large White,08/03/2025,GH-023,23,GH-008,Large White,Hog,590.8
+Landrace,28/12/2025,GH-024,24,GH-004,Landrace,Gilt,232.6
+Mixed Breed,15/08/2025,GH-025,25,GH-008,Local,Hog,392.0
+Duroc,23/11/2025,GH-026,26,GH-009,Local,Gilt,276.9
+Landrace,23/04/2025,GH-027,27,,Large White,Hog,513.2
+Local,02/04/2025,GH-028,28,GH-006,Duroc,Sow,546.7
+Mixed Breed,28/12/2025,GH-029,29,,Local,Gilt,227.1
+Duroc,19/02/2026,GH-030,30,,Local,Boar,161.6
+Landrace,17/05/2026,GH-031,31,,Landrace,Gilt,61.7
+Landrace,09/09/2025,GH-032,32,,Local,Gilt,369.5
+Local,08/04/2026,GH-033,33,GH-007,Local,Gilt,95.7
+Duroc,03/02/2026,GH-034,34,,Local,Gilt,179.7
+Mixed Breed,18/07/2025,GH-035,35,GH-009,Duroc,Hog,427.0
+Duroc,27/04/2026,GH-036,36,GH-009,Landrace,Gilt,87.1
+Local,09/10/2025,GH-037,37,,Mixed Breed,Boar,328.0
+Large White,17/07/2025,GH-038,38,GH-009,Large White,Boar,423.9
+Duroc,25/07/2025,GH-039,39,,Duroc,Hog,409.4
+Duroc,18/04/2026,GH-040,40,GH-007,Local,Hog,92.4
+Mixed Breed,16/02/2026,GH-041,41,GH-004,Local,Boar,164.0
+Duroc,05/05/2026,GH-042,42,GH-009,Large White,Gilt,67.0
+Duroc,12/04/2026,GH-043,43,,Local,Gilt,98.5
+Local,31/01/2025,GH-044,44,GH-005,Local,Hog,617.3
+Local,04/04/2026,GH-045,45,,Duroc,Boar,114.4
+Landrace,07/01/2025,GH-046,46,GH-005,Landrace,Sow,617.3
+Mixed Breed,02/09/2025,GH-047,47,GH-009,Local,Hog,376.1
+Duroc,25/03/2025,GH-048,48,GH-004,Landrace,Boar,559.3
+Duroc,02/01/2026,GH-049,49,GH-008,Mixed Breed,Boar,222.7
+Mixed Breed,21/04/2026,GH-050,50,GH-009,Landrace,Boar,86.6
+Large White,25/01/2026,GH-051,51,GH-004,Large White,Gilt,202.4
+Duroc,10/01/2025,GH-052,52,GH-006,Duroc,Hog,617.3
+Local,10/03/2026,GH-053,53,GH-006,Mixed Breed,Gilt,145.7
+Duroc,22/01/2025,GH-054,54,,Landrace,Sow,617.3
+Local,11/02/2025,GH-055,55,,Mixed Breed,Sow,608.5
+Duroc,16/05/2026,GH-056,56,GH-005,Mixed Breed,Gilt,59.5
+Large White,09/12/2025,GH-057,57,GH-004,Large White,Gilt,256.4
+Local,28/08/2025,GH-058,58,GH-009,Landrace,Gilt,383.2

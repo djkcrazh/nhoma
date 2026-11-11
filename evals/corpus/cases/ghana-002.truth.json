@@ -1,0 +1,342 @@
+{
+ "id": "ghana-002",
+ "category": "ghana",
+ "split": "test",
+ "tags": [
+  "date:dd/MM/yyyy",
+  "sex:female_male",
+  "enc:utf-8",
+  "unseen_headers",
+  "junk_columns"
+ ],
+ "gap_reasons": [],
+ "encoding": "utf-8",
+ "style": {
+  "date_fmt": "dd/MM/yyyy",
+  "number_fmt": "en",
+  "weight_unit": "kg",
+  "delimiter": ",",
+  "n_pigs": 20,
+  "columns": [
+   "tagId",
+   "dateOfBirth",
+   "sex",
+   "fatherTagId",
+   "breed",
+   "junk:Sale Price (GHS)",
+   "motherTagId",
+   "weightKg",
+   "notes"
+  ],
+  "headers": {
+   "tagId": "Tag No",
+   "sex": "Gender",
+   "dateOfBirth": "Birth Dt",
+   "breed": "Pig Breed",
+   "weightKg": "Weight",
+   "motherTagId": "Dam",
+   "fatherTagId": "Father",
+   "notes": "Remarks/Comments",
+   "junk:Sale Price (GHS)": "Sale Price (GHS)"
+  },
+  "sex_set": "female_male",
+  "castrated_set": "yes_no"
+ },
+ "mapping": {
+  "version": 1,
+  "fields": {
+   "tagId": {
+    "source": "Tag No"
+   },
+   "breed": {
+    "source": "Pig Breed"
+   },
+   "sex": {
+    "source": "Gender"
+   },
+   "dateOfBirth": {
+    "source": "Birth Dt"
+   },
+   "weightKg": {
+    "source": "Weight"
+   },
+   "motherTagId": {
+    "source": "Dam"
+   },
+   "fatherTagId": {
+    "source": "Father"
+   },
+   "castrated": {
+    "source": null
+   },
+   "notes": {
+    "source": "Remarks/Comments"
+   }
+  },
+  "transforms": {
+   "sexValues": {
+    "Female": "FEMALE",
+    "Male": "MALE"
+   },
+   "dateFormat": "dd/MM/yyyy",
+   "dateFormatConfirmed": true,
+   "weightUnit": "kg",
+   "numberFormat": "en",
+   "numberFormatConfirmed": true,
+   "castratedValues": {
+    "Yes": true,
+    "No": false
+   }
+  }
+ },
+ "sex_words": {
+  "Female": "FEMALE",
+  "Male": "MALE"
+ },
+ "castrated_words": {
+  "Yes": true,
+  "No": false
+ },
+ "pigs": [
+  {
+   "tag": "PIG_001",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2024-04-12",
+   "weight_kg": 204.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "to be sold"
+  },
+  {
+   "tag": "PIG_002",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-01-21",
+   "weight_kg": 230.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "good mother"
+  },
+  {
+   "tag": "PIG_003",
+   "breed": "Local",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-02-02",
+   "weight_kg": 212.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "sick – treated"
+  },
+  {
+   "tag": "PIG_004",
+   "breed": "Duroc",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2023-09-16",
+   "weight_kg": 223.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PIG_005",
+   "breed": "Duroc",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-07-23",
+   "weight_kg": 189.0,
+   "mother": "PIG_004",
+   "father": null,
+   "castrated": null,
+   "notes": "weaned at 28 days"
+  },
+  {
+   "tag": "PIG_006",
+   "breed": "Large White",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-05-29",
+   "weight_kg": 223.0,
+   "mother": null,
+   "father": "PIG_001",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PIG_007",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-07-29",
+   "weight_kg": 188.0,
+   "mother": "PIG_002",
+   "father": null,
+   "castrated": null,
+   "notes": "vaccinated"
+  },
+  {
+   "tag": "PIG_008",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-12-03",
+   "weight_kg": 116.0,
+   "mother": "PIG_004",
+   "father": "PIG_001",
+   "castrated": null,
+   "notes": "pen 3"
+  },
+  {
+   "tag": "PIG_009",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-04-26",
+   "weight_kg": 239.0,
+   "mother": "PIG_003",
+   "father": "PIG_001",
+   "castrated": null,
+   "notes": "to be sold"
+  },
+  {
+   "tag": "PIG_010",
+   "breed": "Duroc",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-12-06",
+   "weight_kg": 120.0,
+   "mother": "PIG_003",
+   "father": null,
+   "castrated": null,
+   "notes": "good mother"
+  },
+  {
+   "tag": "PIG_011",
+   "breed": "Duroc",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-04-07",
+   "weight_kg": 47.0,
+   "mother": "PIG_003",
+   "father": "PIG_001",
+   "castrated": null,
+   "notes": "vaccinated"
+  },
+  {
+   "tag": "PIG_012",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-10-24",
+   "weight_kg": 140.0,
+   "mother": "PIG_004",
+   "father": null,
+   "castrated": null,
+   "notes": "pen 3"
+  },
+  {
+   "tag": "PIG_013",
+   "breed": "Local",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-04-06",
+   "weight_kg": 252.0,
+   "mother": "PIG_003",
+   "father": "PIG_001",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PIG_014",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2026-02-09",
+   "weight_kg": 75.0,
+   "mother": "PIG_004",
+   "father": null,
+   "castrated": null,
+   "notes": "good mother"
+  },
+  {
+   "tag": "PIG_015",
+   "breed": "Duroc",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-02-22",
+   "weight_kg": 269.0,
+   "mother": "PIG_002",
+   "father": null,
+   "castrated": null,
+   "notes": "vaccinated"
+  },
+  {
+   "tag": "PIG_016",
+   "breed": "Duroc",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-01-14",
+   "weight_kg": 90.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "good mother"
+  },
+  {
+   "tag": "PIG_017",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-10-16",
+   "weight_kg": 140.0,
+   "mother": "PIG_004",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PIG_018",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-05-09",
+   "weight_kg": 227.0,
+   "mother": "PIG_003",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PIG_019",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-01-26",
+   "weight_kg": 280.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "to be sold"
+  },
+  {
+   "tag": "PIG_020",
+   "breed": "Large White",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-03-31",
+   "weight_kg": 253.0,
+   "mother": "PIG_004",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  }
+ ]
+}

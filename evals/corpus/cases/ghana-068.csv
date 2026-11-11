@@ -1,0 +1,53 @@
+Pig No,Remarks,Castrated,Born,Sire No,Wt (kg),Dam ID,Gender,Breed
+PIG_001,weaned at 28 days,No,16/03/2025,,212.2,,Male,Landrace
+PIG_002,good mother,No,01/10/2023,,213.6,,Male,Duroc
+PIG_003,,,27/07/2023,,176.9,,Female,Duroc
+PIG_004,sick – treated,,06/01/2025,,242.7,,Female,Duroc
+PIG_005,pen 3,,01/10/2023,,242.2,,Female,Large White
+PIG_006,,,14/11/2023,,203.9,,Female,Local
+PIG_007,weaned at 28 days,,21/07/2023,,210.7,,Female,Landrace
+PIG_008,good mother,,04/05/2024,,237.9,,Female,Large White
+PIG_009,,,28/07/2025,PIG_002,190.0,PIG_005,Female,Duroc
+PIG_010,pen 3,No,25/01/2026,PIG_001,89.3,,Male,Mixed Breed
+PIG_011,pen 3,Yes,13/01/2026,,89.8,,Male,Local
+PIG_012,vaccinated,,03/04/2026,PIG_001,51.0,PIG_006,Female,Large White
+PIG_013,,,29/05/2026,,19.0,PIG_008,Female,Duroc
+PIG_014,,,07/02/2025,PIG_001,280.0,,Female,Landrace
+PIG_015,sick – treated,Yes,28/01/2026,,83.8,,Male,Large White
+PIG_016,to be sold,No,08/04/2026,,45.1,PIG_005,Male,Duroc
+PIG_017,to be sold,Yes,29/07/2025,,185.5,,Male,Landrace
+PIG_018,to be sold,,16/01/2025,,280.0,PIG_006,Female,Landrace
+PIG_019,good mother,,11/12/2025,PIG_001,112.9,,Female,Large White
+PIG_020,to be sold,,25/03/2025,PIG_002,258.4,PIG_003,Female,Mixed Breed
+PIG_021,sick – treated,No,30/03/2025,PIG_001,254.7,,Male,Duroc
+PIG_022,,,14/04/2026,PIG_002,45.7,,Female,Local
+PIG_023,weaned at 28 days,,01/12/2025,PIG_001,116.8,PIG_008,Female,Mixed Breed
+PIG_024,vaccinated,No,07/06/2025,,213.2,PIG_007,Male,Duroc
+PIG_025,good mother,,13/04/2026,PIG_001,48.6,PIG_004,Female,Duroc
+PIG_026,pen 3,,12/07/2025,,196.9,,Female,Landrace
+PIG_027,weaned at 28 days,No,03/02/2026,PIG_002,86.8,PIG_007,Male,Local
+PIG_028,sick – treated,,28/12/2025,PIG_002,101.3,,Female,Landrace
+PIG_029,sick – treated,Yes,03/03/2025,PIG_002,265.8,PIG_003,Male,Landrace
+PIG_030,to be sold,No,02/05/2025,,231.1,,Male,Landrace
+PIG_031,to be sold,,07/06/2025,PIG_001,214.5,PIG_004,Female,Landrace
+PIG_032,sow’s first litter,Yes,28/11/2025,,124.7,PIG_004,Male,Landrace
+PIG_033,sow’s first litter,Yes,25/01/2026,PIG_001,89.1,PIG_005,Male,Local
+PIG_034,pen 3,,05/09/2025,PIG_002,167.0,PIG_003,Female,Local
+PIG_035,sow’s first litter,,02/06/2025,,213.1,PIG_003,Female,Duroc
+PIG_036,,Yes,29/06/2025,PIG_001,205.4,,Male,Mixed Breed
+PIG_037,to be sold,,16/05/2026,,25.1,PIG_003,Female,Duroc
+PIG_038,sow’s first litter,No,28/06/2025,PIG_002,208.3,,Male,Duroc
+PIG_039,,No,27/12/2025,PIG_002,105.5,,Male,Local
+PIG_040,pen 3,No,05/03/2025,PIG_001,266.4,PIG_003,Male,Landrace
+PIG_041,,,31/05/2026,,18.1,PIG_003,Female,Landrace
+PIG_042,good mother,,17/03/2025,,260.4,PIG_007,Female,Mixed Breed
+PIG_043,vaccinated,,16/02/2025,PIG_001,278.3,,Female,Duroc
+PIG_044,sick – treated,,28/04/2026,,40.9,PIG_006,Female,Landrace
+PIG_045,vaccinated,No,18/02/2025,,276.1,PIG_008,Male,Large White
+PIG_046,vaccinated,,09/05/2026,PIG_002,30.3,PIG_005,Female,Large White
+PIG_047,sow’s first litter,Yes,22/04/2025,,241.8,PIG_004,Male,Mixed Breed
+PIG_048,,Yes,07/11/2025,,130.6,PIG_005,Male,Landrace
+PIG_049,,No,17/09/2025,,159.3,,Male,Large White
+PIG_050,sick – treated,,01/06/2025,PIG_001,219.4,PIG_008,Female,Local
+PIG_051,,,15/07/2025,,194.0,PIG_006,Female,Local
+PIG_052,,No,28/01/2026,PIG_002,85.2,,Male,Landrace

@@ -1,0 +1,29 @@
+ID,Weight,Dam ID,Genotype,Sex (M/F),Cast.,DOB
+A-0001,178,,Landrace,Boar,N,06/06/2024
+A-0002,230,,Large White,Sow,,13/03/2024
+A-0003,186,,Local,Sow,,07/02/2025
+A-0004,170,,Mixed Breed,Sow,,29/04/2024
+A-0005,280,A-0003,Large White,Barrow,Y,14/01/2025
+A-0006,102,A-0002,Mixed Breed,Boar,N,26/12/2025
+A-0007,152,,Duroc,Barrow,Y,25/09/2025
+A-0008,221,A-0002,Local,Sow,,28/05/2025
+A-0009,230,A-0004,Large White,Barrow,Y,15/05/2025
+A-0010,137,A-0004,Large White,Boar,N,23/10/2025
+A-0011,108,A-0003,Mixed Breed,Gilt,,12/12/2025
+A-0012,116,A-0004,Large White,Gilt,,10/12/2025
+A-0013,192,A-0002,Landrace,Gilt,,21/07/2025
+A-0014,280,A-0003,Large White,Barrow,Y,09/02/2025
+A-0015,160,A-0004,Duroc,Gilt,,24/09/2025
+A-0016,183,,Local,Barrow,Y,01/08/2025
+A-0017,142,,Landrace,Barrow,Y,20/10/2025
+A-0018,62,,Duroc,Gilt,,08/03/2026
+A-0019,43,A-0002,Large White,Gilt,,25/04/2026
+A-0020,60,,Local,Gilt,,25/03/2026
+A-0021,280,A-0002,Large White,Barrow,Y,25/01/2025
+A-0022,145,A-0003,Duroc,Barrow,Y,08/10/2025
+A-0023,222,A-0004,Local,Barrow,Y,29/05/2025
+A-0024,280,,Duroc,Sow,,15/01/2025
+A-0025,98,A-0004,Duroc,Gilt,,06/01/2026
+A-0026,115,A-0004,Landrace,Gilt,,04/12/2025
+A-0027,138,A-0003,Landrace,Gilt,,19/10/2025
+A-0028,54,A-0003,Duroc,Boar,N,26/03/2026

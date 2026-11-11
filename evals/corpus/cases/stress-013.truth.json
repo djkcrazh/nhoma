@@ -1,0 +1,365 @@
+{
+ "id": "stress-013",
+ "category": "stress",
+ "split": "test",
+ "tags": [
+  "date:iso",
+  "sex:with_hog",
+  "enc:utf-8-sig",
+  "unseen_headers",
+  "no_breed"
+ ],
+ "gap_reasons": [],
+ "encoding": "utf-8-sig",
+ "style": {
+  "date_fmt": "iso",
+  "number_fmt": "en",
+  "weight_unit": "kg",
+  "delimiter": ",",
+  "n_pigs": 22,
+  "columns": [
+   "tagId",
+   "castrated",
+   "weightKg",
+   "sex",
+   "motherTagId",
+   "dateOfBirth"
+  ],
+  "headers": {
+   "tagId": "Pig No",
+   "sex": "M/F",
+   "dateOfBirth": "Born On",
+   "weightKg": "Current Weight",
+   "motherTagId": "Dam",
+   "castrated": "Neutered"
+  },
+  "sex_set": "with_hog",
+  "castrated_set": "yes_no"
+ },
+ "mapping": {
+  "version": 1,
+  "fields": {
+   "tagId": {
+    "source": "Pig No"
+   },
+   "breed": {
+    "source": null,
+    "default": "Mixed Breed"
+   },
+   "sex": {
+    "source": "M/F"
+   },
+   "dateOfBirth": {
+    "source": "Born On"
+   },
+   "weightKg": {
+    "source": "Current Weight"
+   },
+   "motherTagId": {
+    "source": "Dam"
+   },
+   "fatherTagId": {
+    "source": null
+   },
+   "castrated": {
+    "source": "Neutered"
+   },
+   "notes": {
+    "source": null
+   }
+  },
+  "transforms": {
+   "sexValues": {
+    "Sow": "FEMALE",
+    "Gilt": "FEMALE",
+    "Boar": "MALE",
+    "Hog": "MALE"
+   },
+   "dateFormat": "iso",
+   "dateFormatConfirmed": true,
+   "weightUnit": "kg",
+   "numberFormat": "en",
+   "numberFormatConfirmed": true,
+   "castratedValues": {
+    "Yes": true,
+    "No": false
+   }
+  }
+ },
+ "sex_words": {
+  "Sow": "FEMALE",
+  "Gilt": "FEMALE",
+  "Boar": "MALE",
+  "Hog": "MALE"
+ },
+ "castrated_words": {
+  "Yes": true,
+  "No": false
+ },
+ "pigs": [
+  {
+   "tag": "PRM0001",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-04-03",
+   "weight_kg": 226.6,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0002",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2024-01-11",
+   "weight_kg": 226.7,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0003",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2024-11-17",
+   "weight_kg": 171.9,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0004",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2024-07-15",
+   "weight_kg": 208.2,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0005",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2026-04-07",
+   "weight_kg": 47.1,
+   "mother": null,
+   "father": null,
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0006",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-10-27",
+   "weight_kg": 140.7,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0007",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2026-05-02",
+   "weight_kg": 45.3,
+   "mother": "PRM0003",
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0008",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-12-11",
+   "weight_kg": 116.4,
+   "mother": "PRM0004",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0009",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-11-05",
+   "weight_kg": 132.4,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0010",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-02-04",
+   "weight_kg": 280.0,
+   "mother": "PRM0004",
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0011",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2026-05-21",
+   "weight_kg": 23.7,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0012",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-09-16",
+   "weight_kg": 157.5,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0013",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-06-23",
+   "weight_kg": 207.7,
+   "mother": "PRM0003",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0014",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-07-25",
+   "weight_kg": 189.4,
+   "mother": "PRM0003",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0015",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-07-30",
+   "weight_kg": 187.6,
+   "mother": null,
+   "father": null,
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0016",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-02-13",
+   "weight_kg": 274.9,
+   "mother": "PRM0004",
+   "father": null,
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0017",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-09-23",
+   "weight_kg": 155.4,
+   "mother": "PRM0002",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0018",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-01-31",
+   "weight_kg": 280.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0019",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-05-29",
+   "weight_kg": 219.3,
+   "mother": "PRM0004",
+   "father": null,
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0020",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2026-01-24",
+   "weight_kg": 83.7,
+   "mother": "PRM0003",
+   "father": null,
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0021",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-11-17",
+   "weight_kg": 128.3,
+   "mother": "PRM0002",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0022",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-05-19",
+   "weight_kg": 18.8,
+   "mother": "PRM0003",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  }
+ ]
+}

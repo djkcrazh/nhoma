@@ -1,0 +1,50 @@
+﻿ID,Breed,Sex (M/F),Live Wt (kg),Born,Sire
+PIG_001,Landrace,Male,187,23/03/2024,
+PIG_002,Landrace,Male,243,20/05/2024,
+PIG_003,Landrace,Female,258,19/09/2024,
+PIG_004,Mixed Breed,Female,160,19/12/2024,
+PIG_005,Mixed Breed,Female,153,26/11/2024,
+PIG_006,Local,Female,180,27/04/2024,
+PIG_007,Duroc,Female,214,16/10/2024,
+PIG_008,Mixed Breed,Female,182,16/05/2024,
+PIG_009,Local,Female,92,10/01/2026,
+PIG_010,Local,Male,280,09/01/2025,
+PIG_011,Duroc,Female,221,27/05/2025,PIG_001
+PIG_012,Local,Female,156,19/09/2025,PIG_001
+PIG_013,Duroc,Female,179,21/08/2025,PIG_002
+PIG_014,Duroc,Female,147,09/10/2025,PIG_001
+PIG_015,Landrace,Female,186,02/08/2025,
+PIG_016,Large White,Male,208,03/07/2025,
+PIG_017,Duroc,Male,170,27/08/2025,
+PIG_018,Duroc,Female,92,07/01/2026,
+PIG_019,Local,Male,240,29/04/2025,PIG_002
+PIG_020,Mixed Breed,Male,89,29/01/2026,
+PIG_021,Duroc,Male,211,10/06/2025,
+PIG_022,Duroc,Female,163,10/09/2025,
+PIG_023,Landrace,Female,218,29/05/2025,PIG_001
+PIG_024,Large White,Female,167,02/09/2025,PIG_001
+PIG_025,Duroc,Male,270,20/02/2025,PIG_001
+PIG_026,Local,Male,72,28/02/2026,
+PIG_027,Duroc,Female,268,22/02/2025,
+PIG_028,Local,Female,276,13/02/2025,
+PIG_029,Duroc,Female,93,21/01/2026,PIG_002
+PIG_030,Mixed Breed,Male,60,12/03/2026,
+PIG_031,Mixed Breed,Male,88,21/01/2026,PIG_001
+PIG_032,Local,Male,111,14/12/2025,PIG_002
+PIG_033,Mixed Breed,Female,141,21/10/2025,PIG_001
+PIG_034,Local,Female,20,29/05/2026,
+PIG_035,Mixed Breed,Female,243,11/04/2025,PIG_002
+PIG_036,Large White,Male,126,13/11/2025,
+PIG_037,Mixed Breed,Female,168,28/08/2025,
+PIG_038,Local,Female,111,19/12/2025,PIG_002
+PIG_039,Mixed Breed,Female,204,05/07/2025,
+PIG_040,Landrace,Female,263,09/03/2025,PIG_002
+PIG_041,Duroc,Male,41,09/04/2026,
+PIG_042,Duroc,Female,89,27/01/2026,
+PIG_043,Mixed Breed,Male,280,10/01/2025,
+PIG_044,Local,Female,280,18/01/2025,PIG_002
+PIG_045,Duroc,Female,101,09/01/2026,
+PIG_046,Duroc,Female,183,25/07/2025,PIG_002
+PIG_047,Local,Female,280,06/02/2025,
+PIG_048,Mixed Breed,Male,280,02/02/2025,
+PIG_049,Local,Female,280,22/01/2025,

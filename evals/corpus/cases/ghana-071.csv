@@ -1,0 +1,42 @@
+Pig Number,Breed,Remarks,Dam,Gender,Weight,Born On
+A-0001,Duroc,pen 3,,Male,173,05.08.2023
+A-0002,Large White,sick – treated,,Male,205,07.04.2025
+A-0003,Duroc,vaccinated,,Female,234,07.04.2024
+A-0004,Mixed Breed,sick – treated,,Female,185,12.04.2025
+A-0005,Landrace,sick – treated,,Female,194,31.10.2024
+A-0006,Landrace,,,Female,218,13.10.2024
+A-0007,Local,vaccinated,A-0003,Male,184,31.07.2025
+A-0008,Mixed Breed,,,Female,280,08.01.2025
+A-0009,Landrace,,A-0005,Male,260,13.03.2025
+A-0010,Duroc,,A-0004,Male,129,10.11.2025
+A-0011,Duroc,,A-0005,Female,262,17.03.2025
+A-0012,Mixed Breed,sick – treated,,Male,238,28.04.2025
+A-0013,Mixed Breed,,A-0004,Male,181,07.08.2025
+A-0014,Duroc,weaned at 28 days,,Female,54,27.03.2026
+A-0015,Mixed Breed,,,Male,83,12.02.2026
+A-0016,Duroc,,,Male,185,29.07.2025
+A-0017,Large White,sow’s first litter,,Male,184,03.08.2025
+A-0018,Duroc,sick – treated,A-0006,Female,46,13.04.2026
+A-0019,Local,,A-0004,Female,61,26.03.2026
+A-0020,Large White,pen 3,A-0003,Male,280,20.01.2025
+A-0021,Local,good mother,A-0003,Male,58,19.03.2026
+A-0022,Large White,good mother,A-0006,Male,223,29.05.2025
+A-0023,Local,vaccinated,,Female,42,15.04.2026
+A-0024,Duroc,to be sold,,Female,139,21.10.2025
+A-0025,Large White,sick – treated,,Male,239,27.04.2025
+A-0026,Large White,,A-0003,Female,131,07.11.2025
+A-0027,Duroc,to be sold,A-0005,Male,47,10.04.2026
+A-0028,Large White,,,Female,195,09.07.2025
+A-0029,Local,to be sold,A-0004,Female,268,06.03.2025
+A-0030,Local,,A-0004,Male,178,16.08.2025
+A-0031,Duroc,,A-0005,Male,144,15.10.2025
+A-0032,Mixed Breed,good mother,,Male,126,24.11.2025
+
+A-0033,Duroc,weaned at 28 days,A-0006,Female,94,17.01.2026
+A-0034,Landrace,sow’s first litter,A-0006,Female,183,04.08.2025
+A-0035,Duroc,sick – treated,,Female,36,05.05.2026
+A-0036,Duroc,,A-0005,Male,66,28.02.2026
+A-0037,Large White,,,Male,213,12.06.2025
+A-0038,Large White,weaned at 28 days,A-0006,Female,136,23.10.2025
+A-0039,Landrace,weaned at 28 days,A-0004,Female,119,03.12.2025
+

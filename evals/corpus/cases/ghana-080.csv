@@ -1,0 +1,61 @@
+﻿Pig Number,Breed Type,Born On,Mother,Pig Sex,Comments,Weight (kg)
+A-0001,Local,22.07.2024,,Male,,161
+A-0002,Mixed Breed,17.10.2023,,Male,sow’s first litter,233
+A-0003,Large White,14.12.2024,,Male,,197
+A-0004,Large White,09.02.2024,,Female,to be sold,219
+A-0005,Mixed Breed,31.12.2023,,Female,sow’s first litter,165
+A-0006,Landrace,19.01.2024,,Female,,151
+A-0007,Duroc,21.09.2024,,Female,,169
+A-0008,Mixed Breed,25.12.2024,,Female,,215
+A-0009,Local,24.11.2023,,Female,pen 3,218
+
+A-0010,Mixed Breed,22.02.2026,A-0008,Female,,72
+A-0011,Landrace,11.07.2025,,Female,,189
+A-0012,Landrace,29.04.2025,A-0004,Male,,236
+A-0013,Local,05.01.2026,,Female,,97
+A-0014,Duroc,05.02.2025,A-0007,Female,to be sold,280
+A-0015,Mixed Breed,26.08.2025,A-0008,Male,,172
+A-0016,Large White,05.10.2025,,Male,,146
+A-0017,Large White,16.03.2025,,Male,,260
+A-0018,Mixed Breed,29.11.2025,A-0006,Male,vaccinated,121
+
+A-0019,Local,21.12.2025,A-0007,Female,sow’s first litter,106
+A-0020,Local,07.03.2026,,Male,,68
+A-0021,Local,16.09.2025,A-0009,Male,weaned at 28 days,160
+A-0022,Mixed Breed,01.04.2026,A-0004,Female,,56
+A-0023,Large White,02.02.2026,A-0009,Female,,83
+
+A-0024,Large White,31.07.2025,,Female,,185
+A-0025,Duroc,07.11.2025,A-0007,Female,vaccinated,127
+A-0026,Duroc,29.03.2026,,Female,good mother,49
+A-0027,Local,18.11.2025,A-0005,Female,,122
+A-0028,Landrace,08.04.2026,,Female,weaned at 28 days,47
+A-0029,Duroc,18.02.2026,,Female,weaned at 28 days,76
+A-0030,Mixed Breed,13.04.2026,A-0009,Male,vaccinated,42
+A-0031,Large White,01.11.2025,,Male,sick – treated,136
+A-0032,Mixed Breed,19.07.2025,A-0008,Male,,195
+A-0033,Local,22.06.2025,,Male,sick – treated,205
+A-0034,Duroc,26.11.2025,A-0004,Male,,125
+A-0035,Mixed Breed,19.05.2026,,Male,sow’s first litter,30
+A-0036,Duroc,12.07.2025,A-0006,Female,good mother,194
+A-0037,Mixed Breed,21.09.2025,A-0008,Female,,159
+A-0038,Large White,08.03.2026,A-0008,Female,sick – treated,63
+A-0039,Duroc,14.08.2025,,Male,sick – treated,179
+A-0040,Duroc,29.01.2025,A-0009,Male,weaned at 28 days,280
+A-0041,Local,07.03.2025,,Male,weaned at 28 days,265
+A-0042,Local,17.12.2025,A-0005,Male,vaccinated,111
+A-0043,Mixed Breed,05.12.2025,A-0004,Male,sow’s first litter,116
+A-0044,Large White,11.11.2025,A-0004,Female,,130
+A-0045,Mixed Breed,01.06.2025,A-0007,Female,sick – treated,217
+A-0046,Landrace,31.10.2025,A-0009,Female,pen 3,135
+
+A-0047,Local,30.12.2025,,Male,to be sold,100
+A-0048,Landrace,15.06.2025,A-0007,Male,,211
+A-0049,Large White,11.10.2025,,Male,sick – treated,143
+A-0050,Duroc,10.12.2025,A-0007,Female,to be sold,116
+A-0051,Mixed Breed,05.05.2026,,Male,good mother,36
+A-0052,Duroc,05.04.2025,A-0007,Male,to be sold,249
+A-0053,Large White,08.11.2025,,Male,weaned at 28 days,125
+A-0054,Landrace,11.07.2025,,Female,weaned at 28 days,201
+A-0055,Landrace,04.08.2025,A-0005,Male,weaned at 28 days,188
+
