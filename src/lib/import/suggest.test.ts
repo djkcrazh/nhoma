@@ -37,6 +37,12 @@ describe("suggestMapping: columns", () => {
     expect(s.mapping.transforms.weightUnit).toBe("lb");
   });
 
+  it("recognises the pig ID under the names farms actually use", () => {
+    for (const h of ["Pig No", "Pig No.", "Pig Number", "Tag No", "Ear No", "Animal ID", "PIG_NO"]) {
+      expect(sources([h, "Breed", "Sex", "DOB"]).fields.tagId, h).toBe(h);
+    }
+  });
+
   it("recognises French headers", () => {
     const s = sources(["Numéro", "Race", "Sexe", "Date de naissance", "Poids", "Mère", "Père", "Castré", "Remarques"]);
     expect(s.fields).toMatchObject({ tagId: "Numéro", breed: "Race", sex: "Sexe", dateOfBirth: "Date de naissance", weightKg: "Poids", motherTagId: "Mère", fatherTagId: "Père", castrated: "Castré" });
@@ -224,6 +230,46 @@ describe("suggestMapping: dates and the human check", () => {
     const { mapping } = suggestMapping(HEADERS, rows);
     const wrong: ImportMapping = { ...mapping, transforms: { ...mapping.transforms, dateFormat: "MM/dd/yyyy", dateFormatConfirmed: true } };
     expect(checkMapping(wrong, rows)).toEqual([{ kind: "unreadableDates", count: 2, example: "15/01/2026", betterFormat: "dd/MM/yyyy" }]);
+  });
+});
+
+describe("suggestMapping: weights and number format", () => {
+  const H = [...HEADERS, "Weight (kg)"];
+  const withWeights = (...w: string[]) => suggestMapping(H, w.map((weight) => row({ "Weight (kg)": weight })));
+
+  it("keeps the English convention by default and needs no question for unambiguous values", () => {
+    const s = withWeights("85.5", "112", "1,020.5", "n/a", "-");
+    expect(s.mapping.transforms.numberFormat).toBe("en");
+    expect(s.unresolved).toEqual([]);
+  });
+
+  it("switches to the European convention only on proof, and says why without asking", () => {
+    const s = withWeights("180,5", "210", "12,5");
+    expect(s.mapping.transforms.numberFormat).toBe("eu");
+    expect(s.numberHint?.reason).toMatch(/“180,5” only makes sense with a decimal comma/);
+    expect(kinds(s.unresolved)).not.toContain("confirmNumberFormat"); // wrong English reading would FAIL, not silently differ
+  });
+
+  it("never guesses when a value reads both ways: it asks, like the date order", () => {
+    const s = withWeights("85.5", "1,200");
+    expect(s.mapping.transforms.numberFormat).toBe("en");
+    expect(s.mapping.transforms.numberFormatConfirmed).toBe(false);
+    expect(s.unresolved).toContainEqual({ kind: "confirmNumberFormat", format: "en" });
+    const rows = [{ "Weight (kg)": "85.5" }, { "Weight (kg)": "1,200" }];
+    expect(checkMapping({ ...s.mapping, transforms: { ...s.mapping.transforms, numberFormatConfirmed: true } }, rows)).toEqual([]);
+  });
+
+  it("blocks a convention the file contradicts, naming the one that fits", () => {
+    const m = suggestMapping(H, [row({ "Weight (kg)": "85.5" })]).mapping;
+    const rows = ["180,5", "12,5", "99,9"].map((w) => ({ "Weight (kg)": w }));
+    expect(checkMapping(m, rows)).toEqual([{ kind: "unreadableWeights", count: 3, example: "180,5", betterFormat: "eu" }]);
+  });
+
+  it("only warns about a stray unreadable weight, and ignores placeholders", () => {
+    const rows = [...Array(9).fill("85.5"), "heavy", "n/a", "-"].map((w) => ({ "Weight (kg)": w }));
+    const { mapping } = suggestMapping(H, rows.map((r) => row(r)));
+    expect(checkMapping(mapping, rows)).toEqual([]);
+    expect(mappingWarnings(mapping, rows)).toEqual([{ kind: "strayWeights", count: 1, example: "heavy" }]);
   });
 });
 

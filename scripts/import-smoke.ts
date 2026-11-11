@@ -119,6 +119,23 @@ async function main() {
   assert.deepEqual([await dob("AMB-1"), await dob("AMB-2")], ["2024-04-03", "2024-03-04"]);
   ok("the same cell 03/04/2024 stores 2024-04-03 day-first and 2024-03-04 month-first");
 
+  console.log("commas and periods");
+  const weights = [{ tagId: "NUM-1", breed: "Duroc", sex: "F", dateOfBirth: "2024-03-04", weightKg: "1,200" }];
+  await assert.rejects(() => run(weights, defaultMapping(), false), (e) => e instanceof ServiceError && e.code === "NUMBER_FORMAT_UNCONFIRMED");
+  assert.equal(await count({ tagId: "NUM-1" }), 0);
+  ok("the server REFUSES to write an ambiguous weight (1,200) until the number format is confirmed");
+
+  const english = { ...defaultMapping(), transforms: { ...defaultMapping().transforms, numberFormat: "en" as const, numberFormatConfirmed: true } };
+  const european = { ...english, transforms: { ...english.transforms, numberFormat: "eu" as const } };
+  await run(weights, english, false);
+  await run([{ ...weights[0], tagId: "NUM-2" }], european, false);
+  const kg = async (tagId: string) => {
+    const pig = await db.pig.findFirstOrThrow({ where: { farmId: farm.id, tagId } });
+    return (await db.weightRecord.findUniqueOrThrow({ where: { id: pig.currentWeightId! } })).weightKg;
+  };
+  assert.deepEqual([await kg("NUM-1"), await kg("NUM-2")], [1200, 1.2]);
+  ok('the same cell "1,200" stores 1200 kg with a thousands comma (English) and 1.2 kg with a decimal comma (European)');
+
   console.log("a big batch");
   const big: ImportRow[] = [{ tagId: "SOW-0", breed: "Landrace", sex: "F", dateOfBirth: "2021-01-01" }];
   for (let i = 1; i <= 1500; i++)

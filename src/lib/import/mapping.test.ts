@@ -5,9 +5,13 @@ import {
   dateOrderAlternative,
   defaultMapping,
   importMappingSchema,
+  isAmbiguousNumber,
+  isBlankPlaceholder,
   isDateOrderSensitive,
   needsDateOrderConfirmation,
+  needsNumberFormatConfirmation,
   parseDate,
+  parseNumber,
   parseWeight,
   readCell,
   sexResolver,
@@ -30,10 +34,18 @@ describe("importMappingSchema", () => {
     expect(importMappingSchema.safeParse({ ...m, transforms: { ...m.transforms, castratedValues: { x: "yes" } } }).success).toBe(false);
   });
 
-  it("requires the date-order confirmation flag to be present", () => {
-    const { dateFormatConfirmed, ...rest } = defaultMapping().transforms;
+  it("requires the date-order and number-format settings to be present", () => {
+    const { dateFormatConfirmed, ...noDate } = defaultMapping().transforms;
     void dateFormatConfirmed;
-    expect(importMappingSchema.safeParse({ ...defaultMapping(), transforms: rest }).success).toBe(false);
+    expect(importMappingSchema.safeParse({ ...defaultMapping(), transforms: noDate }).success).toBe(false);
+    const { numberFormat, ...noNumber } = defaultMapping().transforms;
+    void numberFormat;
+    expect(importMappingSchema.safeParse({ ...defaultMapping(), transforms: noNumber }).success).toBe(false);
+    expect(importMappingSchema.safeParse({ ...defaultMapping(), transforms: { ...defaultMapping().transforms, numberFormat: "fr" } }).success).toBe(false);
+  });
+
+  it("defaults to the English convention (comma groups thousands, period is the decimal point)", () => {
+    expect(defaultMapping().transforms.numberFormat).toBe("en");
   });
 
   it("accepts optional confidence and reason on a field, and bounds them", () => {
@@ -102,11 +114,52 @@ describe("parseDate", () => {
   });
 });
 
+describe("parseNumber", () => {
+  it("English: a comma is a thousands separator and a period is the decimal point", () => {
+    expect(parseNumber("12.5", "en")).toBe(12.5);
+    expect(parseNumber("1,200", "en")).toBe(1200);
+    expect(parseNumber("1,234,567.89", "en")).toBe(1234567.89);
+    expect(parseNumber("85", "en")).toBe(85);
+  });
+
+  it("European: a period is a thousands separator and a comma is the decimal point", () => {
+    expect(parseNumber("12,5", "eu")).toBe(12.5);
+    expect(parseNumber("1.200", "eu")).toBe(1200);
+    expect(parseNumber("1.234,5", "eu")).toBe(1234.5);
+  });
+
+  it("rejects text that is not valid in the convention, instead of misreading it", () => {
+    expect(parseNumber("12,5", "en")).toBeNull(); // a thousands group needs exactly three digits
+    expect(parseNumber("1,20", "en")).toBeNull();
+    expect(parseNumber("12.5", "eu")).toBeNull();
+    expect(parseNumber("0.5", "eu")).toBeNull();
+    expect(parseNumber("1,2,3", "en")).toBeNull();
+    expect(parseNumber("", "en")).toBeNull();
+    expect(parseNumber("abc", "en")).toBeNull();
+  });
+
+  it("flags only values that mean different things in the two conventions", () => {
+    for (const v of ["1,200", "1.200", "1,234", "2.500 kg"]) expect(isAmbiguousNumber(v)).toBe(true);
+    for (const v of ["12.5", "12,5", "85", "100 lb", "1,234.5", "1.234,5", "abc", ""]) expect(isAmbiguousNumber(v)).toBe(false);
+  });
+});
+
 describe("parseWeight", () => {
-  it("handles decimal commas and units in the cell", () => {
+  it("reads English numbers by default", () => {
     expect(parseWeight("12.5", "kg")).toBe("12.5");
-    expect(parseWeight("12,5", "kg")).toBe("12.5");
+    expect(parseWeight("1,250.5", "kg")).toBe("1250.5");
     expect(parseWeight("12.5 kg", "lb")).toBe("12.5"); // unit in the cell wins
+  });
+
+  it("does NOT read a decimal comma as English: 12,5 is an error, not 125", () => {
+    expect(parseWeight("12,5", "kg")).toBeNull();
+    expect(parseWeight("1,200", "kg")).toBe("1200"); // a comma is a comma
+  });
+
+  it("reads European numbers when asked", () => {
+    expect(parseWeight("12,5", "kg", "eu")).toBe("12.5");
+    expect(parseWeight("1.250,5", "kg", "eu")).toBe("1250.5");
+    expect(parseWeight("1,200", "kg", "eu")).toBe("1.2");
   });
 
   it("converts pounds to kilograms, rounded to 2 places", () => {
@@ -117,6 +170,36 @@ describe("parseWeight", () => {
   it("rejects non-numeric text", () => {
     expect(parseWeight("heavy", "kg")).toBeNull();
     expect(parseWeight("12 stone", "kg")).toBeNull();
+  });
+});
+
+describe("blank weight placeholders", () => {
+  it("recognises the ways farms write 'not weighed'", () => {
+    for (const v of ["n/a", "N/A", "na", "-", "--", "?", "unknown", "None"]) expect(isBlankPlaceholder(v)).toBe(true);
+    for (const v of ["0", "12.5", "heavy", ""]) expect(isBlankPlaceholder(v)).toBe(false);
+  });
+});
+
+describe("number format confirmation", () => {
+  const withWeights = (numberFormatConfirmed: boolean): ImportMapping => ({
+    ...defaultMapping(),
+    transforms: { ...defaultMapping().transforms, numberFormatConfirmed },
+  });
+  const recs = (...w: string[]) => w.map((weightKg) => ({ weightKg }));
+
+  it("is required only when some weight reads two ways and nobody confirmed", () => {
+    expect(needsNumberFormatConfirmation(withWeights(false), recs("85.5", "1,200"))).toBe(true);
+    expect(needsNumberFormatConfirmation(withWeights(true), recs("85.5", "1,200"))).toBe(false);
+  });
+
+  it("is not required when every value is unambiguous", () => {
+    expect(needsNumberFormatConfirmation(withWeights(false), recs("85.5", "112", "1,020.5"))).toBe(false);
+    expect(needsNumberFormatConfirmation(withWeights(false), recs("180,5", "12,5"))).toBe(false);
+  });
+
+  it("is not required when weights are not mapped", () => {
+    const m = withWeights(false);
+    expect(needsNumberFormatConfirmation({ ...m, fields: { ...m.fields, weightKg: { source: null } } }, recs("1,200"))).toBe(false);
   });
 });
 
@@ -176,6 +259,8 @@ describe("applyMapping", () => {
       dateFormat: "dd/MM/yyyy",
       dateFormatConfirmed: true,
       weightUnit: "lb",
+      numberFormat: "eu",
+      numberFormatConfirmed: true,
       castratedValues: { oui: true, non: false },
     },
   };
@@ -210,6 +295,31 @@ describe("applyMapping", () => {
       const { rows, issues } = castratedRow("Truie", "n/a");
       expect(rows[0].castrated).toBe("");
       expect(issues[0]).toEqual([]);
+    });
+  });
+
+  describe("weights", () => {
+    const kg = (cell: string, transforms: Partial<ImportMapping["transforms"]> = {}) =>
+      applyMapping([{ tagId: "A", weightKg: cell }], { ...defaultMapping(), transforms: { ...defaultMapping().transforms, ...transforms } });
+
+    it("reads English numbers by default, with thousands commas", () => {
+      expect(kg("85.5").rows[0].weightKg).toBe("85.5");
+      expect(kg("1,020.5").rows[0].weightKg).toBe("1020.5");
+    });
+
+    it("reads a decimal comma only when the mapping says the file is European", () => {
+      expect(kg("180,5", { numberFormat: "eu" }).rows[0].weightKg).toBe("180.5");
+      const en = kg("180,5");
+      expect(en.rows[0].weightKg).toBe("");
+      expect(en.issues[0]).toEqual([{ field: "weightKg", message: '"180,5" is not a weight' }]);
+    });
+
+    it("treats n/a, - and friends as 'not weighed', not as an error", () => {
+      for (const cell of ["n/a", "-", "unknown"]) {
+        const { rows, issues } = kg(cell);
+        expect(rows[0].weightKg).toBe("");
+        expect(issues[0]).toEqual([]);
+      }
     });
   });
 

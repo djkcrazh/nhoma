@@ -7,12 +7,17 @@ import {
   applyMapping,
   castratedResolver,
   dateOrderAlternative,
+  isAmbiguousNumber,
   isFemale,
+  NUMBER_FORMATS,
   parseDate,
+  parseNumber,
   readCell,
   sexResolver,
+  weightDigits,
   type DateFormat,
   type ImportMapping,
+  type NumberFormat,
 } from "@/lib/import/mapping";
 import {
   checkMapping,
@@ -37,10 +42,15 @@ const FIELD_LABELS: Record<ImportColumn, string> = {
 
 const MAX_VALUES_SHOWN = 30;
 
+const NUMBER_LABELS: Record<NumberFormat, { name: string; code: string }> = {
+  en: { name: "Comma for thousands, period for decimals", code: "1,234.5" },
+  eu: { name: "Period for thousands, comma for decimals", code: "1.234,5" },
+};
+
 const quoted = (values: string[]) => values.slice(0, 4).map((v) => `“${v}”`).join(", ") + (values.length > 4 ? ", …" : "");
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
 
-function describeProblem(p: MappingProblem, format: DateFormat): string {
+function describeProblem(p: MappingProblem, format: DateFormat, numberFormat: NumberFormat): string {
   switch (p.kind) {
     case "missingField":
       return p.field === "breed"
@@ -48,6 +58,12 @@ function describeProblem(p: MappingProblem, format: DateFormat): string {
         : `Choose which column holds the ${FIELD_LABELS[p.field].toLowerCase()}.`;
     case "confirmDateOrder":
       return "Confirm whether your dates are day-first or month-first (below).";
+    case "confirmNumberFormat":
+      return "Confirm how your weights are written (below): some can be read two ways.";
+    case "unreadableWeights":
+      return p.betterFormat
+        ? `${plural(p.count, "weight")} can't be read as “${NUMBER_LABELS[numberFormat].code}”, but “${NUMBER_LABELS[p.betterFormat].code}” reads all of them (for example “${p.example}”). Pick the right one below.`
+        : `${plural(p.count, "weight")} can't be read (for example “${p.example}”). Check the number format and unit below.`;
     case "unreadableDates":
       return p.betterFormat
         ? `${plural(p.count, "date")} can't be read as ${format}, but ${p.betterFormat} reads all of them (for example “${p.example}”). Pick the right order below.`
@@ -63,6 +79,8 @@ function describeWarning(w: MappingWarning): string {
   switch (w.kind) {
     case "strayDates":
       return `${plural(w.count, "date")} can't be read (for example “${w.example}”). Those rows will be listed as errors in the next step.`;
+    case "strayWeights":
+      return `${plural(w.count, "weight")} can't be read (for example “${w.example}”). Those rows will be listed as errors in the next step.`;
     case "straySexValues":
       return `${plural(w.rows, "row")} ${w.rows === 1 ? "has" : "have"} a sex we don't recognise (${quoted(w.values)}). Choose a meaning below, or they'll be listed as errors in the next step.`;
     case "strayCastratedValues":
@@ -93,6 +111,7 @@ export function ImportMappingStep({
   records,
   mapping,
   dateHint,
+  numberHint,
   onChange,
   onContinue,
   onBack,
@@ -102,6 +121,7 @@ export function ImportMappingStep({
   records: Record<string, string>[];
   mapping: ImportMapping;
   dateHint?: MappingSuggestion["dateHint"];
+  numberHint?: MappingSuggestion["numberHint"];
   onChange: (m: ImportMapping) => void;
   onContinue: () => void;
   onBack: () => void;
@@ -151,6 +171,19 @@ export function ImportMappingStep({
     return [...new Set(differing.length > 0 ? differing : cells)].slice(0, 2);
   }, [records, dateSource, format, alternative]);
 
+  // Weights that read differently under each convention make the best examples for the confirmation.
+  const weightSource = mapping.fields.weightKg?.source;
+  const numberExamples = useMemo(
+    () =>
+      weightSource
+        ? [...new Set(records.map((r) => readCell(r, weightSource)).filter(isAmbiguousNumber))].slice(0, 2)
+        : [],
+    [records, weightSource],
+  );
+  const numberConfirmed = mapping.transforms.numberFormatConfirmed;
+  const needsNumberConfirm = problems.some((p) => p.kind === "confirmNumberFormat");
+  const kgText = (n: number | null) => (n === null ? "not a valid number" : `${n} ${mapping.transforms.weightUnit}`);
+
   const dateSamples = useMemo(
     () => (dateSource ? records.map((r) => readCell(r, dateSource)).filter(Boolean).slice(0, 3) : []),
     [records, dateSource],
@@ -161,7 +194,12 @@ export function ImportMappingStep({
       ...mapping,
       fields: { ...mapping.fields, [field]: { ...mapping.fields[field], source } },
       // A different date column may follow a different convention, so ask again.
-      transforms: field === "dateOfBirth" ? { ...mapping.transforms, dateFormatConfirmed: false } : mapping.transforms,
+      transforms:
+        field === "dateOfBirth"
+          ? { ...mapping.transforms, dateFormatConfirmed: false }
+          : field === "weightKg"
+            ? { ...mapping.transforms, numberFormatConfirmed: false }
+            : mapping.transforms,
     });
 
   const setBreedDefault = (value: string) =>
@@ -202,7 +240,7 @@ export function ImportMappingStep({
         <ul role="alert" className="space-y-1 rounded-lg border border-rule bg-sunken px-4 py-3">
           {problems.map((p, i) => (
             <li key={i} className="field-error !mt-0">
-              {describeProblem(p, format)}
+              {describeProblem(p, format, mapping.transforms.numberFormat)}
             </li>
           ))}
         </ul>
@@ -364,6 +402,63 @@ export function ImportMappingStep({
                   {dateSamples.map((d) => `${d} → ${parseDate(d, format) ?? "unreadable"}`).join("  ·  ")}
                 </p>
               )}
+            </div>
+          )}
+
+          {weightSource && needsNumberConfirm && (
+            <fieldset className={`rounded-lg border p-3 ${numberConfirmed ? "border-rule" : "border-overdue"}`}>
+              <legend className="field-label px-1">Confirm how your weights are written *</legend>
+              <p className="text-xs text-ink-faint">
+                A weight like 1,200 is twelve hundred in Ghana, the UK and the US, and one point two in France and Spain. Pick the
+                convention your file uses. We never choose this for you.
+              </p>
+              {numberHint && <p className="mt-1 text-xs">Hint: {numberHint.reason}</p>}
+              <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                {NUMBER_FORMATS.map((f) => {
+                  const selected = numberConfirmed && mapping.transforms.numberFormat === f;
+                  return (
+                    <label
+                      key={f}
+                      className={`cursor-pointer rounded-lg border p-3 text-sm ${selected ? "border-accent bg-sunken" : "border-rule"}`}
+                    >
+                      <span className="flex items-center gap-2 font-semibold">
+                        <input
+                          type="radio"
+                          name="number-format"
+                          checked={selected}
+                          onChange={() => setTransform({ numberFormat: f, numberFormatConfirmed: true })}
+                        />
+                        {NUMBER_LABELS[f].name} <span className="font-tag text-xs font-normal text-ink-faint">{NUMBER_LABELS[f].code}</span>
+                      </span>
+                      {numberExamples.map((v) => (
+                        <span key={v} className="mt-1 block text-xs text-ink-faint">
+                          {v} → {kgText(parseNumber(weightDigits(v) ?? "", f))}
+                        </span>
+                      ))}
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+          )}
+
+          {weightSource && (
+            <div>
+              <label className="field-label" htmlFor="map-number-format">
+                Number format
+              </label>
+              <select
+                id="map-number-format"
+                className="select"
+                value={mapping.transforms.numberFormat}
+                onChange={(e) => setTransform({ numberFormat: e.target.value as NumberFormat, numberFormatConfirmed: false })}
+              >
+                {NUMBER_FORMATS.map((f) => (
+                  <option key={f} value={f}>
+                    {NUMBER_LABELS[f].code} ({NUMBER_LABELS[f].name.toLowerCase()})
+                  </option>
+                ))}
+              </select>
             </div>
           )}
 

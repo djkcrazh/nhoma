@@ -6,7 +6,7 @@ import { logAudit } from "./audit.service";
 import { getSettings } from "./settings.service";
 import { enrichPig, syncStatus, pigInclude, ServiceError } from "./pig.service";
 import { MAX_IMPORT_ROWS, importTxTimeoutMs } from "@/lib/import/columns";
-import { applyMapping, needsDateOrderConfirmation, type ImportMapping } from "@/lib/import/mapping";
+import { applyMapping, needsDateOrderConfirmation, needsNumberFormatConfirmation, type ImportMapping } from "@/lib/import/mapping";
 import { validateImportRows, type ExistingPig, type ImportRow, type RowResult } from "@/lib/import/validate";
 
 export type { ImportRow, RowResult };
@@ -38,6 +38,12 @@ export async function importPigs(
     throw new ServiceError(
       "DATE_ORDER_UNCONFIRMED",
       "Confirm whether your dates are day-first or month-first before importing.",
+    );
+  // Same rule for numbers: "1,200" is 1200 in English and 1.2 in French.
+  if (!dryRun && needsNumberFormatConfirmation(mapping, records))
+    throw new ServiceError(
+      "NUMBER_FORMAT_UNCONFIRMED",
+      "Confirm how your weights are written (1,200 can mean 1200 or 1.2) before importing.",
     );
   const settings = await getSettings(ctx.farmId);
 
@@ -157,7 +163,8 @@ export async function importPigs(
     entityId: "bulk",
     summary:
       `Imported ${valid.length} pigs from CSV (${summary.invalid} rows skipped)` +
-      (mapping.fields.dateOfBirth?.source ? `; dates read as ${mapping.transforms.dateFormat}` : ""),
+      (mapping.fields.dateOfBirth?.source ? `; dates read as ${mapping.transforms.dateFormat}` : "") +
+      (mapping.fields.weightKg?.source ? `; numbers read as ${mapping.transforms.numberFormat === "en" ? "1,234.5" : "1.234,5"}` : ""),
   });
   summary.imported = valid.length;
   return summary;

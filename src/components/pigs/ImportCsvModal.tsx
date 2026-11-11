@@ -45,6 +45,7 @@ export function ImportCsvModal({
   const [records, setRecords] = useState<Record<string, string>[]>([]);
   const [mapping, setMapping] = useState<ImportMapping | null>(null);
   const [dateHint, setDateHint] = useState<MappingSuggestion["dateHint"]>();
+  const [numberHint, setNumberHint] = useState<MappingSuggestion["numberHint"]>();
   const [fileName, setFileName] = useState("");
   const [encoding, setEncoding] = useState<CsvEncoding | null>(null);
   const [report, setReport] = useState<Report | null>(null);
@@ -57,6 +58,7 @@ export function ImportCsvModal({
     setRecords([]);
     setMapping(null);
     setDateHint(undefined);
+    setNumberHint(undefined);
     setReport(null);
     setFileName("");
     setEncoding(null);
@@ -123,6 +125,7 @@ export function ImportCsvModal({
       setRecords(rows);
       setMapping(suggestion.mapping);
       setDateHint(suggestion.dateHint);
+      setNumberHint(suggestion.numberHint);
       setEncoding(decoded.encoding);
       // Fully matched files (including the default template) skip straight to
       // the validation report; anything uncertain goes to the mapping screen.
@@ -231,6 +234,7 @@ export function ImportCsvModal({
           records={records}
           mapping={mapping}
           dateHint={dateHint}
+          numberHint={numberHint}
           onChange={setMapping}
           onContinue={() => runDryRun(records, mapping)}
           onBack={reset}

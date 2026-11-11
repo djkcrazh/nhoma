@@ -20,6 +20,9 @@ export const DATE_FORMATS = [
 ] as const;
 export type DateFormat = (typeof DATE_FORMATS)[number];
 
+export const NUMBER_FORMATS = ["en", "eu"] as const;
+export type NumberFormat = (typeof NUMBER_FORMATS)[number];
+
 /** Formats that differ only in whether the day or the month comes first. */
 const DATE_ORDER_PAIRS: readonly (readonly [DateFormat, DateFormat])[] = [
   ["dd/MM/yyyy", "MM/dd/yyyy"],
@@ -75,6 +78,14 @@ export const importMappingSchema = z.strictObject({
      */
     dateFormatConfirmed: z.boolean(),
     weightUnit: z.enum(["kg", "lb"]),
+    /**
+     * How the file writes numbers. "en" = 1,234.5: a comma groups thousands and a
+     * period is the decimal point (Ghana, UK, US). "eu" = 1.234,5: the reverse
+     * (French, Spanish, much of Europe).
+     */
+    numberFormat: z.enum(NUMBER_FORMATS),
+    /** A person confirmed the convention. Required when some value reads differently under each one ("1,200"). */
+    numberFormatConfirmed: z.boolean(),
     /** Farm vocabulary for castrated beyond yes/no/true/false/1/0/y/n ("oui" -> true, "non" -> false). */
     castratedValues: boundedRecord(z.boolean()),
   }),
@@ -87,7 +98,15 @@ export function defaultMapping(): ImportMapping {
   return {
     version: 1,
     fields: Object.fromEntries(IMPORT_COLUMNS.map((c) => [c, { source: c }])),
-    transforms: { sexValues: {}, dateFormat: "iso", dateFormatConfirmed: false, weightUnit: "kg", castratedValues: {} },
+    transforms: {
+      sexValues: {},
+      dateFormat: "iso",
+      dateFormatConfirmed: false,
+      weightUnit: "kg",
+      numberFormat: "en",
+      numberFormatConfirmed: false,
+      castratedValues: {},
+    },
   };
 }
 
@@ -101,6 +120,17 @@ export function needsDateOrderConfirmation(mapping: ImportMapping): boolean {
     isDateOrderSensitive(mapping.transforms.dateFormat) &&
     !mapping.transforms.dateFormatConfirmed
   );
+}
+
+/**
+ * True when weights are mapped, at least one value reads differently under the
+ * two conventions ("1,200" is 1200 or 1.2), and nobody has confirmed which. Unlike
+ * the date check this needs the file's values, so the server calls it with the rows.
+ */
+export function needsNumberFormatConfirmation(mapping: ImportMapping, records: Record<string, unknown>[]): boolean {
+  const source = mapping.fields.weightKg?.source;
+  if (!source || mapping.transforms.numberFormatConfirmed) return false;
+  return records.some((r) => isAmbiguousNumber(readCell(r, source)));
 }
 
 // ---------- value parsers ----------
@@ -130,13 +160,53 @@ export function parseDate(raw: string, format: DateFormat): string | null {
 
 const LB_TO_KG = 0.45359237;
 
-/** Accepts "12.5", "12,5", "12.5 kg", "27.6 lbs". A unit in the cell beats the mapping's unit. */
-export function parseWeight(raw: string, defaultUnit: "kg" | "lb"): string | null {
-  const m = raw.trim().match(/^(\d+(?:[.,]\d+)?)\s*(kgs?|lbs?)?$/i);
+// Thousands groups must be exactly three digits, so "12,5" is NOT a valid English number
+// (and "12.5" is not a valid European one): a wrong convention fails loudly instead of
+// quietly reading 12.5 as 125 or 1,200 as 1.2.
+const NUMBER_SHAPES: Record<NumberFormat, RegExp> = {
+  en: /^(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?$/,
+  eu: /^(?:\d{1,3}(?:\.\d{3})+|\d+)(?:,\d+)?$/,
+};
+
+/** Parses a plain number in the given convention, or null when the text is not valid in it. */
+export function parseNumber(raw: string, format: NumberFormat): number | null {
+  const s = raw.trim();
+  if (!NUMBER_SHAPES[format].test(s)) return null;
+  return Number(format === "en" ? s.replace(/,/g, "") : s.replace(/\./g, "").replace(",", "."));
+}
+
+const WEIGHT_SHAPE = /^([\d.,]+)\s*(kgs?|lbs?)?$/i;
+const PLACEHOLDERS = new Set(["n/a", "na", "-", "--", "?", "unknown", "none", "null", "nil"]);
+
+/** Weight cells farms fill in when a pig simply was not weighed. Treated as blank, not as an error. */
+export const isBlankPlaceholder = (raw: string): boolean => PLACEHOLDERS.has(raw.trim().toLowerCase());
+
+/**
+ * The numeric part of a weight cell ("27.6 lbs" -> "27.6"), or null if it is not
+ * number-shaped at all.
+ */
+export const weightDigits = (raw: string): string | null => raw.trim().match(WEIGHT_SHAPE)?.[1] ?? null;
+
+/** True when the text is a valid number in BOTH conventions but means different things ("1,200": 1200 or 1.2). */
+export function isAmbiguousNumber(raw: string): boolean {
+  const digits = weightDigits(raw);
+  if (!digits) return false;
+  const en = parseNumber(digits, "en");
+  const eu = parseNumber(digits, "eu");
+  return en !== null && eu !== null && en !== eu;
+}
+
+/**
+ * Accepts "12.5", "1,250.5", "12.5 kg", "27.6 lbs" (English) or "12,5", "1.250,5" (European).
+ * A unit in the cell beats the mapping's unit. Returns kilograms as text, or null.
+ */
+export function parseWeight(raw: string, defaultUnit: "kg" | "lb", numberFormat: NumberFormat = "en"): string | null {
+  const m = raw.trim().match(WEIGHT_SHAPE);
   if (!m) return null;
+  const value = parseNumber(m[1], numberFormat);
+  if (value === null) return null;
   const unit = m[2] ? (m[2].toLowerCase().startsWith("lb") ? "lb" : "kg") : defaultUnit;
-  const n = Number(m[1].replace(",", ".")) * (unit === "lb" ? LB_TO_KG : 1);
-  return String(Math.round(n * 100) / 100);
+  return String(Math.round(value * (unit === "lb" ? LB_TO_KG : 1) * 100) / 100);
 }
 
 /**
@@ -218,8 +288,9 @@ export function applyMapping(records: Record<string, unknown>[], mapping: Import
     }
 
     let weightKg = cell("weightKg");
+    if (isBlankPlaceholder(weightKg)) weightKg = ""; // "n/a" means "not weighed", not "bad data"
     if (weightKg) {
-      const kg = parseWeight(weightKg, mapping.transforms.weightUnit);
+      const kg = parseWeight(weightKg, mapping.transforms.weightUnit, mapping.transforms.numberFormat);
       if (kg) weightKg = kg;
       else {
         rowIssues.push({ field: "weightKg", message: `"${weightKg}" is not a weight` });

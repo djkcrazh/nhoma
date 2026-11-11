@@ -4,13 +4,19 @@ import {
   castratedResolver,
   dateOrderAlternative,
   defaultMapping,
+  isBlankPlaceholder,
   isFemale,
   needsDateOrderConfirmation,
+  needsNumberFormatConfirmation,
   parseDate,
+  parseNumber,
+  parseWeight,
   readCell,
   sexResolver,
+  weightDigits,
   type DateFormat,
   type ImportMapping,
+  type NumberFormat,
 } from "./mapping";
 
 /**
@@ -31,11 +37,14 @@ export type MappingProblem =
   | { kind: "missingField"; field: ImportColumn }
   | { kind: "confirmDateOrder"; format: DateFormat; alternative: DateFormat }
   | { kind: "unreadableDates"; count: number; example: string; betterFormat?: DateFormat }
+  | { kind: "confirmNumberFormat"; format: NumberFormat }
+  | { kind: "unreadableWeights"; count: number; example: string; betterFormat?: NumberFormat }
   | { kind: "unknownSexValues"; values: string[]; rows: number }
   | { kind: "unknownCastratedValues"; values: string[]; rows: number };
 
 export type MappingWarning =
   | { kind: "strayDates"; count: number; example: string }
+  | { kind: "strayWeights"; count: number; example: string }
   | { kind: "straySexValues"; values: string[]; rows: number }
   | { kind: "strayCastratedValues"; values: string[]; rows: number };
 
@@ -47,6 +56,8 @@ export interface MappingSuggestion {
   unresolved: Unresolved[];
   /** Why a particular day/month order looks right. Shown beside the confirmation, never applied on its own. */
   dateHint?: { format: DateFormat; reason: string };
+  /** Why a particular number convention looks right (e.g. "180,5" only reads with a decimal comma). Never applied without confirmation when a value is ambiguous. */
+  numberHint?: { format: NumberFormat; reason: string };
 }
 
 /** Lower-case, strip accents and separators: "Né le" -> "nele", "Date_of Birth" -> "dateofbirth". */
@@ -61,7 +72,7 @@ export function normalizeKey(s: string): string {
 // Header names farms actually use, English / French / Spanish / Mandarin.
 // Entries are matched after normalizeKey, so accents and spacing don't matter.
 const HEADER_ALIASES: Record<ImportColumn, string[]> = {
-  tagId: ["tagid", "tag", "id", "pigid", "eartag", "number", "pignumber", "numero", "identifiant", "identificacion", "arete", "caravana", "猪号", "耳号", "耳标", "编号"],
+  tagId: ["tagid", "tag", "id", "pigid", "eartag", "number", "pignumber", "pigno", "pignum", "tagno", "tagnumber", "tagnum", "earno", "earnumber", "animalid", "animalno", "numero", "identifiant", "identificacion", "arete", "caravana", "猪号", "耳号", "耳标", "编号"],
   breed: ["breed", "race", "raza", "品种", "品系"],
   sex: ["sex", "gender", "sexe", "genre", "sexo", "性别"],
   dateOfBirth: ["dateofbirth", "dob", "birthdate", "birthday", "born", "datenaissance", "datedenaissance", "naissance", "fechanacimiento", "fechadenacimiento", "nacimiento", "出生日期", "出生", "生日"],
@@ -135,6 +146,7 @@ const isMajority = (bad: number, total: number) => total > 0 && bad * 2 >= total
 interface Analysis {
   missing: ImportColumn[];
   dates: { total: number; bad: string[]; betterFormat?: DateFormat };
+  weights: { total: number; bad: string[]; betterFormat?: NumberFormat };
   sex: { total: number; unknownValues: string[]; unknownRows: number };
   castrated: { total: number; unknownValues: string[]; unknownRows: number };
 }
@@ -155,6 +167,19 @@ function analyze(mapping: ImportMapping, records: Record<string, unknown>[]): An
   const other = dateOrderAlternative(format);
   // If the opposite day/month order reads every date the chosen one cannot, the chosen order is wrong.
   const betterFormat = other && bad.length > 0 && dateCells.every((d) => parseDate(d, other) !== null) ? other : undefined;
+
+  const weightSource = column("weightKg");
+  const weightCells = weightSource
+    ? records.map((r) => readCell(r, weightSource)).filter((c) => c && !isBlankPlaceholder(c))
+    : [];
+  const { weightUnit, numberFormat } = mapping.transforms;
+  const badWeights = weightCells.filter((c) => parseWeight(c, weightUnit, numberFormat) === null);
+  const otherNumberFormat: NumberFormat = numberFormat === "en" ? "eu" : "en";
+  // If the other convention reads every weight this one cannot, the chosen convention is wrong.
+  const betterNumberFormat =
+    badWeights.length > 0 && weightCells.every((c) => parseWeight(c, weightUnit, otherNumberFormat) !== null)
+      ? otherNumberFormat
+      : undefined;
 
   const toSex = sexResolver(mapping);
   const translated = new Set(Object.keys(mapping.transforms.sexValues).map((k) => k.trim().toLowerCase()));
@@ -194,10 +219,14 @@ function analyze(mapping: ImportMapping, records: Record<string, unknown>[]): An
   return {
     missing,
     dates: { total: dateCells.length, bad, betterFormat },
+    weights: { total: weightCells.length, bad: badWeights, betterFormat: betterNumberFormat },
     sex: { total: sexTotal, unknownValues: [...unknownSex], unknownRows: unknownSexRows },
     castrated: { total: castratedTotal, unknownValues: [...unknownCastrated], unknownRows: unknownCastratedRows },
   };
 }
+
+const weightsAreBlocking = (a: Analysis) =>
+  a.weights.bad.length > 0 && (isMajority(a.weights.bad.length, a.weights.total) || !!a.weights.betterFormat);
 
 const dateIsBlocking = (a: Analysis) => a.dates.bad.length > 0 && (isMajority(a.dates.bad.length, a.dates.total) || !!a.dates.betterFormat);
 
@@ -217,6 +246,12 @@ export function checkMapping(mapping: ImportMapping, records: Record<string, unk
   if (dateIsBlocking(a)) {
     problems.push({ kind: "unreadableDates", count: a.dates.bad.length, example: a.dates.bad[0], betterFormat: a.dates.betterFormat });
   }
+  if (needsNumberFormatConfirmation(mapping, records)) {
+    problems.push({ kind: "confirmNumberFormat", format: mapping.transforms.numberFormat });
+  }
+  if (weightsAreBlocking(a)) {
+    problems.push({ kind: "unreadableWeights", count: a.weights.bad.length, example: a.weights.bad[0], betterFormat: a.weights.betterFormat });
+  }
   if (a.sex.unknownValues.length > 0 && isMajority(a.sex.unknownRows, a.sex.total)) {
     problems.push({ kind: "unknownSexValues", values: a.sex.unknownValues, rows: a.sex.unknownRows });
   }
@@ -232,6 +267,9 @@ export function mappingWarnings(mapping: ImportMapping, records: Record<string, 
   const warnings: MappingWarning[] = [];
   if (a.dates.bad.length > 0 && !dateIsBlocking(a)) {
     warnings.push({ kind: "strayDates", count: a.dates.bad.length, example: a.dates.bad[0] });
+  }
+  if (a.weights.bad.length > 0 && !weightsAreBlocking(a)) {
+    warnings.push({ kind: "strayWeights", count: a.weights.bad.length, example: a.weights.bad[0] });
   }
   if (a.sex.unknownValues.length > 0 && !isMajority(a.sex.unknownRows, a.sex.total)) {
     warnings.push({ kind: "straySexValues", values: a.sex.unknownValues, rows: a.sex.unknownRows });
@@ -249,6 +287,7 @@ export function suggestMapping(
 ): MappingSuggestion {
   const mapping = defaultMapping();
   let dateHint: MappingSuggestion["dateHint"];
+  let numberHint: MappingSuggestion["numberHint"];
   const taken = new Set<string>();
 
   // 1. Columns: first unused header whose normalized name is a known alias.
@@ -313,11 +352,22 @@ export function suggestMapping(
     } // otherwise leave ISO; checkMapping reports the dates as unreadable.
   }
 
-  // 5. Weight unit from the header ("Weight (lb)", "poids lbs").
+  // 5. Number convention. English (1,234.5) is the default. Switch to European (1.234,5) only
+  // when the file contains a value that cannot be English, like "180,5", and none that cannot
+  // be European. Values that read both ways ("1,200") are left to a person via checkMapping.
+  const weightDigitsSample = valuesOf("weightKg").filter((v) => !isBlankPlaceholder(v)).map(weightDigits);
+  const euOnly = weightDigitsSample.filter((d): d is string => !!d && parseNumber(d, "en") === null && parseNumber(d, "eu") !== null);
+  const enOnly = weightDigitsSample.filter((d): d is string => !!d && parseNumber(d, "eu") === null && parseNumber(d, "en") !== null);
+  if (euOnly.length > 0 && enOnly.length === 0) {
+    mapping.transforms.numberFormat = "eu";
+    numberHint = { format: "eu", reason: `“${euOnly[0]}” only makes sense with a decimal comma, so your numbers look European (1.234,5).` };
+  }
+
+  // 6. Weight unit from the header ("Weight (lb)", "poids lbs").
   const weightHeader = mapping.fields.weightKg?.source;
   if (weightHeader && /(lbs?|pounds?|libras?)$/.test(normalizeKey(weightHeader))) {
     mapping.transforms.weightUnit = "lb";
   }
 
-  return { mapping, unresolved: [...checkMapping(mapping, records), ...mappingWarnings(mapping, records)], dateHint };
+  return { mapping, unresolved: [...checkMapping(mapping, records), ...mappingWarnings(mapping, records)], dateHint, numberHint };
 }
