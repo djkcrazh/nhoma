@@ -1,220 +1,237 @@
-import { db } from "@/server/db";
-import { Ctx } from "@/server/auth/auth";
-import { assertCan } from "@/server/auth/permissions";
-import { logAudit } from "./audit.service";
+// =============================================================================
+// import.service.ts: the SERVER-SIDE import. This is the only place that writes
+// imported pigs to the database.
+//
+// THE FLOW (read top to bottom in importPigs below)
+//   1. check the caller may import and the file is not too big
+//   2. REFUSE to write if a human has not confirmed the date order / number format
+//   3. load the pigs already on the farm (needed to spot duplicates and check parents)
+//   4. applyMapping  : farm's rows -> Nhoma's standard rows          (pure, see mapping.ts)
+//   5. validateRows  : which standard rows are OK                    (pure, see validate.ts)
+//   6. dry run?  -> return the report and STOP (nothing is written)
+//   7. otherwise write everything in ONE database transaction (all-or-nothing)
+//   8. recompute pig statuses, write an audit-log entry, return the summary
+//
+// FOR EVALUATIONS: steps 4-5 are pure functions you can call without this file or a database.
+// This file is covered by the real-database check (`npm run test:db`, scripts/import-smoke.ts).
+//
+// Python analogies: `async/await` here is like Python's asyncio; `db` is an ORM client
+// (Prisma, similar in spirit to SQLAlchemy); a "transaction" is `with session.begin():`.
+// =============================================================================
+
+import { Prisma } from "@prisma/client"; // Prisma = the database library (ORM)
+import { db } from "@/server/db"; // the shared database connection
+import { Ctx } from "@/server/auth/auth"; // "context": who is making this request (user id, farm id, role)
+import { assertCan } from "@/server/auth/permissions"; // raises an error if the role may not do this
+import { logAudit } from "./audit.service"; // writes a row to the audit log
 import { getSettings } from "./settings.service";
-import { enrichPig, syncStatus, pigInclude } from "./pig.service";
-import { pigCreateSchema } from "@/lib/validations/pig";
+import { enrichPig, syncStatus, pigInclude, ServiceError } from "./pig.service";
+import { MAX_IMPORT_ROWS, importTxTimeoutMs } from "@/lib/import/columns";
+import { applyMapping, needsDateOrderConfirmation, needsNumberFormatConfirmation, type ImportMapping } from "@/lib/import/mapping";
+import { validateImportRows, type ExistingPig, type ImportRow, type RowResult } from "@/lib/import/validate";
 
-export interface ImportRow {
-  tagId: string;
-  breed: string;
-  sex: string;
-  dateOfBirth: string;
-  weightKg?: string;
-  motherTagId?: string;
-  fatherTagId?: string;
-  castrated?: string;
-  notes?: string;
-}
-
-export interface RowResult {
-  row: number;
-  tagId: string;
-  ok: boolean;
-  errors: string[];
-}
+// Re-export two types so other files can import them from here. (`export type { ... }` re-exports.)
+export type { ImportRow, RowResult };
 
 /**
  * Two-pass CSV import: pass 1 creates pigs, pass 2 links parents by tagId,
  * so file order never matters. dryRun validates everything without writing.
+ *
+ * `records` are the raw file rows keyed by the FARM'S headers; `mapping` says
+ * how to read them. Translation (applyMapping) and validation
+ * (validateImportRows) are pure and live in src/lib/import/.
  */
-export async function importPigs(ctx: Ctx, rows: ImportRow[], dryRun: boolean) {
+// ARGUMENTS
+//   ctx     : who is calling and for which farm (comes from the login session, NOT from the browser)
+//   records : the farm's rows, e.g. [{"Pig No": "GH-001", "Sex": "Sow", ...}, ...]
+//   mapping : how to read them (see mapping.ts)
+//   dryRun  : true  -> validate and report only (what the preview screen uses)
+//             false -> actually write the valid rows
+// RETURNS (a Promise, i.e. you `await` it, like an async Python function):
+//   {total, valid, invalid, results (per-row verdicts), imported (0 for a dry run)}
+export async function importPigs(
+  ctx: Ctx,
+  records: Record<string, string | undefined>[],
+  mapping: ImportMapping,
+  dryRun: boolean,
+) {
+  // Step 1: permission + size checks. `throw` = Python's `raise`.
   assertCan(ctx.role, "data:import");
+  if (records.length > MAX_IMPORT_ROWS)
+    throw new ServiceError(
+      "IMPORT_TOO_LARGE",
+      `This file has ${records.length} rows. Import up to ${MAX_IMPORT_ROWS} rows at a time.`,
+    );
+  // Step 2: HUMAN-IN-THE-LOOP GUARDS. A model or script may PROPOSE a day/month order, but writing
+  // pigs needs a person's confirmation: a wrong order silently swaps day and month for every pig.
+  // Dry runs stay free so the report can show what each reading would produce.
+  // (`!dryRun` = `not dry_run`, so these only apply to REAL imports.)
+  if (!dryRun && needsDateOrderConfirmation(mapping))
+    throw new ServiceError(
+      "DATE_ORDER_UNCONFIRMED",
+      "Confirm whether your dates are day-first or month-first before importing.",
+    );
+  // Same rule for numbers: "1,200" is 1200 in English and 1.2 in French.
+  if (!dryRun && needsNumberFormatConfirmation(mapping, records))
+    throw new ServiceError(
+      "NUMBER_FORMAT_UNCONFIRMED",
+      "Confirm how your weights are written (1,200 can mean 1200 or 1.2) before importing.",
+    );
+  // Farm-level thresholds (e.g. when a pig counts as a piglet); needed later to compute each pig's status.
   const settings = await getSettings(ctx.farmId);
 
+  // Step 3: load the pigs already on the farm. We only need a few columns of each.
+  // Includes soft-deleted pigs: they still occupy the (farmId, tagId) unique index.
+  // ("Soft-deleted" = marked removed but the row still exists, so its tag is still taken.)
   const existing = await db.pig.findMany({
-    where: { farmId: ctx.farmId },
-    select: { tagId: true, sex: true, id: true },
+    where: { farmId: ctx.farmId }, // ALWAYS filter by the caller's farm: farms must never see each other's data
+    select: { tagId: true, sex: true, id: true, deletedAt: true },
   });
-  const existingByTag = new Map(existing.map((p) => [p.tagId.toLowerCase(), p]));
+  // Turn that list into a dict keyed by lower-cased tag (for case-insensitive lookups).
+  // Python: `{p.tagId.lower(): ExistingPig(id=p.id, sex=p.sex, deleted=p.deletedAt is not None) for p in existing}`
+  const existingByTag = new Map<string, ExistingPig>(
+    existing.map((p) => [p.tagId.toLowerCase(), { id: p.id, sex: p.sex, deleted: p.deletedAt !== null }]),
+  );
 
-  function normalizeRow(r: ImportRow) {
-    return {
-      tagId: (r.tagId ?? "").trim(),
-      breed: (r.breed ?? "").trim(),
-      sex: (r.sex ?? "").trim().toUpperCase() === "M" ? "MALE" : (r.sex ?? "").trim().toUpperCase() === "F" ? "FEMALE" : (r.sex ?? "").trim().toUpperCase(),
-      dateOfBirth: (r.dateOfBirth ?? "").trim(),
-      weightKg: r.weightKg?.trim() || undefined,
-      motherTagId: r.motherTagId?.trim() || undefined,
-      fatherTagId: r.fatherTagId?.trim() || undefined,
-      castrated: ["yes", "true", "1", "y"].includes((r.castrated ?? "").trim().toLowerCase()),
-      notes: r.notes?.trim() || undefined,
-    };
-  }
+  // Steps 4 and 5: the two PURE steps.
+  const mapped = applyMapping(records, mapping);
+  const { results, valid } = validateImportRows(mapped.rows, existingByTag, mapped.issues);
 
-  const normalized = rows.map((raw, i) => ({ row: i + 2, data: normalizeRow(raw) })); // header is row 1
-
-  // Build the file's tag index up front (first occurrence per tag wins) so a
-  // parent listed AFTER its child in the file still resolves — file order
-  // must not matter, since pass 1 creates every valid row before pass 2 links.
-  const fileTags = new Map<string, { sex: string; row: number }>();
-  for (const { row, data: r } of normalized) {
-    if (r.tagId && !fileTags.has(r.tagId.toLowerCase())) {
-      fileTags.set(r.tagId.toLowerCase(), { sex: r.sex, row });
-    }
-  }
-
-  const results: RowResult[] = [];
-  const resultByRow = new Map<number, RowResult>();
-
-  for (const { row: rowNum, data: r } of normalized) {
-    const errors: string[] = [];
-
-    const parsed = pigCreateSchema.safeParse({
-      tagId: r.tagId,
-      breed: r.breed,
-      sex: r.sex,
-      dateOfBirth: r.dateOfBirth,
-      weightKg: r.weightKg,
-      castrated: r.sex === "MALE" ? r.castrated : undefined,
-      notes: r.notes,
-    });
-    if (!parsed.success) {
-      errors.push(...parsed.error.issues.map((iss) => `${iss.path.join(".")}: ${iss.message}`));
-    }
-    if (r.tagId && existingByTag.has(r.tagId.toLowerCase()))
-      errors.push(`Tag ID "${r.tagId}" already exists on the farm`);
-    const firstOccurrence = r.tagId ? fileTags.get(r.tagId.toLowerCase()) : undefined;
-    if (firstOccurrence && firstOccurrence.row !== rowNum)
-      errors.push(`Duplicate tag ID within file (also row ${firstOccurrence.row})`);
-
-    // Parent references: must exist on farm or anywhere else in this file, correct sex
-    for (const [ref, wantSex, label] of [
-      [r.motherTagId, "FEMALE", "Mother"],
-      [r.fatherTagId, "MALE", "Father"],
-    ] as const) {
-      if (!ref) continue;
-      if (ref.toLowerCase() === r.tagId.toLowerCase()) {
-        errors.push(`${label} cannot be the pig itself`);
-        continue;
-      }
-      const onFarm = existingByTag.get(ref.toLowerCase());
-      const inFile = fileTags.get(ref.toLowerCase());
-      if (!onFarm && !inFile) errors.push(`${label} "${ref}" not found on farm or in file`);
-      else if ((onFarm?.sex ?? inFile?.sex) !== wantSex)
-        errors.push(`${label} "${ref}" is not ${wantSex === "FEMALE" ? "female" : "male"}`);
-    }
-
-    const result = { row: rowNum, tagId: r.tagId || "(blank)", ok: errors.length === 0, errors };
-    results.push(result);
-    resultByRow.set(rowNum, result);
-  }
-
-  // A row can only be created if every in-file parent it points to is ALSO
-  // going to be created — otherwise pass 2 would silently fall back to a
-  // null parent. Propagate invalidity to fixpoint (a bad grandparent should
-  // sink its whole in-file lineage, not just its direct child).
-  let changed = true;
-  while (changed) {
-    changed = false;
-    for (const { row: rowNum, data: r } of normalized) {
-      const result = resultByRow.get(rowNum)!;
-      if (!result.ok) continue;
-      for (const [ref, label] of [
-        [r.motherTagId, "Mother"],
-        [r.fatherTagId, "Father"],
-      ] as const) {
-        if (!ref || existingByTag.has(ref.toLowerCase())) continue;
-        const parentRow = fileTags.get(ref.toLowerCase())?.row;
-        const parentResult = parentRow ? resultByRow.get(parentRow) : undefined;
-        if (parentResult && !parentResult.ok) {
-          result.ok = false;
-          result.errors.push(`${label} "${ref}" (row ${parentRow}) failed validation`);
-          changed = true;
-        }
-      }
-    }
-  }
-
-  const valid = normalized
-    .filter(({ row }) => resultByRow.get(row)!.ok)
-    .map(({ row, data }) => ({ row, data }));
-
+  // The report shown to the user.
   const summary = {
-    total: rows.length,
+    total: records.length,
     valid: valid.length,
-    invalid: rows.length - valid.length,
+    invalid: records.length - valid.length,
     results,
     imported: 0,
   };
+  // Step 6: a dry run, or nothing valid to write -> stop here.
   if (dryRun || valid.length === 0) return summary;
 
+  // Step 7: the real write.
   // Pass 1 + 2 run in one transaction: a mid-import failure (bad connection,
   // constraint violation on a row we didn't anticipate) must roll back the
   // whole batch rather than leave a partially-imported, partially-linked herd.
-  const createdByTag = new Map<string, string>();
-  await db.$transaction(async (tx) => {
-    // Pass 1: create pigs (+ weights + notes)
-    for (const { data: r } of valid) {
-      const pig = await tx.pig.create({
-        data: {
-          farmId: ctx.farmId,
-          tagId: r.tagId,
-          breed: r.breed,
-          sex: r.sex,
-          dateOfBirth: new Date(r.dateOfBirth),
-          castrated: r.sex === "MALE" ? r.castrated : null,
-        },
-      });
-      createdByTag.set(r.tagId.toLowerCase(), pig.id);
-      if (r.weightKg) {
-        const wr = await tx.weightRecord.create({
-          data: {
-            farmId: ctx.farmId, pigId: pig.id, weightKg: Number(r.weightKg),
-            measuredAt: new Date(), recordedById: ctx.userId,
-          },
+  // Breeds and notes are batched into one query each so the cost per row is at
+  // most three queries (create pig, create weight, link parents + weight).
+  //
+  // A TRANSACTION means "all or nothing": if anything fails midway, the database undoes everything,
+  // so we never end up with half an import. (Python/SQLAlchemy: `with session.begin(): ...`.)
+  const createdByTag = new Map<string, string>(); // lower-cased tag -> new database id
+  try {
+    await db.$transaction(
+      // `async (tx) => { ... }` is the body of the transaction; `tx` is the transaction's connection.
+      async (tx) => {
+        // Make sure each breed name exists in the farm's breed list, in ONE query.
+        // `[...new Set(list)]` = `list(set(list))`; `skipDuplicates` ignores breeds that already exist.
+        const breedNames = [...new Set(valid.map(({ data }) => data.breed))];
+        await tx.breed.createMany({
+          data: breedNames.map((name) => ({ farmId: ctx.farmId, name })),
+          skipDuplicates: true,
         });
-        await tx.pig.update({ where: { id: pig.id }, data: { currentWeightId: wr.id } });
-      }
-      if (r.notes) {
-        await tx.note.create({
-          data: { farmId: ctx.farmId, pigId: pig.id, authorId: ctx.userId, body: r.notes },
-        });
-      }
-      await tx.breed.upsert({
-        where: { farmId_name: { farmId: ctx.farmId, name: r.breed } },
-        create: { farmId: ctx.farmId, name: r.breed },
-        update: {},
-      });
-    }
 
-    // Pass 2: link parents
-    for (const { data: r } of valid) {
-      if (!r.motherTagId && !r.fatherTagId) continue;
-      const resolve = (tag?: string) =>
-        tag
-          ? createdByTag.get(tag.toLowerCase()) ?? existingByTag.get(tag.toLowerCase())?.id ?? null
-          : null;
-      await tx.pig.update({
-        where: { id: createdByTag.get(r.tagId.toLowerCase())! },
-        data: { motherId: resolve(r.motherTagId), fatherId: resolve(r.fatherTagId) },
-      });
-    }
-  });
+        // Pass 1: create pigs (+ weights)
+        // First create every pig WITHOUT parents (we cannot link a mother until she exists).
+        const weightIdByTag = new Map<string, string>();
+        for (const { data: r } of valid) {
+          const pig = await tx.pig.create({
+            data: {
+              farmId: ctx.farmId,
+              tagId: r.tagId,
+              breed: r.breed,
+              sex: r.sex,
+              dateOfBirth: new Date(r.dateOfBirth),
+              castrated: r.sex === "MALE" ? r.castrated : null, // castrated only applies to males
+            },
+          });
+          createdByTag.set(r.tagId.toLowerCase(), pig.id);
+          if (r.weightKg) {
+            // A first weight reading for this pig, stamped "now" and attributed to the importing user.
+            const wr = await tx.weightRecord.create({
+              data: {
+                farmId: ctx.farmId, pigId: pig.id, weightKg: Number(r.weightKg),
+                measuredAt: new Date(), recordedById: ctx.userId,
+              },
+            });
+            weightIdByTag.set(r.tagId.toLowerCase(), wr.id);
+          }
+        }
 
+        // Notes for all pigs, in one query. `!` after a value tells the type checker "this is not None".
+        const notes = valid.filter(({ data }) => data.notes);
+        if (notes.length > 0) {
+          await tx.note.createMany({
+            data: notes.map(({ data }) => ({
+              farmId: ctx.farmId,
+              pigId: createdByTag.get(data.tagId.toLowerCase())!,
+              authorId: ctx.userId,
+              body: data.notes!,
+            })),
+          });
+        }
+
+        // Pass 2: link parents and the current-weight pointer
+        // Now every pig exists, so a parent tag can be turned into a database id: first look among the
+        // pigs we just created, then among pigs already on the farm; otherwise null.
+        // `a ?? b ?? null` = Python `a if a is not None else (b if b is not None else None)`.
+        const resolve = (tag?: string) =>
+          tag
+            ? createdByTag.get(tag.toLowerCase()) ?? existingByTag.get(tag.toLowerCase())?.id ?? null
+            : null;
+        for (const { data: r } of valid) {
+          const key = r.tagId.toLowerCase();
+          const currentWeightId = weightIdByTag.get(key);
+          if (!r.motherTagId && !r.fatherTagId && !currentWeightId) continue; // nothing to link for this pig
+          await tx.pig.update({
+            where: { id: createdByTag.get(key)! },
+            data: { motherId: resolve(r.motherTagId), fatherId: resolve(r.fatherTagId), currentWeightId },
+          });
+        }
+      },
+      // Give the transaction a time budget that grows with the file size (see columns.ts).
+      { timeout: importTxTimeoutMs(valid.length), maxWait: 10_000 },
+    );
+  } catch (e) {
+    // Turn two known database failures into messages a farmer can understand.
+    // `e instanceof X` = `isinstance(e, X)`.
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      // Unique constraint: someone added one of these tags after the dry run.
+      if (e.code === "P2002")
+        throw new ServiceError(
+          "IMPORT_CONFLICT",
+          "A tag ID in this file was added to the farm while you were reviewing it. Nothing was imported — choose the file again to re-check it.",
+        );
+      // Interactive transaction expired or could not start in time.
+      if (e.code === "P2028")
+        throw new ServiceError(
+          "IMPORT_TIMEOUT",
+          "The import took too long and was rolled back. Nothing was imported — try a smaller file.",
+        );
+    }
+    throw e; // anything else: re-raise unchanged
+  }
+
+  // Step 8: after the transaction succeeded.
+  // Recompute each new pig's status (piglet / healthy / market-ready ...) from its age and weight.
   for (const id of createdByTag.values()) await syncStatus(id, settings);
 
+  // Record WHO imported WHAT, including which date order and number convention were used,
+  // so an auditor can later tell how ambiguous values were interpreted.
   await logAudit(ctx, {
     action: "IMPORT",
     entityType: "Pig",
     entityId: "bulk",
-    summary: `Imported ${valid.length} pigs from CSV (${summary.invalid} rows skipped)`,
+    summary:
+      `Imported ${valid.length} pigs from CSV (${summary.invalid} rows skipped)` +
+      (mapping.fields.dateOfBirth?.source ? `; dates read as ${mapping.transforms.dateFormat}` : "") +
+      (mapping.fields.weightKg?.source ? `; numbers read as ${mapping.transforms.numberFormat === "en" ? "1,234.5" : "1.234,5"}` : ""),
   });
   summary.imported = valid.length;
   return summary;
 }
 
+// The reverse direction: "Export CSV" on the Pigs page. Not part of the import evaluation.
+// Builds one flat dict per pig, in the order a farmer expects, ready to be written as CSV.
 export async function exportPigs(ctx: Ctx) {
   assertCan(ctx.role, "data:export");
   const settings = await getSettings(ctx.farmId);
