@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
+    "test:watch": "vitest",
+    "test:db": "tsx scripts/import-smoke.ts",
     "invite:create": "tsx prisma/create-invite.ts"
   },
   "dependencies": {

@@ -94,6 +94,7 @@ export function validateImportRows(
     const explained = new Set<string>(issues.map((i) => i.field));
     errors.push(...issues.map((i) => `${i.field}: ${i.message}`));
 
+    const originalSex = (rows[rowNum - 2]?.sex ?? "").trim(); // as written in the file, not upper-cased
     const parsed = pigCreateSchema.safeParse({
       tagId: r.tagId,
       breed: r.breed,
@@ -107,7 +108,13 @@ export function validateImportRows(
       errors.push(
         ...parsed.error.issues
           .filter((iss) => !explained.has(String(iss.path[0])))
-          .map((iss) => `${iss.path.join(".")}: ${iss.message}`),
+          .map((iss) =>
+            iss.path[0] === "sex"
+              ? originalSex
+                ? `sex: "${originalSex}" is not male or female (use Edit column matching to say what it means)`
+                : "sex: Sex is required"
+              : `${iss.path.join(".")}: ${iss.message}`,
+          ),
       );
     }
     const taken = r.tagId ? existingByTag.get(r.tagId.toLowerCase()) : undefined;

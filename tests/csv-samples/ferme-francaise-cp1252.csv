@@ -1,0 +1,4 @@
+Numéro,Race,Sexe,Date de naissance,Poids (kg),Mère
+FR-T1,Landrace,Truie,15/01/2024,"180,5",
+FR-V1,Duroc,Verrat,20/03/2024,210,
+FR-P1,Landrace,Truie,25/06/2025,"12,5",FR-T1

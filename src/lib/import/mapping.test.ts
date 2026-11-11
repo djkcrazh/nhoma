@@ -1,5 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { applyMapping, defaultMapping, importMappingSchema, parseDate, parseWeight, readCell, type ImportMapping } from "./mapping";
+import {
+  applyMapping,
+  castratedResolver,
+  dateOrderAlternative,
+  defaultMapping,
+  importMappingSchema,
+  isDateOrderSensitive,
+  needsDateOrderConfirmation,
+  parseDate,
+  parseWeight,
+  readCell,
+  sexResolver,
+  type ImportMapping,
+} from "./mapping";
 import { validateImportRows } from "./validate";
 
 describe("importMappingSchema", () => {
@@ -14,6 +27,53 @@ describe("importMappingSchema", () => {
     expect(importMappingSchema.safeParse({ ...m, fields: { ...m.fields, tagId: { source: "x".repeat(201) } } }).success).toBe(false);
     expect(importMappingSchema.safeParse({ ...m, fields: { ...m.fields, tagId: { source: "a", code: "eval()" } } }).success).toBe(false);
     expect(importMappingSchema.safeParse({ ...m, transforms: { ...m.transforms, sexValues: { x: "UNKNOWN" } } }).success).toBe(false);
+    expect(importMappingSchema.safeParse({ ...m, transforms: { ...m.transforms, castratedValues: { x: "yes" } } }).success).toBe(false);
+  });
+
+  it("requires the date-order confirmation flag to be present", () => {
+    const { dateFormatConfirmed, ...rest } = defaultMapping().transforms;
+    void dateFormatConfirmed;
+    expect(importMappingSchema.safeParse({ ...defaultMapping(), transforms: rest }).success).toBe(false);
+  });
+
+  it("accepts optional confidence and reason on a field, and bounds them", () => {
+    const m = defaultMapping();
+    const withMeta = { ...m, fields: { ...m.fields, tagId: { source: "Ear tag", confidence: 0.9, reason: "Header is a common alias for the pig ID" } } };
+    expect(importMappingSchema.safeParse(withMeta).success).toBe(true);
+    expect(importMappingSchema.safeParse({ ...m, fields: { ...m.fields, tagId: { source: "a", confidence: 1.5 } } }).success).toBe(false);
+    expect(importMappingSchema.safeParse({ ...m, fields: { ...m.fields, tagId: { source: "a", reason: "x".repeat(301) } } }).success).toBe(false);
+  });
+});
+
+describe("date order confirmation", () => {
+  it("knows which formats leave day vs month in doubt", () => {
+    expect(dateOrderAlternative("dd/MM/yyyy")).toBe("MM/dd/yyyy");
+    expect(dateOrderAlternative("MM/dd/yyyy")).toBe("dd/MM/yyyy");
+    expect(dateOrderAlternative("dd.MM.yyyy")).toBe("MM.dd.yyyy");
+    for (const f of ["iso", "yyyy/MM/dd", "yyyy年M月d日"] as const) {
+      expect(dateOrderAlternative(f)).toBeNull();
+      expect(isDateOrderSensitive(f)).toBe(false);
+    }
+  });
+
+  const withDates = (dateFormat: ImportMapping["transforms"]["dateFormat"], confirmed: boolean): ImportMapping => {
+    const m = defaultMapping();
+    return { ...m, transforms: { ...m.transforms, dateFormat, dateFormatConfirmed: confirmed } };
+  };
+
+  it("requires confirmation for an order-sensitive format until a person confirms", () => {
+    expect(needsDateOrderConfirmation(withDates("dd/MM/yyyy", false))).toBe(true);
+    expect(needsDateOrderConfirmation(withDates("MM/dd/yyyy", false))).toBe(true);
+    expect(needsDateOrderConfirmation(withDates("dd/MM/yyyy", true))).toBe(false);
+  });
+
+  it("never asks for ISO, year-first or Chinese dates", () => {
+    for (const f of ["iso", "yyyy/MM/dd", "yyyy年M月d日"] as const) expect(needsDateOrderConfirmation(withDates(f, false))).toBe(false);
+  });
+
+  it("does not ask when the file has no date column mapped", () => {
+    const m = withDates("dd/MM/yyyy", false);
+    expect(needsDateOrderConfirmation({ ...m, fields: { ...m.fields, dateOfBirth: { source: null } } })).toBe(false);
   });
 });
 
@@ -24,8 +84,14 @@ describe("parseDate", () => {
     expect(parseDate("15/01/2026", "dd/MM/yyyy")).toBe("2026-01-15");
     expect(parseDate("01/15/2026", "MM/dd/yyyy")).toBe("2026-01-15");
     expect(parseDate("15.01.2026", "dd.MM.yyyy")).toBe("2026-01-15");
+    expect(parseDate("01.15.2026", "MM.dd.yyyy")).toBe("2026-01-15");
     expect(parseDate("2026/01/15", "yyyy/MM/dd")).toBe("2026-01-15");
     expect(parseDate("2026年1月5日", "yyyy年M月d日")).toBe("2026-01-05");
+  });
+
+  it("reads the same text two ways depending on the order", () => {
+    expect(parseDate("03/04/2024", "dd/MM/yyyy")).toBe("2024-04-03");
+    expect(parseDate("03/04/2024", "MM/dd/yyyy")).toBe("2024-03-04");
   });
 
   it("rejects impossible calendar dates and wrong shapes", () => {
@@ -73,6 +139,25 @@ describe("readCell", () => {
   });
 });
 
+describe("vocabulary resolvers", () => {
+  const m = (patch: Partial<ImportMapping["transforms"]>): ImportMapping => ({ ...defaultMapping(), transforms: { ...defaultMapping().transforms, ...patch } });
+
+  it("sexResolver translates case-insensitively and passes unknown words through", () => {
+    const toSex = sexResolver(m({ sexValues: { Truie: "FEMALE" } }));
+    expect(toSex("TRUIE")).toBe("FEMALE");
+    expect(toSex(" truie ")).toBe("FEMALE");
+    expect(toSex("M")).toBe("M");
+  });
+
+  it("castratedResolver knows the built-ins, the farm's words, and says undefined otherwise", () => {
+    const toCastrated = castratedResolver(m({ castratedValues: { oui: true, Non: false } }));
+    for (const t of ["yes", "TRUE", "1", "y", "Oui"]) expect(toCastrated(t)).toBe(true);
+    for (const t of ["no", "false", "0", "N", "non"]) expect(toCastrated(t)).toBe(false);
+    expect(toCastrated("peut-être")).toBeUndefined();
+    expect(toCastrated("constructor")).toBeUndefined();
+  });
+});
+
 describe("applyMapping", () => {
   const french: ImportMapping = {
     version: 1,
@@ -89,8 +174,9 @@ describe("applyMapping", () => {
     transforms: {
       sexValues: { Truie: "FEMALE", Verrat: "MALE" },
       dateFormat: "dd/MM/yyyy",
+      dateFormatConfirmed: true,
       weightUnit: "lb",
-      castratedTrue: ["oui"],
+      castratedValues: { oui: true, non: false },
     },
   };
 
@@ -105,6 +191,28 @@ describe("applyMapping", () => {
     expect(issues.flat()).toEqual([]);
   });
 
+  describe("castrated", () => {
+    const castratedRow = (Sexe: string, Castré: string) =>
+      applyMapping([{ Numéro: "P", Race: "x", Sexe, Naissance: "15/01/2026", Castré }], french);
+
+    it("uses the farm's own words, including ones the old yes/no list missed", () => {
+      expect(castratedRow("Verrat", "oui").rows[0].castrated).toBe("yes");
+      expect(castratedRow("Verrat", "non").rows[0].castrated).toBe("no");
+    });
+
+    it("reports an unrecognised value on a male instead of silently importing 'not castrated'", () => {
+      const { rows, issues } = castratedRow("Verrat", "peut-être");
+      expect(rows[0].castrated).toBe("");
+      expect(issues[0]).toEqual([{ field: "castrated", message: '"peut-être" is not yes or no' }]);
+    });
+
+    it("ignores the column for sows, which are routinely marked n/a", () => {
+      const { rows, issues } = castratedRow("Truie", "n/a");
+      expect(rows[0].castrated).toBe("");
+      expect(issues[0]).toEqual([]);
+    });
+  });
+
   it("falls back to the field default when the column is absent or the cell blank", () => {
     const m = { ...defaultMapping(), fields: { ...defaultMapping().fields, breed: { source: null, default: "Mixed Breed" } } };
     const { rows } = applyMapping([{ tagId: "A", sex: "F", dateOfBirth: "2026-01-01" }], m);
@@ -112,8 +220,9 @@ describe("applyMapping", () => {
   });
 
   it("passes standard values straight through when no vocabulary is configured", () => {
-    const { rows } = applyMapping([{ tagId: "A", breed: "Duroc", sex: "M", dateOfBirth: "2026-01-01", castrated: "banana" }], defaultMapping());
-    expect(rows[0]).toMatchObject({ sex: "M", castrated: "no" });
+    const { rows, issues } = applyMapping([{ tagId: "A", breed: "Duroc", sex: "M", dateOfBirth: "2026-01-01", castrated: "yes" }], defaultMapping());
+    expect(rows[0]).toMatchObject({ sex: "M", castrated: "yes" });
+    expect(issues[0]).toEqual([]);
   });
 
   it("reports unreadable dates and weights as issues, blanking the value", () => {

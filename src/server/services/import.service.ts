@@ -6,7 +6,7 @@ import { logAudit } from "./audit.service";
 import { getSettings } from "./settings.service";
 import { enrichPig, syncStatus, pigInclude, ServiceError } from "./pig.service";
 import { MAX_IMPORT_ROWS, importTxTimeoutMs } from "@/lib/import/columns";
-import { applyMapping, type ImportMapping } from "@/lib/import/mapping";
+import { applyMapping, needsDateOrderConfirmation, type ImportMapping } from "@/lib/import/mapping";
 import { validateImportRows, type ExistingPig, type ImportRow, type RowResult } from "@/lib/import/validate";
 
 export type { ImportRow, RowResult };
@@ -30,6 +30,14 @@ export async function importPigs(
     throw new ServiceError(
       "IMPORT_TOO_LARGE",
       `This file has ${records.length} rows. Import up to ${MAX_IMPORT_ROWS} rows at a time.`,
+    );
+  // A model or script may PROPOSE a day/month order, but writing pigs needs a
+  // person's confirmation: a wrong order silently swaps day and month for every pig.
+  // Dry runs stay free so the report can show what each reading would produce.
+  if (!dryRun && needsDateOrderConfirmation(mapping))
+    throw new ServiceError(
+      "DATE_ORDER_UNCONFIRMED",
+      "Confirm whether your dates are day-first or month-first before importing.",
     );
   const settings = await getSettings(ctx.farmId);
 
@@ -147,7 +155,9 @@ export async function importPigs(
     action: "IMPORT",
     entityType: "Pig",
     entityId: "bulk",
-    summary: `Imported ${valid.length} pigs from CSV (${summary.invalid} rows skipped)`,
+    summary:
+      `Imported ${valid.length} pigs from CSV (${summary.invalid} rows skipped)` +
+      (mapping.fields.dateOfBirth?.source ? `; dates read as ${mapping.transforms.dateFormat}` : ""),
   });
   summary.imported = valid.length;
   return summary;

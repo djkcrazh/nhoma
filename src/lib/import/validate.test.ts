@@ -62,6 +62,11 @@ describe("validateImportRows", () => {
     expect(errorsFor([row({ weightKg: "-3" })])[0].join()).toMatch(/Weight must be positive/);
   });
 
+  it("explains an unrecognised sex word instead of quoting the schema", () => {
+    expect(errorsFor([row({ sex: "Verat" })])[0]).toEqual(['sex: "Verat" is not male or female (use Edit column matching to say what it means)']);
+    expect(errorsFor([row({ sex: "" })])[0]).toEqual(["sex: Sex is required"]);
+  });
+
   it("silently drops castrated on females instead of failing them", () => {
     const { results } = validateImportRows([row({ sex: "FEMALE", castrated: "yes" })], farm());
     expect(results[0].ok).toBe(true);

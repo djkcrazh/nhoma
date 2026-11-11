@@ -17,7 +17,7 @@ npm install
 npx prisma migrate dev   # creates prisma/dev.db
 npx prisma db seed       # demo farm, users, herd
 npm run dev              # http://localhost:3000
-npm test                 # unit tests (Vitest)
+npm test                 # unit tests (Vitest), see "Testing" below
 ```
 
 Seeded accounts:
@@ -26,6 +26,37 @@ Seeded accounts:
 |---|---|---|
 | Admin | `admin@farm.local` | `admin1234` |
 | Farm user | `worker@farm.local` | `worker1234` |
+
+## Testing
+
+Three layers, from fastest to most realistic:
+
+| Layer | Command | Needs | Where it lives |
+|---|---|---|---|
+| **Unit tests** (Vitest) | `npm test` (or `npm run test:watch`) | nothing | `src/lib/import/*.test.ts` |
+| **Database check** of the real import | `npm run test:db` | a throwaway Postgres | `scripts/import-smoke.ts` |
+| **Manual UI check** with sample files | `npm run dev`, then Pigs, then Import CSV | the same Postgres | `tests/csv-samples/` (see its README for what to expect) |
+
+Run one file with `npx vitest run src/lib/import/suggest.test.ts`, or one test by name with `-t "date order"`.
+
+The unit tests cover everything pure: file encodings (`decode.test.ts`), the import
+template and its transforms (`mapping.test.ts`), header/value matching and the
+"does a person need to look at this" rules (`suggest.test.ts`), row validation
+(`validate.test.ts`), and the limits (`columns.test.ts`, `parse.test.ts`).
+
+For the database check and the manual UI check, start a throwaway Postgres (this
+works in Docker or OrbStack) and point the app at it:
+
+```bash
+docker run -d --name nhoma-test-pg -e POSTGRES_PASSWORD=pw -e POSTGRES_DB=nhoma -p 55433:5432 postgres:16-alpine
+export DATABASE_URL=postgresql://postgres:pw@localhost:55433/nhoma
+npx prisma migrate deploy
+npm run test:db                  # prints one "ok" line per check
+npx prisma db seed && npm run dev   # then log in as admin@farm.local / admin1234
+docker rm -f nhoma-test-pg       # when you are done
+```
+
+The database check creates its own farm on every run, so it never touches the seeded demo data.
 
 ## New farms (invite-only)
 

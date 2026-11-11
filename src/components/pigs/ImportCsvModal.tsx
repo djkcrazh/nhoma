@@ -16,9 +16,9 @@ import {
   MAX_IMPORT_ROWS,
 } from "@/lib/import/columns";
 import { decodeCsvBytes, type CsvEncoding } from "@/lib/import/decode";
-import type { ImportMapping } from "@/lib/import/mapping";
+import { isDateOrderSensitive, type ImportMapping } from "@/lib/import/mapping";
 import { cleanRecords } from "@/lib/import/parse";
-import { suggestMapping } from "@/lib/import/suggest";
+import { suggestMapping, type MappingSuggestion } from "@/lib/import/suggest";
 
 interface Report {
   total: number;
@@ -44,6 +44,7 @@ export function ImportCsvModal({
   const [headers, setHeaders] = useState<string[]>([]);
   const [records, setRecords] = useState<Record<string, string>[]>([]);
   const [mapping, setMapping] = useState<ImportMapping | null>(null);
+  const [dateHint, setDateHint] = useState<MappingSuggestion["dateHint"]>();
   const [fileName, setFileName] = useState("");
   const [encoding, setEncoding] = useState<CsvEncoding | null>(null);
   const [report, setReport] = useState<Report | null>(null);
@@ -55,6 +56,7 @@ export function ImportCsvModal({
     setHeaders([]);
     setRecords([]);
     setMapping(null);
+    setDateHint(undefined);
     setReport(null);
     setFileName("");
     setEncoding(null);
@@ -120,6 +122,7 @@ export function ImportCsvModal({
       setHeaders(fileHeaders);
       setRecords(rows);
       setMapping(suggestion.mapping);
+      setDateHint(suggestion.dateHint);
       setEncoding(decoded.encoding);
       // Fully matched files (including the default template) skip straight to
       // the validation report; anything uncertain goes to the mapping screen.
@@ -227,6 +230,7 @@ export function ImportCsvModal({
           headers={headers}
           records={records}
           mapping={mapping}
+          dateHint={dateHint}
           onChange={setMapping}
           onContinue={() => runDryRun(records, mapping)}
           onBack={reset}
@@ -247,6 +251,12 @@ export function ImportCsvModal({
               <span className="status-badge status-badge--overdue">
                 <span className="dot" />
                 {report.invalid} with errors
+              </span>
+            )}
+            {mapping?.fields.dateOfBirth?.source && isDateOrderSensitive(mapping.transforms.dateFormat) && (
+              <span className="status-badge status-badge--neutral" title="Change this with Edit column matching">
+                <span className="dot" />
+                dates read {mapping.transforms.dateFormat.startsWith("dd") ? "day first" : "month first"} ({mapping.transforms.dateFormat})
               </span>
             )}
             {encoding && encoding !== "utf-8" && (
