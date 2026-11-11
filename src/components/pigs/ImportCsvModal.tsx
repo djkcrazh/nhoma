@@ -1,5 +1,23 @@
 "use client";
 
+// =============================================================================
+// ImportCsvModal.tsx: the "Import CSV" pop-up on the Pigs page (the screen a farmer sees).
+//
+// FOR PYTHON READERS (you can skip this file when working on the evaluations)
+//   This is a React component: a function that returns a description of the screen (JSX, the
+//   HTML-looking text below). React re-runs it whenever its "state" changes.
+//     * `useState(x)` gives you a variable plus a function to change it; changing it redraws the
+//       screen (like a Streamlit/Jupyter widget). `const [step, setStep] = useState("pick")`
+//       means: `step` starts as "pick"; calling `setStep("map")` changes it and redraws.
+//     * `async function onFile(file)` runs when the user picks a file.
+//     * The flow: pick a file -> decode bytes (decode.ts) -> parse (PapaParse + parse.ts)
+//       -> suggestMapping (suggest.ts) -> either go straight to a dry-run report, or show the
+//       mapping screen (ImportMappingStep.tsx) -> user confirms -> dry run -> "Import N pigs".
+//     * Every decision about WHAT is valid lives in src/lib/import/, not here; this file only
+//       moves data between those functions and the screen.
+//   See src/lib/import/README.md for the pipeline diagram.
+// =============================================================================
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Papa from "papaparse";

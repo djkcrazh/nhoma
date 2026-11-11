@@ -1,5 +1,21 @@
 "use client";
 
+// =============================================================================
+// ImportMappingStep.tsx: the "match your columns" screen inside the import pop-up.
+//
+// FOR PYTHON READERS (you can skip this file when working on the evaluations)
+//   A React component (see the note in ImportCsvModal.tsx). It receives the file's headers and
+//   rows plus the current mapping as inputs ("props"), shows dropdowns for each Nhoma field,
+//   and calls `onChange(newMapping)` whenever the user changes something.
+//   Everything it DECIDES comes from src/lib/import/suggest.ts: `checkMapping` produces the red
+//   "blocking" messages (and keeps the Continue button disabled), `mappingWarnings` produces the
+//   grey "Heads up" notes. The two radio-button boxes ("Confirm your date order" and
+//   "Confirm how your weights are written") are the human-in-the-loop confirmations: choosing one
+//   sets `dateFormatConfirmed` / `numberFormatConfirmed` in the mapping.
+//   `useMemo(fn, [deps])` = "cache this computation until the listed inputs change" (like
+//   functools.lru_cache keyed on the inputs).
+// =============================================================================
+
 import { useMemo } from "react";
 import { IMPORT_COLUMNS, REQUIRED_IMPORT_COLUMNS, type ImportColumn } from "@/lib/import/columns";
 import {

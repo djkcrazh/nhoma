@@ -1,3 +1,21 @@
+// =============================================================================
+// suggest.test.ts: tests for the rule-based guesser (suggest.ts): the BASELINE an AI must beat.
+//   Sections: column-name matching (English/French/Spanish/Mandarin headers) -> sex words ->
+//   castrated words -> dates and the human date-order check -> weights and number formats ->
+//   hostile values -> checkMapping (the blocking "report card") -> a full French file end to end.
+//   Helper functions at the top (`row`, `kinds`, `confirmed`) just build small test inputs;
+//   `confirmed(mapping)` plays "a human clicked the confirmation button".
+//   Run just this file:  npx vitest run src/lib/import/suggest.test.ts
+//   HOW TO READ A VITEST FILE IF YOU KNOW PYTHON/PYTEST
+//     describe("group", () => { ... })   a group of related tests   (like a test class)
+//     it("does X", () => { ... })        one test; the sentence is the requirement  (like `def test_does_x():`)
+//     expect(a).toBe(b) / .toEqual(b)    assert a == b
+//     expect(a).toContainEqual(b)        assert b in a
+//     expect(fn).toThrow()               with pytest.raises(...)
+//   `const x = ...` just means "a variable that is not reassigned". See README.md (this folder)
+//   for the full TypeScript <-> Python cheat sheet.
+// =============================================================================
+
 import { describe, expect, it } from "vitest";
 import { checkMapping, mappingWarnings, normalizeKey, suggestMapping, type Unresolved } from "./suggest";
 import { applyMapping, importMappingSchema, type ImportMapping } from "./mapping";

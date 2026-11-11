@@ -1,3 +1,19 @@
+// =============================================================================
+// validate.test.ts: tests for the row-by-row rules (validate.ts).
+//   Checks: sex shorthand (M/F), blank handling, duplicate tags (on the farm, in the file,
+//   held by a removed pig), parent rules (exists, right sex, not itself, not removed), and the
+//   "lineage" rule (if a grandparent's row fails, so do the children's).
+//   Run just this file:  npx vitest run src/lib/import/validate.test.ts
+//   HOW TO READ A VITEST FILE IF YOU KNOW PYTHON/PYTEST
+//     describe("group", () => { ... })   a group of related tests   (like a test class)
+//     it("does X", () => { ... })        one test; the sentence is the requirement  (like `def test_does_x():`)
+//     expect(a).toBe(b) / .toEqual(b)    assert a == b
+//     expect(a).toContainEqual(b)        assert b in a
+//     expect(fn).toThrow()               with pytest.raises(...)
+//   `const x = ...` just means "a variable that is not reassigned". See README.md (this folder)
+//   for the full TypeScript <-> Python cheat sheet.
+// =============================================================================
+
 import { describe, expect, it } from "vitest";
 import { validateImportRows, normalizeImportRow, type ExistingPig, type ImportRow } from "./validate";
 

@@ -1,3 +1,21 @@
+// =============================================================================
+// mapping.test.ts: tests for the mapping format and applyMapping (mapping.ts).
+//   Sections, in order: the schema (what a valid/invalid mapping looks like) -> the date-order
+//   and number-format confirmation rules -> parseDate / parseNumber / parseWeight (the parsers)
+//   -> readCell -> vocabulary resolvers -> applyMapping end to end (a French farm, castrated
+//   words, weights, defaults, hostile input like a header called "constructor").
+//   THIS IS THE BEST FILE TO SKIM to see exactly what applyMapping promises.
+//   Run just this file:  npx vitest run src/lib/import/mapping.test.ts
+//   HOW TO READ A VITEST FILE IF YOU KNOW PYTHON/PYTEST
+//     describe("group", () => { ... })   a group of related tests   (like a test class)
+//     it("does X", () => { ... })        one test; the sentence is the requirement  (like `def test_does_x():`)
+//     expect(a).toBe(b) / .toEqual(b)    assert a == b
+//     expect(a).toContainEqual(b)        assert b in a
+//     expect(fn).toThrow()               with pytest.raises(...)
+//   `const x = ...` just means "a variable that is not reassigned". See README.md (this folder)
+//   for the full TypeScript <-> Python cheat sheet.
+// =============================================================================
+
 import { describe, expect, it } from "vitest";
 import {
   applyMapping,

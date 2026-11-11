@@ -344,16 +344,29 @@ export async function dismissNotificationAction(id: string) {
 // Both arguments cross the network from the browser, so neither is trusted:
 // the mapping is a strict Zod schema (plain data, no code) and every cell must
 // be a string. Row count and size limits are enforced by the service.
+//
+// PYTHON READERS: this is the "controller" between the browser and the import service.
+// Think of it as a FastAPI endpoint: it authenticates the caller, validates the request body,
+// calls the real function, and returns {"ok": ..., "data"/"error": ...} (the `run(...)` wrapper
+// turns any exception into that shape). The browser calls it like a normal function; Next.js
+// turns the call into an HTTP request behind the scenes.
+// A list of dicts whose values are strings (or missing). Python/pydantic: list[dict[str, Optional[str]]].
 const importRecordsSchema = z.array(z.record(z.string(), z.string().optional()));
 
+// records : the farm's rows from the browser (untrusted)
+// mapping : the proposed mapping (untrusted; may come from a person, the guesser, or later an AI)
+// dryRun  : true = preview only, false = really write
 export async function importPigsAction(records: unknown, mapping: unknown, dryRun: boolean) {
   return run(async () => {
-    const ctx = await requireCtx();
+    const ctx = await requireCtx(); // who is logged in and for which farm (from the session, never from the browser)
+    // `.parse(x)` validates and RAISES on bad input (pydantic: `Model.model_validate(x)`).
+    // A mapping that fails the strict schema never reaches the database.
     const parsedMapping = importMappingSchema.parse(mapping);
     const parsedRecords = importRecordsSchema.parse(records);
+    // Load the service lazily; it pulls in the database code, which must only run on the server.
     const { importPigs } = await import("@/server/services/import.service");
     const res = await importPigs(ctx, parsedRecords, parsedMapping, dryRun);
-    if (!dryRun) revalidateAll();
+    if (!dryRun) revalidateAll(); // tell the Pigs/Dashboard pages their cached data is stale after a real import
     return res;
   });
 }

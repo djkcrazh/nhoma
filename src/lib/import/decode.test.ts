@@ -1,3 +1,20 @@
+// =============================================================================
+// decode.test.ts: tests for bytes -> text (decode.ts).
+//   The test data are real byte sequences written in hex (`hex("c6b7...")`), made with
+//   Python's own codecs (cp1252 / gb18030), so they are independent of the code under test.
+//   Checks: UTF-8, byte-order marks, UTF-16, French/Spanish Windows-1252, Chinese GB18030,
+//   and the tricky case where French accents sit side by side and must NOT be read as Chinese.
+//   Run just this file:  npx vitest run src/lib/import/decode.test.ts
+//   HOW TO READ A VITEST FILE IF YOU KNOW PYTHON/PYTEST
+//     describe("group", () => { ... })   a group of related tests   (like a test class)
+//     it("does X", () => { ... })        one test; the sentence is the requirement  (like `def test_does_x():`)
+//     expect(a).toBe(b) / .toEqual(b)    assert a == b
+//     expect(a).toContainEqual(b)        assert b in a
+//     expect(fn).toThrow()               with pytest.raises(...)
+//   `const x = ...` just means "a variable that is not reassigned". See README.md (this folder)
+//   for the full TypeScript <-> Python cheat sheet.
+// =============================================================================
+
 import { describe, expect, it } from "vitest";
 import { decodeCsvBytes } from "./decode";
 
