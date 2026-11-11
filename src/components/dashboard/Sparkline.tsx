@@ -11,7 +11,7 @@ export function Sparkline({
   height?: number;
 }) {
   const values = data.filter((v): v is number => v != null);
-  if (values.length < 2) return null;
+  if (values.length === 0) return null;
 
   const min = Math.min(...values);
   const max = Math.max(...values);
@@ -24,6 +24,18 @@ export function Sparkline({
       v == null ? null : ([pad + i * step, pad + (height - pad * 2) * (1 - (v - min) / span)] as const)
     )
     .filter((p): p is readonly [number, number] => p !== null);
+
+  if (values.length === 1) {
+    // Too few samples for a line: show the lone value as the endpoint marker.
+    const [x, y] = points[0];
+    return (
+      <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} aria-hidden className="overflow-visible">
+        <circle cx={x} cy={height / 2} r="2.6" fill={color} />
+        <circle cx={x} cy={height / 2} r="4.5" fill={color} opacity="0.25" />
+        <title>{String(y)}</title>
+      </svg>
+    );
+  }
 
   const line = points.map((p, i) => `${i === 0 ? "M" : "L"}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(" ");
   const area = `${line} L${points[points.length - 1][0].toFixed(1)},${height - 1} L${points[0][0].toFixed(1)},${height - 1} Z`;

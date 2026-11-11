@@ -28,8 +28,8 @@ export function WeightChart({
         <AreaChart data={series} margin={{ top: 6, right: 8, left: -16, bottom: 0 }}>
           <defs>
             <linearGradient id="wfill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--due)" stopOpacity={0.3} />
-              <stop offset="100%" stopColor="var(--due)" stopOpacity={0.02} />
+              <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.24} />
+              <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="2 4" stroke="var(--rule)" />
@@ -44,7 +44,7 @@ export function WeightChart({
               color: "var(--ink)",
             }}
           />
-          <Area type="monotone" dataKey="kg" stroke="var(--due)" strokeWidth={2} fill="url(#wfill)" dot={{ r: 3, fill: "var(--due)" }} />
+          <Area type="monotone" dataKey="kg" stroke="var(--accent)" strokeWidth={2.4} fill="url(#wfill)" dot={{ r: 3.5, fill: "var(--ground-raised)", stroke: "var(--accent)", strokeWidth: 2 }} />
         </AreaChart>
       </ResponsiveContainer>
     </div>
