@@ -69,6 +69,7 @@ import {
 // `betterFormat?:` marks an optional key.
 export type MappingProblem =
   | { kind: "missingField"; field: ImportColumn } // a required field has no column
+  | { kind: "unknownColumn"; field: ImportColumn; source: string } // the mapping names a column the file does not have
   | { kind: "confirmDateOrder"; format: DateFormat; alternative: DateFormat } // a human must pick day-first or month-first
   | { kind: "unreadableDates"; count: number; example: string; betterFormat?: DateFormat } // most dates don't match the chosen style
   | { kind: "confirmNumberFormat"; format: NumberFormat } // a human must pick the number convention
@@ -226,6 +227,7 @@ const isMajority = (bad: number, total: number) => total > 0 && bad * 2 >= total
 // A bundle of measurements about one file under one mapping (internal; not exported).
 interface Analysis {
   missing: ImportColumn[]; // required fields with no column
+  unknownColumns: { field: ImportColumn; source: string }[]; // mapped to a column that is not in the file
   dates: { total: number; bad: string[]; betterFormat?: DateFormat }; // how many dates, which ones can't be read
   weights: { total: number; bad: string[]; betterFormat?: NumberFormat };
   sex: { total: number; unknownValues: string[]; unknownRows: number };
@@ -234,7 +236,7 @@ interface Analysis {
 
 /** One pass over the whole file, shared by checkMapping and mappingWarnings. */
 // Read the Analysis interface above first, then this function just fills it in, one field at a time.
-function analyze(mapping: ImportMapping, records: Record<string, unknown>[]): Analysis {
+function analyze(mapping: ImportMapping, records: Record<string, unknown>[], headers?: readonly string[]): Analysis {
   // column("sex") -> the farm's header for the sex column, or null if unmapped.
   const column = (field: ImportColumn) => mapping.fields[field]?.source ?? null;
 
@@ -243,6 +245,21 @@ function analyze(mapping: ImportMapping, records: Record<string, unknown>[]): An
     const hasDefault = field === "breed" && !!mapping.fields.breed?.default?.trim();
     return !column(field) && !hasDefault;
   });
+
+  // ---- UNKNOWN COLUMNS: a mapping may only point at columns that really exist in the file.
+  // A person picking from the dropdown can't get this wrong, but a saved template meeting a changed file,
+  // or an AI proposing a header it made up, can. Without this check such a mapping reads blank cells and
+  // looks "fine". The real column names are the file's headers when the caller has them; otherwise
+  // fall back to the keys that appear in the rows (a parser may omit a column that is empty everywhere).
+  // Python: known = set(headers) if headers is not None else {key for r in records for key in r}
+  const knownColumns = new Set(headers ?? records.flatMap((r) => Object.keys(r)));
+  const unknownColumns =
+    !headers && records.length === 0
+      ? []
+      : IMPORT_COLUMNS.flatMap((field) => {
+          const source = column(field);
+          return source && !knownColumns.has(source) ? [{ field, source }] : [];
+        });
 
   // ---- DATES: collect the non-empty date cells and find the ones the chosen format cannot read
   const dateSource = column("dateOfBirth");
@@ -309,6 +326,7 @@ function analyze(mapping: ImportMapping, records: Record<string, unknown>[]): An
   // `[...someSet]` turns a set into a list (Python: `list(some_set)`).
   return {
     missing,
+    unknownColumns,
     dates: { total: dateCells.length, bad, betterFormat },
     weights: { total: weightCells.length, bad: badWeights, betterFormat: betterNumberFormat },
     sex: { total: sexTotal, unknownValues: [...unknownSex], unknownRows: unknownSexRows },
@@ -336,12 +354,13 @@ const dateIsBlocking = (a: Analysis) => a.dates.bad.length > 0 && (isMajority(a.
 // Given ANY mapping (suggested, hand-edited, or AI-proposed) and the file's rows, return the list of
 // BLOCKING problems. An empty list means "safe to continue".
 // FOR EVALUATIONS: `checkMapping(proposedMapping, records) == []` is a cheap, free pass/fail signal.
-export function checkMapping(mapping: ImportMapping, records: Record<string, unknown>[]): MappingProblem[] {
-  const a = analyze(mapping, records);
+export function checkMapping(mapping: ImportMapping, records: Record<string, unknown>[], headers?: readonly string[]): MappingProblem[] {
+  const a = analyze(mapping, records, headers);
   // A required field with no column becomes a "missingField" problem.
   // `.map((field) => ({ ... }))` builds one dict per item; the parentheses around `{...}` just tell
   // JavaScript "this brace is a dict, not a function body".
   const problems: MappingProblem[] = a.missing.map((field) => ({ kind: "missingField", field }));
+  for (const { field, source } of a.unknownColumns) problems.push({ kind: "unknownColumn", field, source });
 
   // Human-in-the-loop #1: the day/month order must be confirmed by a person.
   const alternative = dateOrderAlternative(mapping.transforms.dateFormat);
@@ -506,5 +525,5 @@ export function suggestMapping(
 
   // Finally: run the report-card functions on our own suggestion, so the caller knows what (if anything)
   // a person still has to look at.   `[...a, ...b]` = `a + b` for lists.
-  return { mapping, unresolved: [...checkMapping(mapping, records), ...mappingWarnings(mapping, records)], dateHint, numberHint };
+  return { mapping, unresolved: [...checkMapping(mapping, records, headers), ...mappingWarnings(mapping, records)], dateHint, numberHint };
 }

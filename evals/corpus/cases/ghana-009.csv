@@ -1,0 +1,14 @@
+Pig No,Sex,Breed,Date Born,Weight (kg),Remarks/Comments,Mother ID
+PIG_001,Boar,Local,25/03/2025,205.7,,
+PIG_002,Sow,Mixed Breed,15/10/2024,213.2,vaccinated,
+PIG_003,Sow,Duroc,21/12/2023,201.9,pen 3,
+PIG_004,Sow,Duroc,11/01/2024,226.3,pen 3,
+PIG_005,Sow,Mixed Breed,17/03/2025,261.9,sick – treated,PIG_002
+PIG_006,Gilt,Mixed Breed,07/08/2025,185.0,,
+PIG_007,Gilt,Landrace,09/08/2025,180.7,sick – treated,PIG_003
+PIG_008,Barrow,Mixed Breed,26/03/2026,54.1,,PIG_003
+PIG_009,Gilt,Landrace,22/09/2025,159.0,,
+PIG_010,Sow,Mixed Breed,12/03/2025,265.0,,PIG_004
+PIG_011,Barrow,Duroc,01/04/2026,52.1,sick – treated,PIG_004
+PIG_012,Barrow,Landrace,10/04/2026,45.0,good mother,PIG_002
+PIG_013,Boar,Local,27/09/2025,151.6,,PIG_003

@@ -1,0 +1,14 @@
+﻿Pig #,Breed,Dam ID,Current Weight,Gender,Born
+PIG_001,Mixed Breed,,192.4,Boar,20.09.2024
+PIG_002,Duroc,,205.6,Sow,22.11.2024
+PIG_003,Local,,159.8,Sow,15.02.2024
+PIG_004,Local,,227.1,Sow,17.02.2025
+PIG_005,Landrace,PIG_003,231.3,Boar,06.05.2025
+PIG_006,Landrace,,41.6,Barrow,08.04.2026
+PIG_007,Mixed Breed,,184.5,Gilt,11.08.2025
+PIG_008,Local,,241.4,Barrow,03.05.2025
+PIG_009,Landrace,,52.2,Barrow,22.03.2026
+PIG_010,Large White,PIG_002,251.8,Sow,03.04.2025
+PIG_011,Duroc,PIG_002,240.0,Sow,21.04.2025
+PIG_012,Local,PIG_004,197.4,Gilt,11.07.2025
+PIG_013,Large White,PIG_002,239.9,Barrow,26.04.2025

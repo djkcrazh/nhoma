@@ -1,0 +1,361 @@
+{
+ "id": "ghana-046",
+ "category": "ghana",
+ "split": "test",
+ "tags": [
+  "date:dd-MM-yyyy",
+  "sex:sow_boar",
+  "enc:utf-8",
+  "unseen_headers",
+  "junk_columns",
+  "GAP"
+ ],
+ "gap_reasons": [
+  "date:dd-MM-yyyy"
+ ],
+ "encoding": "utf-8",
+ "style": {
+  "date_fmt": "dd-MM-yyyy",
+  "number_fmt": "en",
+  "weight_unit": "kg",
+  "delimiter": ",",
+  "n_pigs": 21,
+  "columns": [
+   "junk:Location",
+   "tagId",
+   "sex",
+   "castrated",
+   "breed",
+   "junk:Date Weaned",
+   "weightKg",
+   "dateOfBirth",
+   "motherTagId"
+  ],
+  "headers": {
+   "tagId": "Pig Ref",
+   "sex": "M/F",
+   "dateOfBirth": "Date Born",
+   "breed": "Breed",
+   "weightKg": "Live Weight",
+   "motherTagId": "Dam ID",
+   "castrated": "Castrated",
+   "junk:Location": "Location",
+   "junk:Date Weaned": "Date Weaned"
+  },
+  "sex_set": "sow_boar",
+  "castrated_set": "y_n"
+ },
+ "mapping": {
+  "version": 1,
+  "fields": {
+   "tagId": {
+    "source": "Pig Ref"
+   },
+   "breed": {
+    "source": "Breed"
+   },
+   "sex": {
+    "source": "M/F"
+   },
+   "dateOfBirth": {
+    "source": "Date Born"
+   },
+   "weightKg": {
+    "source": "Live Weight"
+   },
+   "motherTagId": {
+    "source": "Dam ID"
+   },
+   "fatherTagId": {
+    "source": null
+   },
+   "castrated": {
+    "source": "Castrated"
+   },
+   "notes": {
+    "source": null
+   }
+  },
+  "transforms": {
+   "sexValues": {
+    "Sow": "FEMALE",
+    "Gilt": "FEMALE",
+    "Boar": "MALE",
+    "Barrow": "MALE"
+   },
+   "dateFormat": "iso",
+   "dateFormatConfirmed": true,
+   "weightUnit": "kg",
+   "numberFormat": "en",
+   "numberFormatConfirmed": true,
+   "castratedValues": {
+    "Y": true,
+    "N": false
+   }
+  }
+ },
+ "sex_words": {
+  "Sow": "FEMALE",
+  "Gilt": "FEMALE",
+  "Boar": "MALE",
+  "Barrow": "MALE"
+ },
+ "castrated_words": {
+  "Y": true,
+  "N": false
+ },
+ "pigs": [
+  {
+   "tag": "PRM0001",
+   "breed": "Landrace",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2024-04-23",
+   "weight_kg": 163.0,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0002",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2023-09-09",
+   "weight_kg": 242.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0003",
+   "breed": "Large White",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-04-08",
+   "weight_kg": 216.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0004",
+   "breed": "Local",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2024-04-24",
+   "weight_kg": 173.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0005",
+   "breed": "Duroc",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-12-31",
+   "weight_kg": 102.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0006",
+   "breed": "Large White",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-08-31",
+   "weight_kg": 168.0,
+   "mother": "PRM0003",
+   "father": null,
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0007",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-07-24",
+   "weight_kg": 184.0,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0008",
+   "breed": "Landrace",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-01-14",
+   "weight_kg": 280.0,
+   "mother": "PRM0003",
+   "father": null,
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0009",
+   "breed": "Local",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2026-01-13",
+   "weight_kg": 95.0,
+   "mother": "PRM0002",
+   "father": null,
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0010",
+   "breed": "Local",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-10-28",
+   "weight_kg": 135.0,
+   "mother": "PRM0004",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0011",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-10-12",
+   "weight_kg": 147.0,
+   "mother": "PRM0004",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0012",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-08-08",
+   "weight_kg": 178.0,
+   "mother": "PRM0004",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0013",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-05-11",
+   "weight_kg": 30.0,
+   "mother": "PRM0004",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0014",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-10-01",
+   "weight_kg": 155.0,
+   "mother": "PRM0002",
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0015",
+   "breed": "Large White",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-08-19",
+   "weight_kg": 179.0,
+   "mother": "PRM0003",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0016",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2026-04-05",
+   "weight_kg": 53.0,
+   "mother": "PRM0004",
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0017",
+   "breed": "Local",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-11-04",
+   "weight_kg": 134.0,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0018",
+   "breed": "Local",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2026-01-14",
+   "weight_kg": 94.0,
+   "mother": "PRM0003",
+   "father": null,
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0019",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2026-01-11",
+   "weight_kg": 92.0,
+   "mother": "PRM0002",
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0020",
+   "breed": "Local",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-01-08",
+   "weight_kg": 280.0,
+   "mother": "PRM0003",
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "PRM0021",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-03-26",
+   "weight_kg": 54.0,
+   "mother": "PRM0003",
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  }
+ ]
+}

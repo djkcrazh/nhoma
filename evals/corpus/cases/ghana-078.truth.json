@@ -1,0 +1,522 @@
+{
+ "id": "ghana-078",
+ "category": "ghana",
+ "split": "dev",
+ "tags": [
+  "date:dd.MM.yyyy",
+  "sex:sow_boar",
+  "enc:utf-8-sig",
+  "unseen_headers",
+  "no_breed",
+  "junk_columns"
+ ],
+ "gap_reasons": [],
+ "encoding": "utf-8-sig",
+ "style": {
+  "date_fmt": "dd.MM.yyyy",
+  "number_fmt": "en",
+  "weight_unit": "kg",
+  "delimiter": ",",
+  "n_pigs": 35,
+  "columns": [
+   "tagId",
+   "dateOfBirth",
+   "sex",
+   "notes",
+   "junk:Sale Price (GHS)",
+   "weightKg"
+  ],
+  "headers": {
+   "tagId": "Ear Tag No.",
+   "sex": "Gender",
+   "dateOfBirth": "Born On",
+   "weightKg": "Weight (kg)",
+   "notes": "Remarks/Comments",
+   "junk:Sale Price (GHS)": "Sale Price (GHS)"
+  },
+  "sex_set": "sow_boar",
+  "castrated_set": "yes_no"
+ },
+ "mapping": {
+  "version": 1,
+  "fields": {
+   "tagId": {
+    "source": "Ear Tag No."
+   },
+   "breed": {
+    "source": null,
+    "default": "Mixed Breed"
+   },
+   "sex": {
+    "source": "Gender"
+   },
+   "dateOfBirth": {
+    "source": "Born On"
+   },
+   "weightKg": {
+    "source": "Weight (kg)"
+   },
+   "motherTagId": {
+    "source": null
+   },
+   "fatherTagId": {
+    "source": null
+   },
+   "castrated": {
+    "source": null
+   },
+   "notes": {
+    "source": "Remarks/Comments"
+   }
+  },
+  "transforms": {
+   "sexValues": {
+    "Sow": "FEMALE",
+    "Gilt": "FEMALE",
+    "Boar": "MALE",
+    "Barrow": "MALE"
+   },
+   "dateFormat": "dd.MM.yyyy",
+   "dateFormatConfirmed": true,
+   "weightUnit": "kg",
+   "numberFormat": "en",
+   "numberFormatConfirmed": true,
+   "castratedValues": {
+    "Yes": true,
+    "No": false
+   }
+  }
+ },
+ "sex_words": {
+  "Sow": "FEMALE",
+  "Gilt": "FEMALE",
+  "Boar": "MALE",
+  "Barrow": "MALE"
+ },
+ "castrated_words": {
+  "Yes": true,
+  "No": false
+ },
+ "pigs": [
+  {
+   "tag": "GH-001",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2024-11-30",
+   "weight_kg": 176.5,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "vaccinated"
+  },
+  {
+   "tag": "GH-002",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2024-08-24",
+   "weight_kg": 232.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "good mother"
+  },
+  {
+   "tag": "GH-003",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2023-07-20",
+   "weight_kg": 166.4,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "good mother"
+  },
+  {
+   "tag": "GH-004",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-01-17",
+   "weight_kg": 185.6,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "sow’s first litter"
+  },
+  {
+   "tag": "GH-005",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2023-12-05",
+   "weight_kg": 165.5,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "to be sold"
+  },
+  {
+   "tag": "GH-006",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-09-27",
+   "weight_kg": 155.7,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "good mother"
+  },
+  {
+   "tag": "GH-007",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-10-22",
+   "weight_kg": 139.3,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "sick – treated"
+  },
+  {
+   "tag": "GH-008",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-03-25",
+   "weight_kg": 249.1,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-009",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-01-23",
+   "weight_kg": 92.4,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-010",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-02-02",
+   "weight_kg": 280.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-011",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-06-26",
+   "weight_kg": 201.3,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "good mother"
+  },
+  {
+   "tag": "GH-012",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-04-26",
+   "weight_kg": 241.4,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "sick – treated"
+  },
+  {
+   "tag": "GH-013",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-04-29",
+   "weight_kg": 233.1,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "to be sold"
+  },
+  {
+   "tag": "GH-014",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-01-24",
+   "weight_kg": 280.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "good mother"
+  },
+  {
+   "tag": "GH-015",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-06-29",
+   "weight_kg": 201.1,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "vaccinated"
+  },
+  {
+   "tag": "GH-016",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-11-24",
+   "weight_kg": 125.3,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "vaccinated"
+  },
+  {
+   "tag": "GH-017",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-01-27",
+   "weight_kg": 280.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-018",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-03-22",
+   "weight_kg": 60.8,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "pen 3"
+  },
+  {
+   "tag": "GH-019",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-03-09",
+   "weight_kg": 260.7,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "weaned at 28 days"
+  },
+  {
+   "tag": "GH-020",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-10-12",
+   "weight_kg": 143.5,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-021",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-03-19",
+   "weight_kg": 263.1,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-022",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-04-06",
+   "weight_kg": 246.8,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-023",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-10-13",
+   "weight_kg": 144.9,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-024",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-07-20",
+   "weight_kg": 195.4,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-025",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-05-09",
+   "weight_kg": 226.7,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "good mother"
+  },
+  {
+   "tag": "GH-026",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2026-03-18",
+   "weight_kg": 58.7,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "sick – treated"
+  },
+  {
+   "tag": "GH-027",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-02-21",
+   "weight_kg": 279.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "to be sold"
+  },
+  {
+   "tag": "GH-028",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-06-18",
+   "weight_kg": 216.9,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "sow’s first litter"
+  },
+  {
+   "tag": "GH-029",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-07-17",
+   "weight_kg": 192.4,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "weaned at 28 days"
+  },
+  {
+   "tag": "GH-030",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2026-05-29",
+   "weight_kg": 20.3,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "sick – treated"
+  },
+  {
+   "tag": "GH-031",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-11-25",
+   "weight_kg": 125.1,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "pen 3"
+  },
+  {
+   "tag": "GH-032",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-07-22",
+   "weight_kg": 194.7,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "sick – treated"
+  },
+  {
+   "tag": "GH-033",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-01-30",
+   "weight_kg": 80.4,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-034",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-04-11",
+   "weight_kg": 46.6,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "weaned at 28 days"
+  },
+  {
+   "tag": "GH-035",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-05-20",
+   "weight_kg": 223.1,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": "weaned at 28 days"
+  }
+ ]
+}

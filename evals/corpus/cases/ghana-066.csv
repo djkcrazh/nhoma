@@ -1,0 +1,36 @@
+Pig Ref,Sire,Date Born,Breed,Sex,Notes,Weight (kg)
+A-0001,,2023-09-09,Mixed Breed,M,,257.2
+A-0002,,2024-05-18,Local,F,,171.5
+A-0003,,2024-08-20,Landrace,F,vaccinated,153.6
+A-0004,,2024-07-25,Duroc,F,,186.1
+A-0005,,2023-09-22,Mixed Breed,F,sick – treated,243.7
+A-0006,,2025-11-07,Mixed Breed,F,sow’s first litter,134.8
+A-0007,,2025-01-06,Local,F,pen 3,280.0
+A-0008,,2026-04-16,Duroc,M,sick – treated,42.1
+A-0009,A-0001,2025-04-24,Landrace,F,good mother,236.1
+A-0010,A-0001,2025-06-21,Duroc,M,,211.8
+A-0011,A-0001,2025-05-09,Duroc,M,sick – treated,229.3
+A-0012,A-0001,2026-03-20,Landrace,M,,56.4
+A-0013,A-0001,2025-10-05,Landrace,M,good mother,148.3
+A-0014,A-0001,2025-04-03,Large White,M,to be sold,251.8
+A-0015,,2026-04-04,Mixed Breed,M,weaned at 28 days,49.3
+A-0016,,2025-05-27,Duroc,M,sick – treated,225.5
+A-0017,A-0001,2025-01-21,Large White,F,,280.0
+A-0018,A-0001,2025-12-16,Landrace,M,,106.0
+A-0019,A-0001,2025-07-23,Large White,F,sick – treated,188.5
+A-0020,A-0001,2025-12-13,Large White,F,to be sold,111.1
+A-0021,A-0001,2026-05-31,Local,F,,14.1
+A-0022,,2025-12-31,Landrace,M,weaned at 28 days,102.0
+A-0023,,2026-04-18,Mixed Breed,F,sick – treated,42.0
+A-0024,,2025-06-25,Duroc,M,,203.3
+A-0025,A-0001,2025-08-15,Landrace,M,sow’s first litter,177.5
+A-0026,,2025-05-08,Local,M,,230.5
+A-0027,,2025-02-25,Mixed Breed,F,pen 3,270.6
+A-0028,A-0001,2025-10-14,Landrace,M,,142.8
+A-0029,,2026-02-13,Duroc,M,pen 3,75.9
+A-0030,,2025-05-03,Landrace,M,good mother,229.9
+A-0031,A-0001,2025-10-02,Duroc,F,,150.3
+A-0032,A-0001,2025-02-12,Large White,M,vaccinated,275.5
+A-0033,,2026-02-21,Landrace,F,,76.7
+A-0034,,2026-05-12,Landrace,F,,35.4
+A-0035,A-0001,2025-02-14,Mixed Breed,F,sow’s first litter,277.6

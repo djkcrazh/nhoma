@@ -1,0 +1,58 @@
+Pig Number,Sex,Breed,Birth Dt,Wt (kg)
+GH-001,Boar,Large White,17/07/2023,176.7
+GH-002,Boar,Landrace,09/05/2024,214.8
+GH-003,Boar,Mixed Breed,06/03/2024,223.8
+GH-004,Sow,Duroc,20/01/2025,250.9
+GH-005,Sow,Large White,29/09/2023,228.7
+GH-006,Sow,Mixed Breed,01/08/2023,242.9
+GH-007,Sow,Large White,17/11/2024,244.2
+GH-008,Sow,Local,12/01/2024,195.2
+GH-009,Sow,Mixed Breed,04/12/2023,159.9
+GH-010,Barrow,Duroc,29/09/2025,153.4
+GH-011,Sow,Mixed Breed,11/01/2025,280.0
+GH-012,Gilt,Landrace,19/08/2025,176.1
+GH-013,Boar,Mixed Breed,14/08/2025,178.7
+GH-014,Boar,Landrace,25/10/2025,140.0
+GH-015,Sow,Duroc,04/04/2025,252.8
+GH-016,Gilt,Local,01/10/2025,146.9
+GH-017,Barrow,Local,20/03/2026,52.9
+GH-018,Sow,Large White,12/02/2025,280.0
+GH-019,Boar,Landrace,02/03/2025,272.4
+GH-020,Boar,Mixed Breed,29/04/2026,37.5
+GH-021,Boar,Large White,17/08/2025,167.8
+GH-022,Barrow,Local,30/06/2025,207.5
+GH-023,Gilt,Mixed Breed,09/09/2025,161.7
+GH-024,Boar,Duroc,05/02/2025,279.4
+GH-025,Boar,Landrace,13/05/2025,230.6
+GH-026,Gilt,Duroc,03/08/2025,183.5
+GH-027,Boar,Duroc,22/08/2025,176.3
+GH-028,Gilt,Local,25/03/2026,62.1
+GH-029,Barrow,Landrace,01/01/2026,104.4
+GH-030,Boar,Large White,14/04/2026,40.3
+GH-031,Boar,Duroc,27/08/2025,167.1
+GH-032,Gilt,Local,08/12/2025,107.5
+GH-033,Gilt,Landrace,05/12/2025,116.0
+GH-034,Gilt,Mixed Breed,31/10/2025,139.6
+GH-035,Sow,Duroc,01/05/2025,232.9
+GH-036,Boar,Large White,27/01/2026,91.9
+GH-037,Sow,Large White,24/02/2025,267.8
+GH-038,Sow,Duroc,30/04/2025,232.2
+GH-039,Gilt,Duroc,22/05/2026,22.9
+GH-040,Gilt,Local,14/08/2025,174.9
+GH-041,Sow,Mixed Breed,18/01/2025,280.0
+GH-042,Sow,Local,24/01/2025,280.0
+GH-043,Gilt,Large White,29/07/2025,184.4
+GH-044,Gilt,Local,08/01/2026,103.5
+GH-045,Boar,Mixed Breed,10/01/2025,280.0
+GH-046,Gilt,Landrace,13/11/2025,128.2
+GH-047,Gilt,Mixed Breed,22/07/2025,190.9
+GH-048,Boar,Mixed Breed,02/12/2025,113.1
+GH-049,Gilt,Local,05/05/2026,27.9
+GH-050,Boar,Landrace,10/02/2026,73.3
+GH-051,Sow,Duroc,06/01/2025,280.0
+GH-052,Gilt,Duroc,04/02/2026,82.7
+GH-053,Sow,Duroc,18/04/2025,241.4
+GH-054,Sow,Local,07/05/2025,233.0
+GH-055,Boar,Duroc,10/11/2025,128.2
+GH-056,Boar,Local,16/03/2026,57.5
+GH-057,Boar,Mixed Breed,15/04/2026,48.5

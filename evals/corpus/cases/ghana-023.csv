@@ -1,0 +1,53 @@
+Tag No,Sex,Date of Birth,Wt (kg),Remarks,Breed Type,Sire No
+PIG_001,M,18/06/2024,236,pen 3,Mixed Breed,
+PIG_002,M,31/03/2024,219,weaned at 28 days,Landrace,
+PIG_003,F,11/12/2024,156,,Local,
+PIG_004,F,09/12/2024,232,,Mixed Breed,
+PIG_005,F,05/09/2024,214,sick – treated,Mixed Breed,
+PIG_006,F,15/10/2023,172,to be sold,Local,
+PIG_007,F,28/12/2024,174,,Landrace,
+PIG_008,F,10/11/2024,206,to be sold,Mixed Breed,
+PIG_009,F,17/04/2025,237,,Local,
+PIG_010,M,03/07/2025,199,weaned at 28 days,Mixed Breed,
+PIG_011,F,21/03/2025,258,,Large White,PIG_002
+PIG_012,M,11/08/2025,177,sick – treated,Duroc,
+PIG_013,M,18/01/2026,94,to be sold,Mixed Breed,PIG_002
+PIG_014,F,21/06/2025,206,vaccinated,Large White,
+PIG_015,F,09/01/2026,97,,Mixed Breed,PIG_001
+PIG_016,M,11/01/2025,280,,Landrace,PIG_002
+PIG_017,M,31/05/2025,212,,Landrace,
+PIG_018,M,23/06/2025,203,,Local,PIG_001
+PIG_019,M,13/08/2025,181,sow’s first litter,Local,
+PIG_020,F,14/08/2025,178,good mother,Duroc,PIG_001
+PIG_021,M,06/06/2025,215,weaned at 28 days,Local,
+PIG_022,F,05/05/2025,235,vaccinated,Mixed Breed,
+PIG_023,M,17/07/2025,195,,Duroc,PIG_002
+PIG_024,M,17/05/2026,26,weaned at 28 days,Mixed Breed,PIG_001
+PIG_025,M,13/02/2026,72,to be sold,Mixed Breed,PIG_001
+PIG_026,F,13/03/2026,62,pen 3,Local,
+PIG_027,F,28/09/2025,148,pen 3,Duroc,PIG_001
+PIG_028,F,20/04/2025,240,weaned at 28 days,Landrace,
+PIG_029,F,08/01/2026,94,vaccinated,Duroc,
+PIG_030,F,26/04/2025,236,,Landrace,PIG_002
+PIG_031,F,14/02/2025,279,,Local,PIG_001
+PIG_032,M,23/12/2025,108,vaccinated,Mixed Breed,PIG_001
+PIG_033,M,12/06/2025,214,weaned at 28 days,Duroc,PIG_001
+PIG_034,M,01/04/2025,252,pen 3,Local,
+PIG_035,F,19/02/2026,76,sick – treated,Local,
+PIG_036,M,30/09/2025,148,sow’s first litter,Landrace,PIG_001
+PIG_037,F,01/05/2026,37,pen 3,Landrace,PIG_002
+PIG_038,M,21/04/2025,243,pen 3,Local,PIG_002
+PIG_039,F,02/10/2025,150,,Duroc,PIG_002
+PIG_040,M,24/09/2025,152,weaned at 28 days,Local,PIG_002
+PIG_041,F,07/12/2025,112,weaned at 28 days,Large White,
+PIG_042,M,07/04/2026,45,weaned at 28 days,Local,
+PIG_043,M,10/01/2026,95,weaned at 28 days,Local,
+PIG_044,M,04/03/2026,70,,Landrace,
+PIG_045,F,13/08/2025,177,,Local,
+PIG_046,M,02/04/2025,255,to be sold,Duroc,PIG_002
+PIG_047,M,16/03/2025,260,sick – treated,Landrace,PIG_001
+PIG_048,M,01/03/2025,268,vaccinated,Large White,
+PIG_049,F,12/01/2025,280,,Duroc,PIG_001
+PIG_050,M,20/08/2025,166,,Mixed Breed,
+PIG_051,F,08/03/2026,65,,Mixed Breed,PIG_002
+PIG_052,F,02/01/2026,97,,Local,

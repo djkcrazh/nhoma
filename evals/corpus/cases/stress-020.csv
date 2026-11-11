@@ -1,0 +1,34 @@
+﻿Date Born,Gender,Pig Breed,Animal Tag,Colour,Sire ID
+11/06/2024,Boar,Local,PRM0001,2,
+01/19/2024,Sow,Mixed Breed,PRM0002,3,
+11/24/2023,Sow,Landrace,PRM0003,Black,
+07/14/2023,Sow,Local,PRM0004,2,
+
+03/30/2024,Sow,Large White,PRM0005,3,
+10/04/2025,Boar,Duroc,PRM0006,1,
+03/11/2025,Sow,Large White,PRM0007,Black,PRM0001
+03/29/2025,Boar,Large White,PRM0008,White,PRM0001
+05/27/2026,Gilt,Local,PRM0009,White,
+01/16/2026,Barrow,Landrace,PRM0010,3,
+05/30/2025,Sow,Duroc,PRM0011,3,
+10/05/2025,Barrow,Duroc,PRM0012,3,PRM0001
+
+02/22/2026,Boar,Duroc,PRM0013,Black,
+02/22/2026,Gilt,Mixed Breed,PRM0014,2,
+12/24/2025,Gilt,Duroc,PRM0015,2,PRM0001
+05/19/2026,Gilt,Duroc,PRM0016,1,PRM0001
+02/19/2026,Barrow,Large White,PRM0017,2,PRM0001
+07/03/2025,Gilt,Landrace,PRM0018,1,
+02/24/2025,Sow,Mixed Breed,PRM0019,1,
+02/27/2025,Sow,Duroc,PRM0020,White,PRM0001
+06/04/2025,Sow,Landrace,PRM0021,Black,PRM0001
+04/27/2025,Sow,Landrace,PRM0022,White,
+10/02/2025,Gilt,Landrace,PRM0023,1,PRM0001
+06/03/2025,Boar,Mixed Breed,PRM0024,3,PRM0001
+04/15/2025,Boar,Mixed Breed,PRM0025,3,
+05/11/2025,Barrow,Mixed Breed,PRM0026,Black,PRM0001
+01/14/2025,Barrow,Large White,PRM0027,2,
+06/13/2025,Barrow,Landrace,PRM0028,White,
+06/12/2025,Sow,Landrace,PRM0029,White,
+12/26/2025,Gilt,Large White,PRM0030,White,PRM0001
+

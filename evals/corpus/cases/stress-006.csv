@@ -1,0 +1,36 @@
+Pig No,Date of Farrowing,Breed,Date Weaned,Mother's Tag,Sex
+A-0001,08-Jan-25,Local,05-Feb-25,,Male
+A-0002,17-Mar-24,Local,14-Apr-24,,Female
+A-0003,21-Aug-24,Large White,18-Sep-24,,Female
+A-0004,21-Oct-23,Large White,18-Nov-23,,Female
+A-0005,10-Dec-24,Duroc,07-Jan-25,,Female
+A-0006,03-Oct-25,Large White,31-Oct-25,,Male,extra,cells
+A-0007,06-Feb-25,Duroc,06-Mar-25,A-0003,Female,extra,cells
+A-0008,10-Mar-25,Landrace,07-Apr-25,A-0004,Female
+A-0009,08-Jan-25,Duroc,05-Feb-25,,Male
+A-0010,10-Feb-26,Large White,10-Mar-26,,Male
+A-0011,16-Jun-25,Landrace,14-Jul-25,,Female
+A-0012,24-Jul-25,Landrace,21-Aug-25,,Male
+A-0013,03-Jan-26,Duroc,31-Jan-26,A-0004,Male
+A-0014,18-Jan-26,Large White,15-Feb-26,A-0004,Male
+A-0015,06-May-25,Local,03-Jun-25,,Female,extra,cells
+A-0016,12-Jan-25,Local,09-Feb-25,,Female,extra,cells
+A-0017,10-Jan-26,Landrace,07-Feb-26,,Male
+A-0018,18-May-25,Large White,15-Jun-25,A-0005,Male
+A-0019,11-Sep-25,Local,09-Oct-25,A-0002,Male
+A-0020,06-Jul-25,Duroc,03-Aug-25,A-0003,Female
+A-0021,14-Feb-25,Mixed Breed,14-Mar-25,A-0002,Male,extra,cells
+A-0022,26-Jan-26,Mixed Breed,23-Feb-26,A-0002,Female
+A-0023,15-Jan-25,Local,12-Feb-25,,Female,extra,cells
+A-0024,03-Nov-25,Local,01-Dec-25,A-0002,Male,extra,cells
+A-0025,05-Feb-26,Local,05-Mar-26,A-0002,Female
+A-0026,06-Feb-26,Duroc,06-Mar-26,,Male
+A-0027,13-Jan-26,Mixed Breed,10-Feb-26,,Male
+A-0028,03-Jul-25,Local,31-Jul-25,A-0002,Male
+A-0029,16-Dec-25,Duroc,13-Jan-26,A-0005,Female
+A-0030,11-Jan-25,Local,08-Feb-25,A-0005,Male
+A-0031,13-May-25,Landrace,10-Jun-25,A-0003,Male
+A-0032,19-Sep-25,Duroc,17-Oct-25,A-0004,Male
+A-0033,05-Nov-25,Duroc,03-Dec-25,A-0004,Female
+A-0034,22-Nov-25,Landrace,20-Dec-25,A-0003,Female
+A-0035,26-Dec-25,Large White,23-Jan-26,,Female

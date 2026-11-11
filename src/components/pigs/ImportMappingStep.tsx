@@ -72,6 +72,8 @@ function describeProblem(p: MappingProblem, format: DateFormat, numberFormat: Nu
       return p.field === "breed"
         ? "Choose a breed column, or type a breed to use for every pig."
         : `Choose which column holds the ${FIELD_LABELS[p.field].toLowerCase()}.`;
+    case "unknownColumn":
+      return `The column “${p.source}” is not in your file. Choose a column for ${FIELD_LABELS[p.field].toLowerCase()}.`;
     case "confirmDateOrder":
       return "Confirm whether your dates are day-first or month-first (below).";
     case "confirmNumberFormat":
@@ -143,7 +145,7 @@ export function ImportMappingStep({
   onBack: () => void;
   busy: boolean;
 }) {
-  const problems = useMemo(() => checkMapping(mapping, records), [mapping, records]);
+  const problems = useMemo(() => checkMapping(mapping, records, headers), [mapping, records, headers]);
   const warnings = useMemo(() => mappingWarnings(mapping, records), [mapping, records]);
   const preview = useMemo(() => applyMapping(records.slice(0, 3), mapping).rows, [records, mapping]);
 
@@ -274,7 +276,7 @@ export function ImportMappingStep({
       <div className="grid gap-3 sm:grid-cols-2">
         {IMPORT_COLUMNS.map((field) => {
           const required = (REQUIRED_IMPORT_COLUMNS as readonly string[]).includes(field);
-          const missing = problems.some((p) => p.kind === "missingField" && p.field === field);
+          const missing = problems.some((p) => (p.kind === "missingField" || p.kind === "unknownColumn") && p.field === field);
           return (
             <div key={field}>
               <label className="field-label" htmlFor={`map-${field}`}>

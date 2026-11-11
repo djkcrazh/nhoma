@@ -274,20 +274,49 @@ describe("suggestMapping: weights and number format", () => {
     expect(s.mapping.transforms.numberFormatConfirmed).toBe(false);
     expect(s.unresolved).toContainEqual({ kind: "confirmNumberFormat", format: "en" });
     const rows = [{ "Weight (kg)": "85.5" }, { "Weight (kg)": "1,200" }];
-    expect(checkMapping({ ...s.mapping, transforms: { ...s.mapping.transforms, numberFormatConfirmed: true } }, rows)).toEqual([]);
+    expect(checkMapping({ ...s.mapping, transforms: { ...s.mapping.transforms, numberFormatConfirmed: true } }, rows, H)).toEqual([]);
   });
 
   it("blocks a convention the file contradicts, naming the one that fits", () => {
     const m = suggestMapping(H, [row({ "Weight (kg)": "85.5" })]).mapping;
     const rows = ["180,5", "12,5", "99,9"].map((w) => ({ "Weight (kg)": w }));
-    expect(checkMapping(m, rows)).toEqual([{ kind: "unreadableWeights", count: 3, example: "180,5", betterFormat: "eu" }]);
+    expect(checkMapping(m, rows, H)).toEqual([{ kind: "unreadableWeights", count: 3, example: "180,5", betterFormat: "eu" }]);
   });
 
   it("only warns about a stray unreadable weight, and ignores placeholders", () => {
     const rows = [...Array(9).fill("85.5"), "heavy", "n/a", "-"].map((w) => ({ "Weight (kg)": w }));
     const { mapping } = suggestMapping(H, rows.map((r) => row(r)));
-    expect(checkMapping(mapping, rows)).toEqual([]);
+    expect(checkMapping(mapping, rows, H)).toEqual([]);
     expect(mappingWarnings(mapping, rows)).toEqual([{ kind: "strayWeights", count: 1, example: "heavy" }]);
+  });
+});
+
+describe("checkMapping: a mapping may only use columns the file really has", () => {
+  const records = [{ "Pig No": "A", Breed: "Duroc", Sex: "F", DOB: "2026-01-01" }];
+
+  it("flags a made-up column name instead of silently reading blank cells", () => {
+    const { mapping } = suggestMapping(["Pig No", "Breed", "Sex", "DOB"], records);
+    mapping.fields.tagId = { source: "Ear Tag Number" }; // not in the file
+    expect(checkMapping(mapping, records)).toContainEqual({ kind: "unknownColumn", field: "tagId", source: "Ear Tag Number" });
+  });
+
+  it("flags it on optional fields too, not only required ones", () => {
+    const { mapping } = suggestMapping(["Pig No", "Breed", "Sex", "DOB"], records);
+    mapping.fields.weightKg = { source: "Live Weight" };
+    expect(checkMapping(mapping, records)).toContainEqual({ kind: "unknownColumn", field: "weightKg", source: "Live Weight" });
+  });
+
+  it("uses the real header list when given, so a column that is empty in every row is not mistaken for a missing one", () => {
+    const { mapping } = suggestMapping(["Pig No", "Breed", "Sex", "DOB", "Remarks"], records);
+    expect(mapping.fields.notes?.source).toBe("Remarks"); // the rows have no "Remarks" key at all
+    expect(checkMapping(mapping, records, ["Pig No", "Breed", "Sex", "DOB", "Remarks"]).map((p) => p.kind)).not.toContain("unknownColumn");
+    expect(checkMapping(mapping, records).map((p) => p.kind)).toContain("unknownColumn"); // guessing from the rows alone would wrongly flag it
+  });
+
+  it("stays quiet when every mapped column exists, and for an empty file", () => {
+    const { mapping } = suggestMapping(["Pig No", "Breed", "Sex", "DOB"], records);
+    expect(checkMapping(mapping, records).map((p) => p.kind)).not.toContain("unknownColumn");
+    expect(checkMapping(mapping, [])).not.toContainEqual(expect.objectContaining({ kind: "unknownColumn" }));
   });
 });
 

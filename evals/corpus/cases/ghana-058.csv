@@ -1,0 +1,54 @@
+Father,Pig Number,Notes,M/F,Born On,Mother ID,Breed Type,Weight
+,A-0001,to be sold,Boar,03-03-2024,,Landrace,239
+,A-0002,,Boar,26-09-2023,,Mixed Breed,223
+,A-0003,pen 3,Sow,09-08-2024,,Mixed Breed,249
+,A-0004,sow’s first litter,Sow,10-06-2024,,Local,174
+,A-0005,sick – treated,Sow,05-04-2024,,Mixed Breed,237
+,A-0006,weaned at 28 days,Sow,12-03-2024,,Landrace,203
+,A-0007,,Sow,29-06-2023,,Mixed Breed,237
+,A-0008,sow’s first litter,Sow,15-10-2023,,Local,187
+,A-0009,good mother,Boar,19-06-2025,A-0005,Duroc,213
+,A-0010,to be sold,Boar,10-01-2026,A-0007,Duroc,100
+A-0002,A-0011,,Sow,26-03-2025,A-0005,Mixed Breed,255
+A-0002,A-0012,pen 3,Boar,28-07-2025,A-0003,Landrace,188
+A-0001,A-0013,pen 3,Boar,07-09-2025,A-0003,Large White,164
+,A-0014,sick – treated,Barrow,18-09-2025,A-0008,Landrace,160
+,A-0015,,Gilt,12-04-2026,A-0008,Duroc,46
+A-0002,A-0016,good mother,Gilt,22-02-2026,A-0005,Local,71
+A-0002,A-0017,,Barrow,26-07-2025,,Local,187
+A-0002,A-0018,,Barrow,11-03-2025,,Mixed Breed,262
+,A-0019,,Boar,29-01-2026,A-0008,Large White,80
+,A-0020,pen 3,Sow,05-03-2025,A-0006,Landrace,265
+,A-0021,weaned at 28 days,Barrow,16-06-2025,A-0007,Mixed Breed,218
+,A-0022,,Boar,18-06-2025,,Duroc,215
+A-0001,A-0023,vaccinated,Barrow,03-03-2025,,Duroc,271
+,A-0024,good mother,Barrow,16-12-2025,,Local,103
+,A-0025,,Sow,05-03-2025,A-0006,Duroc,271
+A-0001,A-0026,to be sold,Barrow,03-02-2025,A-0007,Landrace,278
+A-0001,A-0027,,Gilt,03-08-2025,A-0003,Large White,184
+A-0002,A-0028,to be sold,Sow,24-02-2025,A-0006,Duroc,269
+,A-0029,,Boar,27-07-2025,A-0003,Landrace,186
+,A-0030,weaned at 28 days,Gilt,19-05-2026,,Large White,30
+A-0001,A-0031,pen 3,Gilt,14-07-2025,,Duroc,194
+A-0001,A-0032,to be sold,Gilt,24-03-2026,A-0008,Landrace,52
+A-0001,A-0033,pen 3,Boar,02-05-2025,,Local,237
+A-0002,A-0034,,Gilt,13-07-2025,A-0005,Duroc,190
+,A-0035,sow’s first litter,Barrow,24-12-2025,A-0007,Local,107
+,A-0036,vaccinated,Boar,13-01-2025,,Large White,280
+A-0002,A-0037,,Gilt,22-03-2026,,Local,53
+,A-0038,,Gilt,09-02-2026,,Local,82
+A-0001,A-0039,vaccinated,Boar,19-12-2025,A-0005,Mixed Breed,110
+,A-0040,,Sow,05-02-2025,A-0008,Mixed Breed,280
+,A-0041,sick – treated,Boar,03-09-2025,A-0005,Landrace,166
+A-0001,A-0042,,Boar,05-03-2025,A-0008,Landrace,267
+,A-0043,,Sow,27-04-2025,A-0003,Large White,238
+,A-0044,pen 3,Barrow,27-09-2025,A-0007,Duroc,156
+,A-0045,,Sow,27-05-2025,,Mixed Breed,219
+A-0002,A-0046,,Sow,12-02-2025,,Landrace,273
+,A-0047,pen 3,Boar,10-08-2025,A-0003,Large White,177
+A-0001,A-0048,,Boar,05-07-2025,A-0007,Local,196
+,A-0049,vaccinated,Boar,27-11-2025,,Large White,115
+,A-0050,,Barrow,28-04-2025,,Local,235
+A-0001,A-0051,,Sow,05-05-2025,A-0008,Landrace,236
+A-0002,A-0052,pen 3,Barrow,20-02-2025,,Local,273
+,A-0053,,Sow,28-06-2025,A-0003,Local,204
