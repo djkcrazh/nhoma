@@ -1,0 +1,45 @@
+Tag No,Breed,Date of Farrowing,Health Notes,Sex (M/F),Live Weight,Mother
+PIG_001,Local,04.03.2024,weaned at 28 days,M,199.3,
+PIG_002,Landrace,23.08.2023,,M,159.9,
+PIG_003,Landrace,07.01.2024,,F,235.1,
+PIG_004,Mixed Breed,22.05.2024,pen 3,F,249.4,
+PIG_005,Duroc,12.01.2025,good mother,F,231.4,
+PIG_006,Large White,23.08.2023,weaned at 28 days,F,194.3,
+PIG_007,Large White,07.04.2024,sow’s first litter,F,212.8,
+PIG_008,Mixed Breed,18.04.2025,,M,243.7,
+PIG_009,Duroc,03.03.2025,to be sold,M,267.6,
+PIG_010,Duroc,23.10.2025,sick – treated,M,138.2,
+PIG_011,Duroc,06.01.2026,vaccinated,M,98.7,PIG_006
+PIG_012,Mixed Breed,05.02.2026,sow’s first litter,F,84.5,PIG_007
+PIG_013,Mixed Breed,30.10.2025,pen 3,F,138.0,
+PIG_014,Mixed Breed,03.04.2026,weaned at 28 days,F,49.8,PIG_007
+PIG_015,Local,14.01.2026,sick – treated,M,89.7,
+PIG_016,Local,19.03.2025,,M,260.0,
+PIG_017,Landrace,23.03.2025,,M,261.2,PIG_006
+PIG_018,Local,25.03.2025,,M,259.1,PIG_004
+PIG_019,Local,25.06.2025,good mother,M,212.4,
+PIG_020,Large White,15.05.2026,pen 3,M,27.8,
+PIG_021,Mixed Breed,08.03.2026,,M,62.5,PIG_005
+PIG_022,Large White,13.04.2025,good mother,M,246.9,PIG_007
+PIG_023,Duroc,01.06.2025,,F,214.5,PIG_003
+PIG_024,Duroc,28.09.2025,,M,152.4,
+PIG_025,Duroc,28.11.2025,sick – treated,F,118.5,
+PIG_026,Large White,20.11.2025,,F,121.2,
+PIG_027,Duroc,29.04.2025,sick – treated,F,238.0,PIG_005
+PIG_028,Large White,24.11.2025,weaned at 28 days,F,120.2,PIG_003
+PIG_029,Large White,30.04.2026,weaned at 28 days,M,36.1,
+PIG_030,Local,05.08.2025,,M,186.7,
+PIG_031,Duroc,21.09.2025,,M,157.2,
+PIG_032,Landrace,13.01.2026,,M,96.7,
+PIG_033,Large White,18.05.2026,,F,21.0,PIG_004
+PIG_034,Mixed Breed,08.04.2026,pen 3,F,54.8,
+PIG_035,Local,18.03.2025,weaned at 28 days,F,261.3,PIG_003
+PIG_036,Local,22.12.2025,pen 3,F,107.2,
+PIG_037,Duroc,19.09.2025,pen 3,M,162.0,PIG_004
+PIG_038,Local,03.05.2026,sow’s first litter,M,29.9,PIG_004
+PIG_039,Local,17.01.2025,to be sold,M,280.0,PIG_004
+PIG_040,Large White,21.02.2025,sow’s first litter,M,274.6,PIG_005
+PIG_041,Landrace,14.03.2026,sick – treated,M,61.1,PIG_004
+PIG_042,Local,14.02.2026,,F,75.9,
+PIG_043,Large White,07.03.2026,pen 3,F,65.1,PIG_005
+PIG_044,Large White,18.08.2025,,F,178.3,

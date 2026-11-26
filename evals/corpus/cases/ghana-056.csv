@@ -1,0 +1,56 @@
+Sale Price (GHS),Pig ID,Birth Date,Sex,Breed,Remarks,Weaning Weight (kg),Mother,Live Weight
+958,GH-001,09/11/2023,Boar,Mixed Breed,,9.1,,229.2
+1060,GH-002,14/07/2023,Boar,Duroc,,9.3,,158.1
+647,GH-003,25/01/2024,Boar,Duroc,weaned at 28 days,7.1,,219.3
+554,GH-004,27/03/2024,Sow,Large White,sick – treated,9.8,,251.8
+547,GH-005,08/03/2025,Sow,Local,,10.0,,229.4
+450,GH-006,01/10/2023,Sow,Large White,good mother,8.3,,234.5
+868,GH-007,02/04/2024,Sow,Landrace,,6.0,,222.5
+1137,GH-008,27/08/2024,Sow,Duroc,sow’s first litter,8.6,,170.3
+515,GH-009,09/02/2024,Sow,Landrace,,9.8,,173.5
+696,GH-010,26/06/2025,Boar,Landrace,vaccinated,9.8,GH-004,204.3
+923,GH-011,07/03/2025,Sow,Local,good mother,9.1,,268.0
+642,GH-012,20/10/2025,Sow,Mixed Breed,sow’s first litter,8.5,GH-006,142.4
+428,GH-013,06/06/2025,Boar,Local,,8.6,GH-005,219.1
+860,GH-014,23/06/2025,Sow,Mixed Breed,to be sold,6.3,GH-007,208.7
+447,GH-015,31/01/2026,Boar,Mixed Breed,,8.1,GH-006,86.2
+717,GH-016,18/01/2026,Sow,Large White,pen 3,8.7,GH-008,89.0
+1489,GH-017,24/08/2025,Sow,Landrace,sow’s first litter,9.1,GH-005,179.2
+512,GH-018,20/12/2025,Sow,Mixed Breed,,9.6,,108.9
+1337,GH-019,29/07/2025,Boar,Local,to be sold,7.7,GH-005,188.2
+756,GH-020,09/12/2025,Boar,Duroc,,9.6,GH-005,113.3
+939,GH-021,15/04/2026,Sow,Landrace,,7.1,GH-006,45.5
+1482,GH-022,25/06/2025,Boar,Local,pen 3,6.8,GH-009,207.3
+1027,GH-023,30/10/2025,Boar,Local,vaccinated,9.6,,141.1
+410,GH-024,19/07/2025,Boar,Large White,good mother,8.2,GH-006,186.0
+1484,GH-025,10/01/2026,Sow,Large White,,7.7,GH-004,94.7
+687,GH-026,10/07/2025,Sow,Local,sick – treated,6.8,GH-009,199.9
+659,GH-027,06/05/2025,Boar,Mixed Breed,,9.2,,233.0
+1288,GH-028,27/12/2025,Sow,Mixed Breed,,7.0,,108.9
+799,GH-029,02/09/2025,Sow,Mixed Breed,,8.5,,165.3
+1070,GH-030,28/03/2026,Sow,Landrace,,8.3,GH-005,54.5
+925,GH-031,16/07/2025,Sow,Mixed Breed,sow’s first litter,9.4,GH-005,189.7
+907,GH-032,19/08/2025,Sow,Mixed Breed,,8.7,GH-009,174.5
+314,GH-033,13/03/2025,Sow,Duroc,,9.1,GH-006,263.5
+1132,GH-034,13/04/2025,Sow,Large White,,7.8,,248.8
+885,GH-035,12/01/2025,Boar,Duroc,to be sold,8.3,GH-007,280.0
+360,GH-036,18/02/2025,Boar,Duroc,,9.9,,278.6
+1327,GH-037,01/03/2026,Sow,Large White,,7.1,GH-009,71.3
+1482,GH-038,11/02/2026,Sow,Large White,,10.0,,81.6
+315,GH-039,05/06/2025,Sow,Large White,,9.9,GH-004,211.5
+927,GH-040,14/04/2025,Sow,Large White,pen 3,6.2,GH-007,247.1
+1101,GH-041,02/04/2025,Boar,Duroc,,6.4,GH-004,250.7
+526,GH-042,20/03/2026,Sow,Landrace,to be sold,8.3,,58.1
+634,GH-043,01/05/2026,Sow,Landrace,to be sold,7.0,,36.8
+768,GH-044,30/12/2025,Sow,Duroc,good mother,7.3,,96.7
+914,GH-045,26/01/2025,Sow,Duroc,,9.7,GH-005,280.0
+1286,GH-046,11/09/2025,Sow,Local,weaned at 28 days,7.1,,160.6
+1278,GH-047,21/05/2026,Sow,Large White,weaned at 28 days,9.4,GH-004,19.5
+1296,GH-048,21/03/2026,Boar,Local,,6.2,GH-009,57.7
+609,GH-049,05/04/2026,Boar,Large White,,7.2,GH-004,53.3
+906,GH-050,20/04/2025,Sow,Local,sow’s first litter,8.2,,241.6
+1279,GH-051,20/02/2025,Boar,Landrace,sow’s first litter,8.7,GH-007,272.0
+957,GH-052,07/01/2025,Sow,Mixed Breed,good mother,6.5,GH-004,280.0
+1466,GH-053,14/01/2026,Boar,Mixed Breed,sow’s first litter,6.0,GH-006,95.7
+740,GH-054,09/05/2026,Boar,Duroc,sick – treated,6.7,,30.6
+721,GH-055,17/06/2025,Boar,Large White,,7.0,GH-007,211.5

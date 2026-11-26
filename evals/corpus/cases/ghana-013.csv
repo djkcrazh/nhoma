@@ -1,0 +1,61 @@
+Pig Ref,Cast.,M/F,Date Born,Sire No,Weight (kg),Breed
+NP-001,N,Male,17/04/2024,,259.5,Mixed Breed
+NP-002,N,Male,16/03/2024,,189.6,Large White
+NP-003,N,Male,03/12/2024,,190.6,Mixed Breed
+NP-004,,Female,05/04/2025,,228.5,Duroc
+NP-005,,Female,07/10/2024,,204.4,Local
+NP-006,,Female,24/10/2024,,198.6,Large White
+
+NP-007,,Female,17/07/2024,,257.2,Landrace
+NP-008,,Female,04/12/2024,,225.8,Mixed Breed
+NP-009,,Female,23/03/2025,,224.2,Mixed Breed
+NP-010,,Female,01/03/2026,NP-003,70.0,Mixed Breed
+NP-011,,Female,31/12/2025,,101.5,Duroc
+NP-012,,Female,20/09/2025,NP-002,156.0,Large White
+NP-013,N,Male,14/12/2025,,110.1,Mixed Breed
+NP-014,N,Male,21/01/2026,,87.7,Large White
+NP-015,,Female,19/01/2025,NP-002,280.0,Large White
+NP-016,N,Male,14/02/2026,,76.2,Large White
+NP-017,,Female,31/12/2025,NP-002,97.4,Mixed Breed
+NP-018,Y,Male,08/03/2026,,65.4,Landrace
+NP-019,N,Male,14/08/2025,,178.4,Duroc
+
+NP-020,,Female,13/03/2025,NP-003,264.8,Local
+NP-021,,Female,22/04/2025,NP-001,238.2,Local
+NP-022,,Female,22/01/2026,,89.8,Large White
+NP-023,,Female,22/01/2026,,94.1,Local
+NP-024,Y,Male,25/04/2026,,36.5,Landrace
+NP-025,Y,Male,04/07/2025,NP-001,198.0,Large White
+NP-026,Y,Male,10/04/2025,,246.2,Large White
+NP-027,,Female,16/04/2025,NP-001,244.4,Landrace
+NP-028,Y,Male,25/01/2025,,280.0,Mixed Breed
+
+NP-029,Y,Male,29/01/2026,NP-002,86.5,Local
+NP-030,Y,Male,01/02/2026,NP-003,83.7,Local
+NP-031,N,Male,26/07/2025,NP-002,188.3,Landrace
+NP-032,,Female,30/01/2025,NP-002,280.0,Local
+NP-033,,Female,08/01/2025,NP-003,280.0,Duroc
+NP-034,,Female,25/03/2026,NP-001,50.0,Large White
+NP-035,Y,Male,21/03/2025,NP-001,256.0,Landrace
+NP-036,,Female,19/03/2026,NP-001,59.3,Large White
+NP-037,Y,Male,07/12/2025,NP-001,116.8,Mixed Breed
+NP-038,,Female,22/02/2026,,68.7,Large White
+NP-039,N,Male,04/03/2026,NP-002,64.9,Large White
+NP-040,,Female,01/04/2025,,247.0,Landrace
+NP-041,,Female,23/01/2026,,84.5,Duroc
+NP-042,N,Male,18/02/2025,,274.0,Mixed Breed
+NP-043,,Female,30/03/2025,NP-001,251.2,Duroc
+NP-044,N,Male,30/01/2025,NP-003,280.0,Local
+NP-045,,Female,10/08/2025,,172.4,Landrace
+NP-046,N,Male,11/10/2025,,153.3,Large White
+NP-047,,Female,13/02/2026,NP-001,79.0,Local
+
+NP-048,,Female,13/11/2025,,132.1,Duroc
+NP-049,Y,Male,20/02/2026,,79.5,Mixed Breed
+NP-050,,Female,27/08/2025,NP-001,168.3,Landrace
+NP-051,N,Male,24/01/2026,NP-002,88.1,Landrace
+NP-052,,Female,15/02/2025,,278.7,Duroc
+NP-053,N,Male,22/02/2026,,74.8,Large White
+NP-054,N,Male,08/03/2025,,266.7,Landrace
+NP-055,N,Male,08/05/2025,,228.3,Landrace
+

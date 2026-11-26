@@ -1,0 +1,49 @@
+﻿Pig ID,Dam,Pig Breed,Born On,Gender
+GH-001,,Landrace,11/05/2024,Boar
+GH-002,,Local,20/12/2023,Boar
+GH-003,,Mixed Breed,23/11/2023,Sow
+GH-004,,Landrace,08/10/2023,Sow
+GH-005,,Large White,17/02/2024,Sow
+GH-006,,Large White,27/11/2023,Sow
+GH-007,,Large White,01/08/2023,Sow
+GH-008,GH-004,Duroc,24/07/2025,Gilt
+GH-009,GH-003,Landrace,18/04/2026,Gilt
+GH-010,GH-006,Large White,09/02/2025,Boar
+
+GH-011,GH-007,Local,03/08/2025,Gilt
+GH-012,GH-005,Mixed Breed,31/12/2025,Boar
+GH-013,,Local,26/05/2025,Boar
+GH-014,,Landrace,31/01/2025,Sow
+GH-015,GH-005,Large White,12/03/2025,Sow
+GH-016,,Duroc,14/05/2026,Boar
+GH-017,GH-003,Duroc,16/03/2026,Gilt
+
+GH-018,GH-005,Large White,01/08/2025,Boar
+GH-019,GH-004,Duroc,22/03/2026,Barrow
+GH-020,GH-003,Local,07/06/2025,Sow
+GH-021,GH-004,Large White,03/03/2026,Gilt
+GH-022,GH-006,Mixed Breed,05/04/2026,Barrow
+GH-023,GH-005,Large White,03/03/2026,Gilt
+GH-024,GH-005,Landrace,15/07/2025,Gilt
+GH-025,GH-003,Duroc,11/04/2026,Barrow
+GH-026,,Duroc,09/11/2025,Gilt
+GH-027,GH-007,Mixed Breed,06/09/2025,Boar
+GH-028,GH-007,Local,21/02/2026,Boar
+GH-029,GH-006,Duroc,28/05/2026,Barrow
+GH-030,,Large White,12/04/2025,Boar
+GH-031,,Duroc,23/11/2025,Gilt
+GH-032,GH-003,Large White,23/12/2025,Boar
+GH-033,GH-007,Mixed Breed,24/02/2026,Barrow
+
+GH-034,GH-007,Mixed Breed,19/04/2026,Barrow
+GH-035,GH-006,Mixed Breed,09/02/2025,Barrow
+GH-036,GH-005,Large White,23/01/2025,Sow
+GH-037,GH-006,Landrace,17/04/2026,Boar
+GH-038,GH-004,Local,12/07/2025,Boar
+GH-039,GH-005,Large White,11/04/2025,Barrow
+GH-040,,Mixed Breed,02/04/2026,Boar
+GH-041,GH-006,Local,13/08/2025,Gilt
+GH-042,GH-004,Landrace,31/07/2025,Gilt
+GH-043,GH-004,Mixed Breed,23/11/2025,Boar
+GH-044,,Large White,08/02/2025,Sow
+

@@ -1,0 +1,52 @@
+Pen,Pig Number,Sire,Date Born,Mother,Pig Breed,M/F
+A,A-0001,,2023-07-28,,Large White,Male
+3,A-0002,,2024-03-24,,Landrace,Male
+1,A-0003,,2024-12-27,,Local,Female
+2,A-0004,,2024-11-25,,Mixed Breed,Female
+3,A-0005,,2024-07-28,,Large White,Female
+White,A-0006,,2023-09-01,,Duroc,Female
+2,A-0007,,2023-08-27,,Landrace,Female
+3,A-0008,,2024-04-13,,Mixed Breed,Female
+White,A-0009,A-0002,2025-04-10,A-0006,Large White,Male
+White,A-0010,,2026-02-01,A-0003,Local,Male
+Black,A-0011,,2025-04-10,A-0008,Local,Female
+2,A-0012,,2025-05-12,A-0005,Large White,Male
+White,A-0013,A-0002,2026-01-12,A-0006,Local,Female
+2,A-0014,A-0001,2026-05-17,,Large White,Male
+Black,A-0015,,2025-04-20,,Large White,Male
+Black,A-0016,,2026-03-17,,Mixed Breed,Male
+1,A-0017,A-0002,2026-05-20,A-0003,Local,Female
+1,A-0018,,2025-06-20,A-0005,Local,Male
+1,A-0019,,2026-03-25,A-0008,Large White,Female
+White,A-0020,,2025-01-18,A-0007,Duroc,Male
+2,A-0021,A-0001,2026-04-01,A-0005,Local,Female
+1,A-0022,A-0002,2025-01-08,A-0006,Landrace,Male
+Black,A-0023,A-0002,2025-01-07,,Large White,Male
+Black,A-0024,A-0001,2025-04-21,,Mixed Breed,Female
+A,A-0025,,2025-07-17,A-0008,Duroc,Female
+Black,A-0026,,2025-02-23,A-0004,Landrace,Male
+2,A-0027,A-0002,2026-05-14,A-0006,Duroc,Male
+1,A-0028,,2025-12-24,,Large White,Male
+White,A-0029,,2025-01-28,,Large White,Male
+1,A-0030,A-0001,2025-04-15,,Duroc,Male
+1,A-0031,,2025-03-22,,Duroc,Male
+3,A-0032,,2025-02-14,,Local,Female
+Black,A-0033,A-0002,2025-01-23,A-0007,Local,Female
+A,A-0034,A-0002,2025-10-21,A-0003,Mixed Breed,Male
+Black,A-0035,A-0001,2026-05-13,A-0007,Local,Female
+A,A-0036,A-0002,2025-10-20,A-0005,Duroc,Female
+Black,A-0037,A-0002,2026-03-27,A-0005,Large White,Male
+3,A-0038,,2025-02-09,,Large White,Male
+Black,A-0039,A-0002,2025-07-19,A-0005,Duroc,Male
+3,A-0040,,2025-05-12,A-0004,Large White,Female
+1,A-0041,A-0002,2026-04-12,A-0006,Landrace,Female
+White,A-0042,,2025-05-23,A-0003,Local,Female
+Black,A-0043,A-0002,2026-03-22,,Mixed Breed,Female
+White,A-0044,,2026-05-13,A-0006,Duroc,Male
+A,A-0045,,2025-02-08,A-0006,Landrace,Male
+2,A-0046,,2026-02-22,,Mixed Breed,Female
+Black,A-0047,A-0001,2025-06-23,,Large White,Male
+Black,A-0048,A-0002,2025-04-09,A-0004,Mixed Breed,Male
+Black,A-0049,,2026-01-29,A-0008,Large White,Male
+White,A-0050,,2025-06-11,A-0008,Mixed Breed,Male
+A,A-0051,,2025-06-07,A-0008,Large White,Male

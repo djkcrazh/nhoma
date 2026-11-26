@@ -1,0 +1,32 @@
+Pig Tag,Pig Sex,Father,Breed Type,Birth Date
+A-0001,Boar,,Mixed Breed,22.05.2024
+A-0002,Sow,,Duroc,09.01.2025
+A-0003,Sow,,Mixed Breed,13.04.2025
+A-0004,Sow,,Landrace,19.01.2025
+A-0005,Barrow,,Duroc,15.12.2025
+A-0006,Barrow,,Duroc,08.03.2025
+A-0007,Gilt,A-0001,Mixed Breed,06.07.2025
+A-0008,Gilt,,Local,09.08.2025
+A-0009,Barrow,,Mixed Breed,04.10.2025
+A-0010,Boar,A-0001,Duroc,03.02.2025
+A-0011,Barrow,,Large White,17.01.2026
+A-0012,Gilt,A-0001,Mixed Breed,02.08.2025
+A-0013,Boar,,Landrace,02.05.2025
+A-0014,Boar,,Large White,19.05.2026
+A-0015,Boar,,Large White,25.03.2025
+A-0016,Sow,A-0001,Duroc,26.05.2025
+A-0017,Barrow,,Duroc,20.10.2025
+
+A-0018,Gilt,A-0001,Local,18.11.2025
+A-0019,Sow,A-0001,Mixed Breed,03.02.2025
+A-0020,Gilt,A-0001,Landrace,08.04.2026
+A-0021,Sow,,Landrace,11.02.2025
+A-0022,Sow,A-0001,Landrace,08.02.2025
+A-0023,Barrow,,Local,13.09.2025
+A-0024,Gilt,A-0001,Local,22.05.2026
+
+A-0025,Gilt,,Landrace,11.11.2025
+A-0026,Boar,,Duroc,28.07.2025
+A-0027,Sow,A-0001,Landrace,18.05.2025
+A-0028,Gilt,A-0001,Landrace,22.09.2025
+

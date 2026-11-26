@@ -1,0 +1,653 @@
+{
+ "id": "ghana-077",
+ "category": "ghana",
+ "split": "dev",
+ "tags": [
+  "date:iso",
+  "sex:sow_boar",
+  "enc:utf-8-sig",
+  "unseen_headers"
+ ],
+ "gap_reasons": [],
+ "encoding": "utf-8-sig",
+ "style": {
+  "date_fmt": "iso",
+  "number_fmt": "en",
+  "weight_unit": "kg",
+  "delimiter": ",",
+  "n_pigs": 46,
+  "columns": [
+   "tagId",
+   "castrated",
+   "sex",
+   "weightKg",
+   "breed",
+   "fatherTagId",
+   "dateOfBirth"
+  ],
+  "headers": {
+   "tagId": "Pig Ref",
+   "sex": "Pig Sex",
+   "dateOfBirth": "Date of Birth",
+   "breed": "Breed",
+   "weightKg": "Weight (kg)",
+   "fatherTagId": "Sire",
+   "castrated": "Neutered"
+  },
+  "sex_set": "sow_boar",
+  "castrated_set": "yes_no"
+ },
+ "mapping": {
+  "version": 1,
+  "fields": {
+   "tagId": {
+    "source": "Pig Ref"
+   },
+   "breed": {
+    "source": "Breed"
+   },
+   "sex": {
+    "source": "Pig Sex"
+   },
+   "dateOfBirth": {
+    "source": "Date of Birth"
+   },
+   "weightKg": {
+    "source": "Weight (kg)"
+   },
+   "motherTagId": {
+    "source": null
+   },
+   "fatherTagId": {
+    "source": "Sire"
+   },
+   "castrated": {
+    "source": "Neutered"
+   },
+   "notes": {
+    "source": null
+   }
+  },
+  "transforms": {
+   "sexValues": {
+    "Sow": "FEMALE",
+    "Gilt": "FEMALE",
+    "Boar": "MALE",
+    "Barrow": "MALE"
+   },
+   "dateFormat": "iso",
+   "dateFormatConfirmed": true,
+   "weightUnit": "kg",
+   "numberFormat": "en",
+   "numberFormatConfirmed": true,
+   "castratedValues": {
+    "Yes": true,
+    "No": false
+   }
+  }
+ },
+ "sex_words": {
+  "Sow": "FEMALE",
+  "Gilt": "FEMALE",
+  "Boar": "MALE",
+  "Barrow": "MALE"
+ },
+ "castrated_words": {
+  "Yes": true,
+  "No": false
+ },
+ "pigs": [
+  {
+   "tag": "GH-001",
+   "breed": "Local",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2024-01-02",
+   "weight_kg": 234.0,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-002",
+   "breed": "Local",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2024-05-05",
+   "weight_kg": 247.0,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-003",
+   "breed": "Large White",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2023-11-18",
+   "weight_kg": 195.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-004",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2024-01-23",
+   "weight_kg": 209.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-005",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-04-09",
+   "weight_kg": 236.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-006",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2023-11-02",
+   "weight_kg": 234.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-007",
+   "breed": "Large White",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2024-06-26",
+   "weight_kg": 251.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-008",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-11-05",
+   "weight_kg": 134.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-009",
+   "breed": "Local",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2026-01-08",
+   "weight_kg": 100.0,
+   "mother": null,
+   "father": "GH-002",
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "GH-010",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-08-26",
+   "weight_kg": 174.0,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-011",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-12-01",
+   "weight_kg": 117.0,
+   "mother": null,
+   "father": null,
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "GH-012",
+   "breed": "Duroc",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-12-08",
+   "weight_kg": 114.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-013",
+   "breed": "Large White",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-04-15",
+   "weight_kg": 245.0,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-014",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2026-01-27",
+   "weight_kg": 87.0,
+   "mother": null,
+   "father": "GH-002",
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-015",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-07-25",
+   "weight_kg": 188.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-016",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2026-02-01",
+   "weight_kg": 82.0,
+   "mother": null,
+   "father": "GH-001",
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-017",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-05-04",
+   "weight_kg": 33.0,
+   "mother": null,
+   "father": "GH-001",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-018",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-11-04",
+   "weight_kg": 129.0,
+   "mother": null,
+   "father": "GH-001",
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-019",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-02-17",
+   "weight_kg": 280.0,
+   "mother": null,
+   "father": "GH-001",
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-020",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-10-17",
+   "weight_kg": 147.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-021",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-02-07",
+   "weight_kg": 280.0,
+   "mother": null,
+   "father": null,
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "GH-022",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2026-02-16",
+   "weight_kg": 75.0,
+   "mother": null,
+   "father": null,
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "GH-023",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-07-13",
+   "weight_kg": 193.0,
+   "mother": null,
+   "father": "GH-002",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-024",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-05-24",
+   "weight_kg": 23.0,
+   "mother": null,
+   "father": "GH-001",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-025",
+   "breed": "Large White",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-01-08",
+   "weight_kg": 280.0,
+   "mother": null,
+   "father": "GH-001",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-026",
+   "breed": "Landrace",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-07-15",
+   "weight_kg": 195.0,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-027",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-07-04",
+   "weight_kg": 198.0,
+   "mother": null,
+   "father": "GH-001",
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-028",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-12-02",
+   "weight_kg": 111.0,
+   "mother": null,
+   "father": "GH-001",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-029",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-03-15",
+   "weight_kg": 268.0,
+   "mother": null,
+   "father": "GH-002",
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-030",
+   "breed": "Local",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-11-10",
+   "weight_kg": 127.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-031",
+   "breed": "Large White",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-05-27",
+   "weight_kg": 19.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-032",
+   "breed": "Mixed Breed",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-10-14",
+   "weight_kg": 147.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-033",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-04-28",
+   "weight_kg": 242.0,
+   "mother": null,
+   "father": "GH-001",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-034",
+   "breed": "Duroc",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-03-15",
+   "weight_kg": 60.0,
+   "mother": null,
+   "father": "GH-002",
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-035",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-08-17",
+   "weight_kg": 176.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-036",
+   "breed": "Large White",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-05-08",
+   "weight_kg": 28.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-037",
+   "breed": "Large White",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-07-02",
+   "weight_kg": 201.0,
+   "mother": null,
+   "father": "GH-002",
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-038",
+   "breed": "Duroc",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-10-12",
+   "weight_kg": 146.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-039",
+   "breed": "Large White",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-03-12",
+   "weight_kg": 259.0,
+   "mother": null,
+   "father": "GH-002",
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-040",
+   "breed": "Large White",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2025-12-23",
+   "weight_kg": 108.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-041",
+   "breed": "Landrace",
+   "sex": "MALE",
+   "role": "barrow",
+   "date_of_birth": "2025-08-19",
+   "weight_kg": 171.0,
+   "mother": null,
+   "father": "GH-002",
+   "castrated": true,
+   "notes": ""
+  },
+  {
+   "tag": "GH-042",
+   "breed": "Landrace",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-05-23",
+   "weight_kg": 225.0,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-043",
+   "breed": "Mixed Breed",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2025-06-02",
+   "weight_kg": 220.0,
+   "mother": null,
+   "father": "GH-002",
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-044",
+   "breed": "Duroc",
+   "sex": "MALE",
+   "role": "boar",
+   "date_of_birth": "2026-01-19",
+   "weight_kg": 93.0,
+   "mother": null,
+   "father": null,
+   "castrated": false,
+   "notes": ""
+  },
+  {
+   "tag": "GH-045",
+   "breed": "Large White",
+   "sex": "FEMALE",
+   "role": "gilt",
+   "date_of_birth": "2026-04-29",
+   "weight_kg": 36.0,
+   "mother": null,
+   "father": null,
+   "castrated": null,
+   "notes": ""
+  },
+  {
+   "tag": "GH-046",
+   "breed": "Landrace",
+   "sex": "FEMALE",
+   "role": "sow",
+   "date_of_birth": "2025-05-11",
+   "weight_kg": 234.0,
+   "mother": null,
+   "father": "GH-002",
+   "castrated": null,
+   "notes": ""
+  }
+ ]
+}

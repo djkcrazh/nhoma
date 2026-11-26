@@ -1,0 +1,2 @@
+tagId,breed,sex,dateOfBirth,weightKg,motherTagId,fatherTagId,castrated,notes
+NEW-1,Duroc,F,2025-01-10,50,,,,default template pig

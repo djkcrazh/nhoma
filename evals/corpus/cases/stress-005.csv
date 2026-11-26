@@ -1,0 +1,52 @@
+﻿Sex (M/F),Weight,Pig ID,Comments,Date Born,Father,Breed Type
+Boar,154,PRM0001,to be sold,12/16/2024,,Mixed Breed
+Boar,161,PRM0002,to be sold,09/22/2024,,Duroc
+Sow,210,PRM0003,,04/09/2025,,Large White
+Sow,154,PRM0004,,10/12/2023,,Landrace
+Sow,225,PRM0005,pen 3,01/21/2024,,Landrace
+Sow,183,PRM0006,weaned at 28 days,09/15/2024,,Local
+Sow,218,PRM0007,sow’s first litter,12/31/2024,,Large White
+Sow,220,PRM0008,good mother,05/28/2025,PRM0001,Local
+Hog,255,PRM0009,pen 3,03/17/2025,,Mixed Breed
+Hog,170,PRM0010,pen 3,08/21/2025,PRM0002,Landrace
+Boar,90,PRM0011,to be sold,01/13/2026,PRM0001,Large White
+Boar,75,PRM0012,sick – treated,02/20/2026,,Landrace
+Boar,193,PRM0013,weaned at 28 days,07/08/2025,PRM0002,Mixed Breed
+Hog,76,PRM0014,good mother,02/15/2026,PRM0002,Landrace
+Hog,87,PRM0015,sow’s first litter,01/23/2026,PRM0001,Large White
+Hog,219,PRM0016,,05/25/2025,PRM0002,Duroc
+Boar,84,PRM0017,good mother,02/04/2026,PRM0001,Local
+
+Boar,165,PRM0018,,09/06/2025,PRM0002,Duroc
+Boar,219,PRM0019,sick – treated,06/10/2025,PRM0001,Landrace
+Gilt,34,PRM0020,,04/27/2026,PRM0001,Landrace
+
+Gilt,82,PRM0021,,02/01/2026,PRM0002,Mixed Breed
+Hog,126,PRM0022,pen 3,11/15/2025,,Mixed Breed
+Boar,232,PRM0023,to be sold,05/19/2025,,Mixed Breed
+Hog,280,PRM0024,sick – treated,02/05/2025,PRM0001,Landrace
+Gilt,68,PRM0025,,03/03/2026,,Mixed Breed
+Gilt,191,PRM0026,,07/20/2025,,Landrace
+Gilt,48,PRM0027,vaccinated,04/04/2026,PRM0002,Local
+Boar,243,PRM0028,,04/06/2025,PRM0002,Large White
+Boar,84,PRM0029,sow’s first litter,01/21/2026,PRM0002,Landrace
+Hog,266,PRM0030,,02/23/2025,PRM0002,Large White
+Gilt,161,PRM0031,good mother,09/19/2025,,Local
+Boar,226,PRM0032,to be sold,05/11/2025,PRM0001,Large White
+Boar,231,PRM0033,weaned at 28 days,05/10/2025,,Local
+Boar,203,PRM0034,vaccinated,06/16/2025,PRM0002,Mixed Breed
+Boar,249,PRM0035,weaned at 28 days,04/09/2025,PRM0002,Duroc
+Hog,112,PRM0036,to be sold,12/19/2025,PRM0002,Large White
+Gilt,64,PRM0037,vaccinated,02/28/2026,PRM0001,Duroc
+Hog,260,PRM0038,sow’s first litter,03/18/2025,PRM0002,Landrace
+Gilt,139,PRM0039,,10/30/2025,PRM0001,Duroc
+Boar,28,PRM0040,vaccinated,05/15/2026,,Mixed Breed
+Sow,280,PRM0041,sick – treated,01/13/2025,,Large White
+Gilt,92,PRM0042,weaned at 28 days,01/11/2026,,Local
+
+Gilt,77,PRM0043,weaned at 28 days,02/17/2026,,Large White
+Sow,232,PRM0044,,05/05/2025,,Landrace
+Gilt,165,PRM0045,sow’s first litter,09/05/2025,PRM0002,Duroc
+Gilt,170,PRM0046,good mother,08/26/2025,,Duroc
+Boar,133,PRM0047,weaned at 28 days,11/06/2025,,Landrace
+

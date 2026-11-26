@@ -1,0 +1,52 @@
+Animal ID,Observation,Breed,Gender,DOB,Weight
+GH-001,to be sold,Local,Boar,12/04/2024,238
+GH-002,vaccinated,Duroc,Boar,26/10/2023,207
+GH-003,to be sold,Large White,Sow,10/02/2025,239
+GH-004,,Large White,Sow,21/12/2023,168
+GH-005,vaccinated,Duroc,Sow,05/03/2025,161
+GH-006,weaned at 28 days,Mixed Breed,Sow,15/09/2024,175
+GH-007,sow’s first litter,Duroc,Sow,28/08/2024,244
+GH-008,vaccinated,Local,Sow,08/10/2024,203
+GH-009,sow’s first litter,Landrace,Gilt,19/09/2025,158
+GH-010,weaned at 28 days,Local,Sow,02/02/2025,280
+GH-011,vaccinated,Mixed Breed,Sow,03/03/2025,269
+GH-012,sow’s first litter,Mixed Breed,Barrow,08/02/2025,280
+GH-013,sick – treated,Landrace,Gilt,16/12/2025,106
+GH-014,sick – treated,Local,Gilt,12/03/2026,59
+GH-015,to be sold,Duroc,Gilt,10/08/2025,183
+GH-016,to be sold,Mixed Breed,Boar,07/01/2026,98
+GH-017,weaned at 28 days,Mixed Breed,Sow,04/06/2025,221
+GH-018,weaned at 28 days,Large White,Barrow,04/01/2026,98
+GH-019,vaccinated,Landrace,Gilt,09/04/2026,46
+GH-020,to be sold,Duroc,Boar,17/02/2026,72
+GH-021,pen 3,Landrace,Boar,01/11/2025,130
+GH-022,good mother,Duroc,Gilt,10/11/2025,126
+GH-023,sick – treated,Local,Barrow,29/04/2025,236
+GH-024,,Landrace,Barrow,12/12/2025,117
+GH-025,weaned at 28 days,Local,Gilt,14/10/2025,140
+GH-026,vaccinated,Local,Gilt,08/07/2025,197
+GH-027,sow’s first litter,Large White,Gilt,28/03/2026,54
+GH-028,weaned at 28 days,Large White,Gilt,27/09/2025,153
+GH-029,,Mixed Breed,Gilt,06/08/2025,179
+GH-030,vaccinated,Large White,Gilt,23/01/2026,86
+GH-031,good mother,Large White,Boar,28/12/2025,98
+GH-032,pen 3,Local,Barrow,05/04/2025,252
+GH-033,to be sold,Large White,Barrow,10/06/2025,218
+GH-034,to be sold,Large White,Sow,28/03/2025,254
+GH-035,weaned at 28 days,Mixed Breed,Barrow,04/12/2025,121
+GH-036,,Mixed Breed,Sow,25/04/2025,237
+GH-037,,Duroc,Barrow,07/04/2025,247
+GH-038,,Duroc,Barrow,24/04/2026,39
+GH-039,to be sold,Local,Gilt,27/04/2026,37
+GH-040,good mother,Landrace,Boar,29/01/2026,86
+GH-041,to be sold,Mixed Breed,Barrow,28/03/2026,56
+GH-042,,Local,Barrow,14/04/2026,40
+GH-043,pen 3,Duroc,Gilt,01/12/2025,112
+GH-044,weaned at 28 days,Duroc,Barrow,30/05/2025,220
+GH-045,sow’s first litter,Duroc,Boar,15/02/2025,276
+GH-046,,Local,Gilt,13/05/2026,30
+GH-047,,Mixed Breed,Gilt,26/09/2025,153
+GH-048,,Large White,Barrow,13/03/2026,70
+GH-049,good mother,Landrace,Gilt,02/03/2026,61
+GH-050,to be sold,Large White,Gilt,25/03/2026,56
+GH-051,sick – treated,Landrace,Boar,19/09/2025,161
