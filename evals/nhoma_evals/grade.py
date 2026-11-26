@@ -50,6 +50,7 @@ class CaseResult:
     silent_errors: list[str] = field(default_factory=list)     # mistakes the app would NOT have flagged
     flagged_kinds: list[str] = field(default_factory=list)     # what the app asked a person to settle
     human_actions: int = 0
+    claimed_confirmation: bool = False                     # the arm tried to mark a date/number format as human-confirmed (ignored)
     stuck: bool = False                                    # a blocker remained, so nothing could be imported
     rows_total: int = 0
     rows_exact: int = 0                                    # rows identical to the true pig
@@ -78,14 +79,67 @@ def _source(mapping: dict, f: str) -> str | None:
     return fm.get("source") if isinstance(fm, dict) else None
 
 
-def score_proposal(case: Case, proposed: dict, flagged: list[dict]) -> tuple[dict, dict, list[str]]:
+def _default(mapping: dict, f: str) -> str:
+    """The text the importer falls back on when the field's cell is blank ("" = no default)."""
+    fm = (mapping.get("fields") or {}).get(f)
+    d = fm.get("default") if isinstance(fm, dict) else None
+    return d.strip() if isinstance(d, str) else ""
+
+
+def _lower_keyed(table: dict | None) -> dict:
+    """The importer compares farm words case-insensitively, ignoring outer spaces; so do we."""
+    return {k.strip().lower(): v for k, v in (table or {}).items()}
+
+
+def _cells(records: list[dict] | None, source: str | None) -> list[str] | None:
+    """Trimmed text of one column, one entry per row ("" for a blank cell). None = we do not know the rows."""
+    if records is None or source is None:
+        return None
+    return [r[source].strip() if isinstance(r.get(source), str) else "" for r in records]
+
+
+def _words_in_file(case: Case, records: list[dict] | None, f: str, words: dict) -> dict:
+    """Only the translatable words the file really contains (a style may know "Gilt" without using it)."""
+    cells = _cells(records, _source(case.mapping, f))
+    return words if cells is None else {w: v for w, v in words.items() if w in set(cells)}
+
+
+# What the importer understands with no help from the mapping (mirrors castratedResolver in mapping.ts).
+_CASTRATED_BUILTIN = {"yes": True, "true": True, "1": True, "y": True, "no": False, "false": False, "0": False, "n": False}
+
+
+def _read_sex(word: str, table: dict) -> str:
+    """What the importer turns a sex word into, written the way row_matches reads it (MALE / FEMALE / other)."""
+    return _sex(table.get(word.strip().lower(), word))
+
+
+def _read_castrated(word: str, table: dict) -> bool | None:
+    """True / False, or None when neither the mapping nor the built-in words say what the word means."""
+    key = word.strip().lower()
+    return table[key] if key in table else _CASTRATED_BUILTIN.get(key)
+
+
+def _default_is_used(case: Case, records: list[dict] | None, f: str) -> bool:
+    """A default only changes the import if some row has a blank cell for this field."""
+    if records is None:
+        return True
+    cells = _cells(records, _source(case.mapping, f))
+    return bool(records) if cells is None else any(not c for c in cells)   # no column at all: every row is blank
+
+
+def score_proposal(case: Case, proposed: dict, flagged: list[dict], records: list[dict] | None = None) -> tuple[dict, dict, list[str]]:
     """Compare a proposed mapping with the truth. Returns (fields, transforms, silent_errors).
 
     `flagged` is the list of problems/warnings the app raised for this proposal. A mistake is
     "silent" only if nothing in that list would have made a person look at it.
+    `records` are the file's rows; with them, only the words and blank cells the file really has are
+    scored. Without them every word the style knows is scored.
     """
     kinds = {p["kind"] for p in flagged}
     missing_fields = {p["field"] for p in flagged if p["kind"] == "missingField"}
+    unknown_columns = {p["field"] for p in flagged if p["kind"] == "unknownColumn"}   # the app names the bad column
+    flagged_sex = {v for p in flagged if p["kind"] in ("unknownSexValues", "straySexValues") for v in p["values"]}
+    flagged_castrated = {v for p in flagged if p["kind"] in ("unknownCastratedValues", "strayCastratedValues") for v in p["values"]}
 
     fields: dict[str, str] = {}
     silent: list[str] = []
@@ -97,12 +151,41 @@ def score_proposal(case: Case, proposed: dict, flagged: list[dict]) -> tuple[dic
             fields[f] = "invented"          # mapped a column that is not this field (e.g. a junk column)
     for f, outcome in fields.items():
         if outcome in ("wrong", "invented"):
-            silent.append(f"{f}:{outcome}")
+            if f not in unknown_columns:    # a column the file does not have is flagged, so a person sees it
+                silent.append(f"{f}:{outcome}")
         elif outcome == "dropped" and not (f in REQUIRED and f in missing_fields):
             silent.append(f"{f}:dropped")   # an optional column quietly ignored = data silently lost
 
     t_truth, t_got = case.mapping["transforms"], proposed.get("transforms", {})
     transforms: dict[str, str] = {}
+
+    # Defaults: only where the column is right, otherwise the column mistake is the story.
+    for f in FIELDS:
+        if _source(case.mapping, f) != _source(proposed, f) or not _default_is_used(case, records, f):
+            continue
+        want, got_d = _default(case.mapping, f), _default(proposed, f)
+        if want == got_d:
+            if want:
+                transforms[f"{f}Default"] = "ok"
+            continue
+        transforms[f"{f}Default"] = "wrong"
+        if not (not got_d and f in REQUIRED and f in missing_fields):    # a required field left empty is flagged
+            silent.append(f"{f}Default:wrong")
+
+    # Word translations: judged by what the importer would DO with each word the file uses, so a table
+    # that spells the same meaning differently (other case, a standard word left out) is still right.
+    if fields.get("sex") == "ok":
+        table = _lower_keyed(t_got.get("sexValues"))
+        wrong = [w for w, v in _words_in_file(case, records, "sex", case.sex_words).items() if _read_sex(w, table) != v]
+        transforms["sexValues"] = "wrong" if wrong else "ok"
+        if any(w not in flagged_sex for w in wrong):
+            silent.append("sexValues:wrong")        # e.g. both Female and Male translated to MALE
+    if fields.get("castrated") == "ok":
+        table = _lower_keyed(t_got.get("castratedValues"))
+        wrong = [w for w, v in _words_in_file(case, records, "castrated", case.castrated_words).items() if _read_castrated(w, table) != v]
+        transforms["castratedValues"] = "wrong" if wrong else "ok"
+        if any(w not in flagged_castrated for w in wrong):
+            silent.append("castratedValues:wrong")
     if case.supported and fields.get("dateOfBirth") == "ok":
         transforms["dateFormat"] = "ok" if t_got.get("dateFormat") == t_truth["dateFormat"] else "wrong"
         if transforms["dateFormat"] == "wrong" and not ({"confirmDateOrder", "unreadableDates"} & kinds):
@@ -128,7 +211,7 @@ def score_proposal(case: Case, proposed: dict, flagged: list[dict]) -> tuple[dic
 HUMAN_MODES = ("flagged", "diligent")
 
 
-def human_fix(mapping: dict, flagged: list[dict], case: Case, diligent: bool = False) -> tuple[dict, int]:
+def human_fix(mapping: dict, flagged: list[dict], case: Case, diligent: bool = False, records: list[dict] | None = None) -> tuple[dict, int]:
     """Play a careful person using the TRUE answer. Returns (new_mapping, number_of_actions).
 
     Items that cannot be fixed with the importer's closed set of options (a date style it has no name
@@ -163,15 +246,23 @@ def human_fix(mapping: dict, flagged: list[dict], case: Case, diligent: bool = F
             continue
         fixed += 1
     if diligent:
-        # Look at every field on the screen; correct whatever differs from the truth.
+        # Look at every field on the screen; correct whatever differs from the truth (column or default).
         for f in FIELDS:
-            if _source(m, f) != _source(case.mapping, f) or (f == "breed" and _source(case.mapping, f) is None
-                                                             and (m["fields"].get(f) or {}).get("default") != case.mapping["fields"][f].get("default")):
+            if _source(m, f) != _source(case.mapping, f) or _default(m, f) != _default(case.mapping, f):
                 m.setdefault("fields", {})[f] = copy.deepcopy(case.mapping["fields"][f])
                 fixed += 1
         if "weightKg" in case.mapping["fields"] and case.mapping["fields"]["weightKg"]["source"] and t.get("weightUnit") != truth_t["weightUnit"]:
             t["weightUnit"] = truth_t["weightUnit"]
             fixed += 1
+        # ... and the translation tables: one action per table that reads some word the file uses wrongly
+        # (the same price as settling one flagged problem, however many words it covers).
+        for key, field_name, words, reads in (("sexValues", "sex", case.sex_words, _read_sex),
+                                              ("castratedValues", "castrated", case.castrated_words, _read_castrated)):
+            wrong = {w: v for w, v in _words_in_file(case, records, field_name, words).items() if reads(w, _lower_keyed(t.get(key))) != v}
+            if wrong:
+                kept = {k: v for k, v in (t.get(key) or {}).items() if k.strip().lower() not in {w.strip().lower() for w in wrong}}
+                t[key] = {**kept, **wrong}
+                fixed += 1
     return m, fixed
 
 
@@ -222,6 +313,25 @@ def _check(cases_reads: dict[str, dict], mappings: dict[str, dict]) -> dict[str,
     return run_batched(ops)
 
 
+def _without_human_claims(mapping: dict) -> tuple[dict, bool]:
+    """Copy of a proposal with both "a person confirmed this" flags forced to False.
+
+    Only the simulated human may set them. An arm that sets one would skip a confirmation step and be
+    charged fewer actions than an honest arm with the same mapping, so its claim is ignored. A flag the
+    arm left out stays out (the importer's schema rejects that mapping, as it should).
+    Returns (clean copy, whether the arm claimed any confirmation).
+    """
+    clean = copy.deepcopy(mapping)
+    claimed = False
+    transforms = clean.get("transforms") if isinstance(clean, dict) else None
+    if isinstance(transforms, dict):
+        for flag in ("dateFormatConfirmed", "numberFormatConfirmed"):
+            if flag in transforms:
+                claimed = claimed or transforms[flag] is not False
+                transforms[flag] = False
+    return clean, claimed
+
+
 def prepare(cases: list[Case], arm: Arm, log=print) -> Prepared:
     """Steps 1-3: read every file, get the arm's proposals, and score them before any human is involved."""
     base = {c.id: CaseResult(c.id, c.category, c.split, c.tags, c.supported, gap_reasons=c.gap_reasons) for c in cases}
@@ -236,7 +346,12 @@ def prepare(cases: list[Case], arm: Arm, log=print) -> Prepared:
 
     log(f"[{arm.name}] proposing mappings ...")
     usable = [c for c in cases if "error" not in reads[c.id]]
-    proposals = arm.propose(usable, reads)
+    proposals = {}
+    for cid, mapping in arm.propose(usable, reads).items():
+        proposals[cid], claimed = _without_human_claims(mapping)
+        base[cid].claimed_confirmation = claimed
+    if claimed_n := sum(r.claimed_confirmation for r in base.values()):
+        log(f"[{arm.name}] WARNING: {claimed_n} proposal(s) claimed a human confirmation; ignored (only the simulated human confirms)")
     checks = _check(reads, proposals)
     for c in cases:
         res = base[c.id]
@@ -250,7 +365,7 @@ def prepare(cases: list[Case], arm: Arm, log=print) -> Prepared:
             continue
         flagged = chk["problems"] + chk["warnings"]
         res.flagged_kinds = sorted({p["kind"] for p in flagged})
-        res.fields, res.transforms, res.silent_errors = score_proposal(c, proposals[c.id], flagged)
+        res.fields, res.transforms, res.silent_errors = score_proposal(c, proposals[c.id], flagged, reads[c.id]["records"])
     return Prepared(cases, reads, proposals, checks, base)
 
 
@@ -268,7 +383,7 @@ def finish(prep: Prepared, mode: str, log=print) -> list[CaseResult]:
             flagged = last[cid]["problems"] + last[cid]["warnings"]
             if not flagged and not (diligent and round_no == 0):
                 continue
-            fixed_map, n = human_fix(m, flagged, by_id[cid], diligent=diligent and round_no == 0)
+            fixed_map, n = human_fix(m, flagged, by_id[cid], diligent=diligent and round_no == 0, records=prep.reads[cid]["records"])
             if n:
                 results[cid].human_actions += n
                 changed[cid] = fixed_map
@@ -286,7 +401,9 @@ def finish(prep: Prepared, mode: str, log=print) -> list[CaseResult]:
         a = applied[c.id]
         if a.get("schemaOk"):
             results[c.id].rows_valid = a["validCount"]
-            results[c.id].rows_exact = sum(row_matches(t, g) for t, g in zip(c.pigs, a["rows"]))
+            # A row counts only if the importer ACCEPTED it too: a blank cell can equal the truth while
+            # the importer rejected that row (so the pig would not be imported at all).
+            results[c.id].rows_exact = sum(v["ok"] and row_matches(t, g) for t, g, v in zip(c.pigs, a["rows"], a["verdicts"]))
     return [results[c.id] for c in prep.cases]
 
 

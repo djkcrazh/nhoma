@@ -31,17 +31,17 @@
 | category | files | columns right | silent-mistake files | perfect (flagged-only human) | actions / file (diligent human) |
 |---|---|---|---|---|---|
 | ghana | 48 | 63% | 48% | 52% | 3.4 |
-| stress | 7 | 45% | 71% | 29% | 4.9 |
+| stress | 7 | 45% | 71% | 29% | 5.0 |
 
 ## 4. By file feature (a file can have several)
 
 | feature | files | columns right | silent-mistake files | perfect (flagged-only human) | actions / file (diligent human) |
 |---|---|---|---|---|---|
-| blank_rows | 8 | 62% | 25% | 75% | 3.8 |
-| date:MM/dd/yyyy | 4 | 60% | 50% | 50% | 4.2 |
+| blank_rows | 8 | 62% | 25% | 75% | 3.9 |
+| date:MM/dd/yyyy | 4 | 60% | 50% | 50% | 4.5 |
 | date:dd.MM.yyyy | 4 | 50% | 75% | 25% | 4.2 |
 | date:dd/MM/yyyy | 36 | 62% | 42% | 58% | 3.6 |
-| date:iso | 11 | 58% | 73% | 27% | 3.3 |
+| date:iso | 11 | 58% | 73% | 27% | 3.2 |
 | enc:cp1252 | 5 | 60% | 40% | 60% | 3.8 |
 | enc:utf-8 | 23 | 59% | 43% | 57% | 3.6 |
 | enc:utf-8-sig | 27 | 62% | 59% | 41% | 3.6 |

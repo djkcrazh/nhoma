@@ -35,17 +35,22 @@ file bytes -> READ -> PROPOSE (arm) -> SCORE -> HUMAN -> IMPORT -> compare with 
 1. **Read**: the real importer decodes and parses the bytes.
 2. **Propose**: the arm sees only the headers and rows and proposes a *mapping* (which column feeds which
    field, plus how to read dates, numbers, sex words). It never sees the answer.
-3. **Score**: compared with the true mapping. A mistake is **silent** if the app would not have flagged it
-   for a person (a column quietly ignored, a pound weight read as kilograms...). Silent mistakes are the
-   dangerous ones.
+3. **Score**: compared with the true mapping: the columns, the date/number/unit settings, the defaults, and the
+   translation of every sex and castrated word the file uses (a table that means the same thing, such as
+   different letter case or a standard word left out, is not penalised). A mistake is **silent** if the app
+   would not have flagged it for a person (a column quietly ignored, a pound weight read as kilograms, `Female`
+   translated to `MALE`...). A mistake the app does flag (for example a column the file does not have) is not
+   silent. Silent mistakes are the dangerous ones.
 4. **Human**: the app lists what a person must settle. We play that person using the true answer. Two
    kinds are simulated, because the truth for a real farm lies between them:
    - **flagged**: fixes only what the app flags. Measures *silent risk*.
    - **diligent**: also studies the mapping screen and fixes every wrong column. Measures *effort*.
    The two "a human confirmed this" flags (`dateFormatConfirmed`, `numberFormatConfirmed`) are only ever
-   set here. An arm can never set them.
+   set here. If an arm sets one, the grader clears it before the first check (and records
+   `claimed_confirmation`), so an arm cannot skip a confirmation step.
 5. **Import**: with the mapping the human ended with, the real importer translates and validates the
-   rows (a dry run); every row is compared with the true pig.
+   rows (a dry run). A row counts as right only if the importer **accepted** it and it equals the true pig:
+   a blank cell that happens to match the truth does not count when the importer rejected the row.
 
 ## The test files (the corpus)
 
@@ -99,7 +104,7 @@ consequence of the unseen-header share assumed above. The **unseen** row is the 
 ```
 evals/
   nhoma_evals/   pigs.py  styles.py  corpus.py  bridge.py  arms.py  grade.py  report.py  run.py
-  tests/         tests of the evaluation code (34), including tests that break things on purpose
+  tests/         tests of the evaluation code (44), including tests that break things on purpose
   corpus/        the 100 generated files + answer keys + manifest
   results/       saved reports per arm and split
   runs/          raw per-file output (git-ignored)

@@ -30,26 +30,26 @@
 
 | category | files | columns right | silent-mistake files | perfect (flagged-only human) | actions / file (diligent human) |
 |---|---|---|---|---|---|
-| ghana | 71 | 64% | 49% | 51% | 3.4 |
-| stress | 14 | 39% | 79% | 21% | 5.4 |
+| ghana | 71 | 64% | 49% | 51% | 3.3 |
+| stress | 14 | 39% | 79% | 21% | 5.6 |
 
 ## 4. By file feature (a file can have several)
 
 | feature | files | columns right | silent-mistake files | perfect (flagged-only human) | actions / file (diligent human) |
 |---|---|---|---|---|---|
-| blank_rows | 15 | 58% | 33% | 67% | 3.9 |
-| date:MM/dd/yyyy | 7 | 47% | 71% | 29% | 4.9 |
+| blank_rows | 15 | 58% | 33% | 67% | 4.1 |
+| date:MM/dd/yyyy | 7 | 47% | 71% | 29% | 5.1 |
 | date:dd.MM.yyyy | 7 | 56% | 43% | 57% | 4.0 |
-| date:dd/MM/yyyy | 56 | 63% | 50% | 50% | 3.5 |
-| date:iso | 15 | 57% | 67% | 33% | 3.6 |
+| date:dd/MM/yyyy | 56 | 63% | 50% | 50% | 3.6 |
+| date:iso | 15 | 57% | 67% | 33% | 3.4 |
 | enc:cp1252 | 7 | 61% | 43% | 57% | 3.9 |
 | enc:utf-8 | 43 | 59% | 53% | 47% | 3.7 |
 | enc:utf-8-sig | 35 | 62% | 57% | 43% | 3.6 |
-| junk_columns | 17 | 54% | 71% | 29% | 4.2 |
+| junk_columns | 17 | 54% | 71% | 29% | 4.3 |
 | lb | 8 | 36% | 75% | 25% | 5.4 |
-| no_breed | 7 | 56% | 57% | 43% | 4.7 |
-| no_weight | 16 | 53% | 50% | 50% | 3.7 |
-| shuffled | 3 | 33% | 100% | 0% | 4.7 |
+| no_breed | 7 | 56% | 57% | 43% | 4.6 |
+| no_weight | 16 | 53% | 50% | 50% | 3.8 |
+| shuffled | 3 | 33% | 100% | 0% | 5.0 |
 | unseen_headers | 82 | 59% | 56% | 44% | 3.8 |
 
 ## 5. Gap cases (a format the importer cannot read today)

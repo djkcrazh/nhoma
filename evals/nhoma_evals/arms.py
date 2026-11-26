@@ -5,7 +5,7 @@ JSON recipe saying which column feeds which Nhoma field and how to translate the
 
 What a proposer must NOT do: look at the answer key, or claim that a human has confirmed
 something. The two "confirmed" flags in a mapping are only ever set by the evaluation, playing the
-part of the human (grade.py).
+part of the human (grade.py). If an arm sets one anyway, grade.py clears it and notes the attempt.
 
 Arms in this file:
     baseline  the rule-based guesser that ships in the app today (TypeScript `suggestMapping`).
