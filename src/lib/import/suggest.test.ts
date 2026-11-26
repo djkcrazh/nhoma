@@ -332,6 +332,19 @@ describe("checkMapping", () => {
     expect(checkMapping(confirmed(mapping), records)).toEqual([]);
   });
 
+  it("blocks a default-only date or weight until a person confirms how it is read", () => {
+    const base = confirmed(suggestMapping(headers, records).mapping);
+    const mapping: ImportMapping = {
+      ...base,
+      fields: { ...base.fields, dateOfBirth: { source: null, default: "03/04/2024" }, weightKg: { source: null, default: "1,200" } },
+      transforms: { ...base.transforms, dateFormatConfirmed: false },
+    };
+    // (dateOfBirth is also "missing": only breed may be satisfied by a default. The server guard still matters for API callers.)
+    expect(checkMapping(mapping, records).map((p) => p.kind)).toEqual(["missingField", "confirmDateOrder", "confirmNumberFormat"]);
+    const done: ImportMapping = { ...mapping, transforms: { ...mapping.transforms, dateFormatConfirmed: true, numberFormatConfirmed: true } };
+    expect(checkMapping(done, records).map((p) => p.kind)).toEqual(["missingField"]);
+  });
+
   it("flags a required field that was un-mapped by hand, but accepts a breed default", () => {
     const mapping = confirmed(suggestMapping(headers, records).mapping);
     mapping.fields.breed = { source: null };

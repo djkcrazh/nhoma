@@ -41,7 +41,7 @@ export interface DecodedCsv {
 // `Uint8Array` is the browser/Node type for "a sequence of bytes". Python: `bytes`.
 // `bytes[0]` is the first byte as an integer 0-255 (in Python 3 `data[0]` is also an int).
 // Hex literals like 0xef are written the same in Python.
-export function decodeCsvBytes(bytes: Uint8Array): DecodedCsv {
+export function decodeCsvBytes(bytes: Uint8Array, legacyOverride?: LegacyCsvEncoding): DecodedCsv {
   // A "BOM" is a few magic bytes some programs put at the very start of a file to say
   // which encoding it uses. EF BB BF means UTF-8. (Python: `data.startswith(b"\xef\xbb\xbf")`)
   if (bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf) {
@@ -62,17 +62,44 @@ export function decodeCsvBytes(bytes: Uint8Array): DecodedCsv {
     // replacement character. Python's `.decode("utf-8")` is already strict by default.
     return { text: new TextDecoder("utf-8", { fatal: true }).decode(bytes), encoding: "utf-8" };
   } catch {
-    // Not valid UTF-8, so it must be an old Windows code page. Ask the helper below which one.
+    // Not valid UTF-8, so it must be an old Windows code page. The guess below can be wrong
+    // (see guessLegacyEncoding), so a person's choice (`legacyOverride`) always wins over it.
     // (`catch {` with no variable = `except Exception:` where we ignore the error object.)
-    const encoding = guessLegacyEncoding(bytes);
+    const encoding = legacyOverride ?? guessLegacyEncoding(bytes);
     return { text: new TextDecoder(encoding).decode(bytes), encoding };
   }
+}
+
+/** The legacy code pages a person can pick between when the guess looks wrong. */
+export const LEGACY_ENCODINGS: readonly LegacyCsvEncoding[] = ["windows-1252", "gb18030"];
+
+/** True for the two encodings that are GUESSED from the bytes (as opposed to announced by a BOM or proven by strict UTF-8). */
+export const isLegacyEncoding = (e: CsvEncoding): e is LegacyCsvEncoding => (LEGACY_ENCODINGS as readonly string[]).includes(e);
+
+/**
+ * A few pieces of text that contain non-ASCII characters when the bytes are read as `encoding`,
+ * so a person can see what the guess did to their accents or Chinese and pick the reading that
+ * looks right. Plain ASCII says nothing about the encoding, so it is never shown.
+ */
+// Python: `words = [w for w in re.split(r"[,;\t\r\n]+", data.decode(enc)) if re.search(r"[^\x00-\x7f]", w)]`
+export function previewDecoding(bytes: Uint8Array, encoding: LegacyCsvEncoding, max = 3): string[] {
+  const text = new TextDecoder(encoding).decode(bytes);
+  const seen = new Set<string>();
+  for (const cell of text.split(/[,;\t\r\n]+/)) {
+    const trimmed = cell.trim().replace(/^"|"$/g, "");
+    if (trimmed && /[^\x00-\x7f]/.test(trimmed)) seen.add(trimmed.length > 40 ? `${trimmed.slice(0, 40)}…` : trimmed);
+    if (seen.size >= max) break;
+  }
+  return [...seen];
 }
 
 /**
  * The bytes are NOT valid UTF-8 (and have no BOM). Decide which legacy code
  * page they most likely use. Both decoders accept almost any input, so the
- * wrong guess does not throw, it silently produces garbage:
+ * wrong guess does not throw, it silently produces garbage. It can also be wrong
+ * on perfectly valid text: windows-1252 "créée" is E9 E9, which is also a valid GBK
+ * character, so two such notes read as Chinese. No byte pattern separates those
+ * cases, so the import screen shows the guess and lets a person override it:
  *   - French "née" (6e e9 65) read as GB18030 becomes the CJK mojibake "n閑".
  *   - Chinese "品种" (c6 b7 d6 d6) read as windows-1252 becomes "Æ·ÖÖ".
  *

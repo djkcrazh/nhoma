@@ -30,6 +30,7 @@ import {
   castratedResolver,
   dateOrderAlternative,
   defaultMapping,
+  effectiveCell,
   isBlankPlaceholder,
   isFemale,
   needsDateOrderConfirmation,
@@ -262,9 +263,9 @@ function analyze(mapping: ImportMapping, records: Record<string, unknown>[], hea
         });
 
   // ---- DATES: collect the non-empty date cells and find the ones the chosen format cannot read
-  const dateSource = column("dateOfBirth");
-  // `cond ? a : b` = `a if cond else b`.  `.filter(Boolean)` drops empty strings.
-  const dateCells = dateSource ? records.map((r) => readCell(r, dateSource)).filter(Boolean) : [];
+  // effectiveCell = what applyMapping reads: the column's cell, or the field's default when it is blank.
+  // `.filter(Boolean)` drops empty strings.
+  const dateCells = records.map((r) => effectiveCell(r, mapping.fields.dateOfBirth)).filter(Boolean);
   const format = mapping.transforms.dateFormat;
   const bad = dateCells.filter((d) => parseDate(d, format) === null);
   const other = dateOrderAlternative(format);
@@ -272,10 +273,7 @@ function analyze(mapping: ImportMapping, records: Record<string, unknown>[], hea
   const betterFormat = other && bad.length > 0 && dateCells.every((d) => parseDate(d, other) !== null) ? other : undefined;
 
   // ---- WEIGHTS: same idea, with number conventions. "n/a"-style placeholders are ignored.
-  const weightSource = column("weightKg");
-  const weightCells = weightSource
-    ? records.map((r) => readCell(r, weightSource)).filter((c) => c && !isBlankPlaceholder(c))
-    : [];
+  const weightCells = records.map((r) => effectiveCell(r, mapping.fields.weightKg)).filter((c) => c && !isBlankPlaceholder(c));
   // `const { a, b } = obj` unpacks keys into variables (Python: `a, b = obj["a"], obj["b"]`).
   const { weightUnit, numberFormat } = mapping.transforms;
   const badWeights = weightCells.filter((c) => parseWeight(c, weightUnit, numberFormat) === null);

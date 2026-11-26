@@ -23,6 +23,8 @@ import {
   applyMapping,
   castratedResolver,
   dateOrderAlternative,
+  effectiveCell,
+  hasValueSource,
   isAmbiguousNumber,
   isFemale,
   NUMBER_FORMATS,
@@ -150,7 +152,9 @@ export function ImportMappingStep({
   const preview = useMemo(() => applyMapping(records.slice(0, 3), mapping).rows, [records, mapping]);
 
   const sexSource = mapping.fields.sex?.source;
-  const dateSource = mapping.fields.dateOfBirth?.source;
+  // A date or weight can come from a column OR a default value; either way it is read (and must be confirmed).
+  const dateActive = hasValueSource(mapping.fields.dateOfBirth);
+  const weightActive = hasValueSource(mapping.fields.weightKg);
   const castratedSource = mapping.fields.castrated?.source;
   const format = mapping.transforms.dateFormat;
   const alternative = dateOrderAlternative(format);
@@ -179,32 +183,31 @@ export function ImportMappingStep({
 
   // Dates that read differently day-first vs month-first make the best examples for the confirmation.
   const orderExamples = useMemo(() => {
-    if (!dateSource || !alternative) return [];
-    const cells = records.map((r) => readCell(r, dateSource)).filter(Boolean);
+    if (!dateActive || !alternative) return [];
+    const cells = records.map((r) => effectiveCell(r, mapping.fields.dateOfBirth)).filter(Boolean);
     const differing = cells.filter((d) => {
       const a = parseDate(d, format);
       const b = parseDate(d, alternative);
       return a && b && a !== b;
     });
     return [...new Set(differing.length > 0 ? differing : cells)].slice(0, 2);
-  }, [records, dateSource, format, alternative]);
+  }, [records, dateActive, mapping.fields.dateOfBirth, format, alternative]);
 
   // Weights that read differently under each convention make the best examples for the confirmation.
-  const weightSource = mapping.fields.weightKg?.source;
   const numberExamples = useMemo(
     () =>
-      weightSource
-        ? [...new Set(records.map((r) => readCell(r, weightSource)).filter(isAmbiguousNumber))].slice(0, 2)
+      weightActive
+        ? [...new Set(records.map((r) => effectiveCell(r, mapping.fields.weightKg)).filter(isAmbiguousNumber))].slice(0, 2)
         : [],
-    [records, weightSource],
+    [records, weightActive, mapping.fields.weightKg],
   );
   const numberConfirmed = mapping.transforms.numberFormatConfirmed;
   const needsNumberConfirm = problems.some((p) => p.kind === "confirmNumberFormat");
   const kgText = (n: number | null) => (n === null ? "not a valid number" : `${n} ${mapping.transforms.weightUnit}`);
 
   const dateSamples = useMemo(
-    () => (dateSource ? records.map((r) => readCell(r, dateSource)).filter(Boolean).slice(0, 3) : []),
-    [records, dateSource],
+    () => (dateActive ? records.map((r) => effectiveCell(r, mapping.fields.dateOfBirth)).filter(Boolean).slice(0, 3) : []),
+    [records, dateActive, mapping.fields.dateOfBirth],
   );
 
   const setField = (field: ImportColumn, source: string | null) =>
@@ -273,260 +276,263 @@ export function ImportMappingStep({
         </ul>
       )}
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        {IMPORT_COLUMNS.map((field) => {
-          const required = (REQUIRED_IMPORT_COLUMNS as readonly string[]).includes(field);
-          const missing = problems.some((p) => (p.kind === "missingField" || p.kind === "unknownColumn") && p.field === field);
-          return (
-            <div key={field}>
-              <label className="field-label" htmlFor={`map-${field}`}>
-                {FIELD_LABELS[field]}
-                {required && <span aria-hidden> *</span>}
-              </label>
-              <select
-                id={`map-${field}`}
-                className={`select ${missing ? "input-error" : ""}`}
-                value={mapping.fields[field]?.source ?? ""}
-                onChange={(e) => setField(field, e.target.value || null)}
-              >
-                <option value="">{required ? "— choose a column —" : "— not in my file —"}</option>
-                {headers.map((h) => (
-                  <option key={h} value={h}>
-                    {h}
-                  </option>
-                ))}
-              </select>
-              {field === "breed" && !mapping.fields.breed?.source && (
-                <input
-                  className="input mt-2"
-                  placeholder="Breed for every pig, e.g. Mixed Breed"
-                  aria-label="Default breed"
-                  value={mapping.fields.breed?.default ?? ""}
-                  onChange={(e) => setBreedDefault(e.target.value)}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
+      {/* Locked while the check runs: the report must describe exactly the mapping that gets imported. */}
+      <fieldset disabled={busy} className="min-w-0 space-y-5">
+        <div className="grid gap-3 sm:grid-cols-2">
+          {IMPORT_COLUMNS.map((field) => {
+            const required = (REQUIRED_IMPORT_COLUMNS as readonly string[]).includes(field);
+            const missing = problems.some((p) => (p.kind === "missingField" || p.kind === "unknownColumn") && p.field === field);
+            return (
+              <div key={field}>
+                <label className="field-label" htmlFor={`map-${field}`}>
+                  {FIELD_LABELS[field]}
+                  {required && <span aria-hidden> *</span>}
+                </label>
+                <select
+                  id={`map-${field}`}
+                  className={`select ${missing ? "input-error" : ""}`}
+                  value={mapping.fields[field]?.source ?? ""}
+                  onChange={(e) => setField(field, e.target.value || null)}
+                >
+                  <option value="">{required ? "— choose a column —" : "— not in my file —"}</option>
+                  {headers.map((h) => (
+                    <option key={h} value={h}>
+                      {h}
+                    </option>
+                  ))}
+                </select>
+                {field === "breed" && !mapping.fields.breed?.source && (
+                  <input
+                    className="input mt-2"
+                    placeholder="Breed for every pig, e.g. Mixed Breed"
+                    aria-label="Default breed"
+                    value={mapping.fields.breed?.default ?? ""}
+                    onChange={(e) => setBreedDefault(e.target.value)}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
 
-      {(sexValues.length > 0 || castratedValues.length > 0 || dateSource || mapping.fields.weightKg?.source) && (
-        <div className="space-y-4 rounded-lg border border-rule p-4">
-          {dateSource && pair.length === 2 && (
-            <fieldset className={`rounded-lg border p-3 ${confirmed ? "border-rule" : "border-overdue"}`}>
-              <legend className="field-label px-1">Confirm your date order *</legend>
-              <p className="text-xs text-ink-faint">
-                A date like 03/04/2024 is 3 April in most of the world and March 4 in the US. Pick the one your file uses. We
-                never choose this for you.
-              </p>
-              {dateHint && pair.includes(dateHint.format) && <p className="mt-1 text-xs">Hint: {dateHint.reason}</p>}
-              <div className="mt-2 grid gap-2 sm:grid-cols-2">
-                {pair.map((f) => {
-                  const selected = confirmed && format === f;
-                  return (
-                    <label
-                      key={f}
-                      className={`cursor-pointer rounded-lg border p-3 text-sm ${selected ? "border-accent bg-sunken" : "border-rule"}`}
-                    >
-                      <span className="flex items-center gap-2 font-semibold">
-                        <input
-                          type="radio"
-                          name="date-order"
-                          checked={selected}
-                          onChange={() => setTransform({ dateFormat: f, dateFormatConfirmed: true })}
-                        />
-                        {orderName(f)} <span className="font-tag text-xs font-normal text-ink-faint">{f}</span>
-                      </span>
-                      {orderExamples.map((d) => (
-                        <span key={d} className="mt-1 block text-xs text-ink-faint">
-                          {d} → {plainDate(parseDate(d, f))}
+        {(sexValues.length > 0 || castratedValues.length > 0 || dateActive || weightActive) && (
+          <div className="space-y-4 rounded-lg border border-rule p-4">
+            {dateActive && pair.length === 2 && (
+              <fieldset className={`rounded-lg border p-3 ${confirmed ? "border-rule" : "border-overdue"}`}>
+                <legend className="field-label px-1">Confirm your date order *</legend>
+                <p className="text-xs text-ink-faint">
+                  A date like 03/04/2024 is 3 April in most of the world and March 4 in the US. Pick the one your file uses. We
+                  never choose this for you.
+                </p>
+                {dateHint && pair.includes(dateHint.format) && <p className="mt-1 text-xs">Hint: {dateHint.reason}</p>}
+                <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                  {pair.map((f) => {
+                    const selected = confirmed && format === f;
+                    return (
+                      <label
+                        key={f}
+                        className={`cursor-pointer rounded-lg border p-3 text-sm ${selected ? "border-accent bg-sunken" : "border-rule"}`}
+                      >
+                        <span className="flex items-center gap-2 font-semibold">
+                          <input
+                            type="radio"
+                            name="date-order"
+                            checked={selected}
+                            onChange={() => setTransform({ dateFormat: f, dateFormatConfirmed: true })}
+                          />
+                          {orderName(f)} <span className="font-tag text-xs font-normal text-ink-faint">{f}</span>
                         </span>
-                      ))}
-                    </label>
-                  );
-                })}
-              </div>
-            </fieldset>
-          )}
+                        {orderExamples.map((d) => (
+                          <span key={d} className="mt-1 block text-xs text-ink-faint">
+                            {d} → {plainDate(parseDate(d, f))}
+                          </span>
+                        ))}
+                      </label>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            )}
 
-          {sexValues.length > 0 && (
-            <fieldset>
-              <legend className="field-label">What your sex values mean</legend>
-              <div className="mt-1 grid gap-2 sm:grid-cols-2">
-                {sexValues.map((v) => (
-                  <label key={v} className="flex items-center justify-between gap-3 text-sm">
-                    <span className="font-tag">{v}</span>
-                    <select
-                      className={`select !w-auto ${sexValueFor(v) ? "" : "input-error"}`}
-                      value={sexValueFor(v)}
-                      onChange={(e) => setSexValue(v, e.target.value as "MALE" | "FEMALE" | "")}
-                      aria-label={`Meaning of ${v}`}
-                    >
-                      <option value="">— choose —</option>
-                      <option value="MALE">Male</option>
-                      <option value="FEMALE">Female</option>
-                    </select>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-          )}
-
-          {castratedValues.length > 0 && (
-            <fieldset>
-              <legend className="field-label">What your castrated values mean</legend>
-              <div className="mt-1 grid gap-2 sm:grid-cols-2">
-                {castratedValues.map((v) => {
-                  const meaning = castratedMeaning(v);
-                  return (
+            {sexValues.length > 0 && (
+              <fieldset>
+                <legend className="field-label">What your sex values mean</legend>
+                <div className="mt-1 grid gap-2 sm:grid-cols-2">
+                  {sexValues.map((v) => (
                     <label key={v} className="flex items-center justify-between gap-3 text-sm">
                       <span className="font-tag">{v}</span>
                       <select
-                        className={`select !w-auto ${meaning === undefined ? "input-error" : ""}`}
-                        value={meaning === undefined ? "" : meaning ? "yes" : "no"}
-                        onChange={(e) => setCastratedValue(v, e.target.value as "yes" | "no" | "")}
-                        aria-label={`Castrated meaning of ${v}`}
+                        className={`select !w-auto ${sexValueFor(v) ? "" : "input-error"}`}
+                        value={sexValueFor(v)}
+                        onChange={(e) => setSexValue(v, e.target.value as "MALE" | "FEMALE" | "")}
+                        aria-label={`Meaning of ${v}`}
                       >
                         <option value="">— choose —</option>
-                        <option value="yes">Castrated</option>
-                        <option value="no">Not castrated</option>
+                        <option value="MALE">Male</option>
+                        <option value="FEMALE">Female</option>
                       </select>
                     </label>
-                  );
-                })}
-              </div>
-            </fieldset>
-          )}
-
-          {dateSource && (
-            <div>
-              <label className="field-label" htmlFor="map-date-format">
-                Date format
-              </label>
-              <select
-                id="map-date-format"
-                className="select"
-                value={format}
-                onChange={(e) => setTransform({ dateFormat: e.target.value as DateFormat, dateFormatConfirmed: false })}
-              >
-                {DATE_FORMATS.map((f) => (
-                  <option key={f} value={f}>
-                    {FORMAT_LABELS[f]}
-                  </option>
-                ))}
-              </select>
-              {dateSamples.length > 0 && (
-                <p className="mt-1 text-xs text-ink-faint">
-                  {dateSamples.map((d) => `${d} → ${parseDate(d, format) ?? "unreadable"}`).join("  ·  ")}
-                </p>
-              )}
-            </div>
-          )}
-
-          {weightSource && needsNumberConfirm && (
-            <fieldset className={`rounded-lg border p-3 ${numberConfirmed ? "border-rule" : "border-overdue"}`}>
-              <legend className="field-label px-1">Confirm how your weights are written *</legend>
-              <p className="text-xs text-ink-faint">
-                A weight like 1,200 is twelve hundred in Ghana, the UK and the US, and one point two in France and Spain. Pick the
-                convention your file uses. We never choose this for you.
-              </p>
-              {numberHint && <p className="mt-1 text-xs">Hint: {numberHint.reason}</p>}
-              <div className="mt-2 grid gap-2 sm:grid-cols-2">
-                {NUMBER_FORMATS.map((f) => {
-                  const selected = numberConfirmed && mapping.transforms.numberFormat === f;
-                  return (
-                    <label
-                      key={f}
-                      className={`cursor-pointer rounded-lg border p-3 text-sm ${selected ? "border-accent bg-sunken" : "border-rule"}`}
-                    >
-                      <span className="flex items-center gap-2 font-semibold">
-                        <input
-                          type="radio"
-                          name="number-format"
-                          checked={selected}
-                          onChange={() => setTransform({ numberFormat: f, numberFormatConfirmed: true })}
-                        />
-                        {NUMBER_LABELS[f].name} <span className="font-tag text-xs font-normal text-ink-faint">{NUMBER_LABELS[f].code}</span>
-                      </span>
-                      {numberExamples.map((v) => (
-                        <span key={v} className="mt-1 block text-xs text-ink-faint">
-                          {v} → {kgText(parseNumber(weightDigits(v) ?? "", f))}
-                        </span>
-                      ))}
-                    </label>
-                  );
-                })}
-              </div>
-            </fieldset>
-          )}
-
-          {weightSource && (
-            <div>
-              <label className="field-label" htmlFor="map-number-format">
-                Number format
-              </label>
-              <select
-                id="map-number-format"
-                className="select"
-                value={mapping.transforms.numberFormat}
-                onChange={(e) => setTransform({ numberFormat: e.target.value as NumberFormat, numberFormatConfirmed: false })}
-              >
-                {NUMBER_FORMATS.map((f) => (
-                  <option key={f} value={f}>
-                    {NUMBER_LABELS[f].code} ({NUMBER_LABELS[f].name.toLowerCase()})
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          {mapping.fields.weightKg?.source && (
-            <div>
-              <label className="field-label" htmlFor="map-weight-unit">
-                Weight unit
-              </label>
-              <select
-                id="map-weight-unit"
-                className="select"
-                value={mapping.transforms.weightUnit}
-                onChange={(e) => setTransform({ weightUnit: e.target.value as "kg" | "lb" })}
-              >
-                <option value="kg">Kilograms</option>
-                <option value="lb">Pounds (converted to kg)</option>
-              </select>
-            </div>
-          )}
-        </div>
-      )}
-
-      {preview.length > 0 && (
-        <div>
-          <div className="field-label">How the first rows will be read</div>
-          <div className="overflow-x-auto rounded-lg border border-rule">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  {["Tag", "Breed", "Sex", "Born", "Weight kg", "Castrated"].map((h) => (
-                    <th key={h}>{h}</th>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
-                {preview.map((r, i) => (
-                  <tr key={i}>
-                    <td className="font-tag text-xs">{r.tagId || "—"}</td>
-                    <td className="text-xs">{r.breed || "—"}</td>
-                    <td className="text-xs">{r.sex || "—"}</td>
-                    <td className="font-tag text-xs">{r.dateOfBirth ? (confirmed || !alternative ? r.dateOfBirth : `${r.dateOfBirth} (unconfirmed)`) : "—"}</td>
-                    <td className="font-tag text-xs">{r.weightKg || "—"}</td>
-                    <td className="text-xs">{r.castrated || "—"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                </div>
+              </fieldset>
+            )}
+
+            {castratedValues.length > 0 && (
+              <fieldset>
+                <legend className="field-label">What your castrated values mean</legend>
+                <div className="mt-1 grid gap-2 sm:grid-cols-2">
+                  {castratedValues.map((v) => {
+                    const meaning = castratedMeaning(v);
+                    return (
+                      <label key={v} className="flex items-center justify-between gap-3 text-sm">
+                        <span className="font-tag">{v}</span>
+                        <select
+                          className={`select !w-auto ${meaning === undefined ? "input-error" : ""}`}
+                          value={meaning === undefined ? "" : meaning ? "yes" : "no"}
+                          onChange={(e) => setCastratedValue(v, e.target.value as "yes" | "no" | "")}
+                          aria-label={`Castrated meaning of ${v}`}
+                        >
+                          <option value="">— choose —</option>
+                          <option value="yes">Castrated</option>
+                          <option value="no">Not castrated</option>
+                        </select>
+                      </label>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            )}
+
+            {dateActive && (
+              <div>
+                <label className="field-label" htmlFor="map-date-format">
+                  Date format
+                </label>
+                <select
+                  id="map-date-format"
+                  className="select"
+                  value={format}
+                  onChange={(e) => setTransform({ dateFormat: e.target.value as DateFormat, dateFormatConfirmed: false })}
+                >
+                  {DATE_FORMATS.map((f) => (
+                    <option key={f} value={f}>
+                      {FORMAT_LABELS[f]}
+                    </option>
+                  ))}
+                </select>
+                {dateSamples.length > 0 && (
+                  <p className="mt-1 text-xs text-ink-faint">
+                    {dateSamples.map((d) => `${d} → ${parseDate(d, format) ?? "unreadable"}`).join("  ·  ")}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {weightActive && needsNumberConfirm && (
+              <fieldset className={`rounded-lg border p-3 ${numberConfirmed ? "border-rule" : "border-overdue"}`}>
+                <legend className="field-label px-1">Confirm how your weights are written *</legend>
+                <p className="text-xs text-ink-faint">
+                  A weight like 1,200 is twelve hundred in Ghana, the UK and the US, and one point two in France and Spain. Pick the
+                  convention your file uses. We never choose this for you.
+                </p>
+                {numberHint && <p className="mt-1 text-xs">Hint: {numberHint.reason}</p>}
+                <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                  {NUMBER_FORMATS.map((f) => {
+                    const selected = numberConfirmed && mapping.transforms.numberFormat === f;
+                    return (
+                      <label
+                        key={f}
+                        className={`cursor-pointer rounded-lg border p-3 text-sm ${selected ? "border-accent bg-sunken" : "border-rule"}`}
+                      >
+                        <span className="flex items-center gap-2 font-semibold">
+                          <input
+                            type="radio"
+                            name="number-format"
+                            checked={selected}
+                            onChange={() => setTransform({ numberFormat: f, numberFormatConfirmed: true })}
+                          />
+                          {NUMBER_LABELS[f].name} <span className="font-tag text-xs font-normal text-ink-faint">{NUMBER_LABELS[f].code}</span>
+                        </span>
+                        {numberExamples.map((v) => (
+                          <span key={v} className="mt-1 block text-xs text-ink-faint">
+                            {v} → {kgText(parseNumber(weightDigits(v) ?? "", f))}
+                          </span>
+                        ))}
+                      </label>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            )}
+
+            {weightActive && (
+              <div>
+                <label className="field-label" htmlFor="map-number-format">
+                  Number format
+                </label>
+                <select
+                  id="map-number-format"
+                  className="select"
+                  value={mapping.transforms.numberFormat}
+                  onChange={(e) => setTransform({ numberFormat: e.target.value as NumberFormat, numberFormatConfirmed: false })}
+                >
+                  {NUMBER_FORMATS.map((f) => (
+                    <option key={f} value={f}>
+                      {NUMBER_LABELS[f].code} ({NUMBER_LABELS[f].name.toLowerCase()})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {weightActive && (
+              <div>
+                <label className="field-label" htmlFor="map-weight-unit">
+                  Weight unit
+                </label>
+                <select
+                  id="map-weight-unit"
+                  className="select"
+                  value={mapping.transforms.weightUnit}
+                  onChange={(e) => setTransform({ weightUnit: e.target.value as "kg" | "lb" })}
+                >
+                  <option value="kg">Kilograms</option>
+                  <option value="lb">Pounds (converted to kg)</option>
+                </select>
+              </div>
+            )}
           </div>
-        </div>
-      )}
+        )}
+
+        {preview.length > 0 && (
+          <div>
+            <div className="field-label">How the first rows will be read</div>
+            <div className="overflow-x-auto rounded-lg border border-rule">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    {["Tag", "Breed", "Sex", "Born", "Weight kg", "Castrated"].map((h) => (
+                      <th key={h}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {preview.map((r, i) => (
+                    <tr key={i}>
+                      <td className="font-tag text-xs">{r.tagId || "—"}</td>
+                      <td className="text-xs">{r.breed || "—"}</td>
+                      <td className="text-xs">{r.sex || "—"}</td>
+                      <td className="font-tag text-xs">{r.dateOfBirth ? (confirmed || !alternative ? r.dateOfBirth : `${r.dateOfBirth} (unconfirmed)`) : "—"}</td>
+                      <td className="font-tag text-xs">{r.weightKg || "—"}</td>
+                      <td className="text-xs">{r.castrated || "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </fieldset>
 
       <div className="flex justify-between gap-2 border-t border-dashed border-rule pt-4">
         <button className="btn btn-ghost" onClick={onBack} disabled={busy}>

@@ -204,11 +204,9 @@ export function defaultMapping(): ImportMapping {
 // Syntax notes: `!!x` converts to a boolean (Python `bool(x)`); `?.` is "safe access": `a?.b` is
 // `None` if `a` is missing instead of raising an error (Python: `(a or {}).get("b")`).
 export function needsDateOrderConfirmation(mapping: ImportMapping): boolean {
-  return (
-    !!mapping.fields.dateOfBirth?.source &&
-    isDateOrderSensitive(mapping.transforms.dateFormat) &&
-    !mapping.transforms.dateFormatConfirmed
-  );
+  // applyMapping reads a date from the column OR, when the cell is missing or blank, from the field's
+  // default, so a default-only date is read in the same ambiguous format and needs the same confirmation.
+  return hasValueSource(mapping.fields.dateOfBirth) && isDateOrderSensitive(mapping.transforms.dateFormat) && !mapping.transforms.dateFormatConfirmed;
 }
 
 /**
@@ -220,9 +218,10 @@ export function needsDateOrderConfirmation(mapping: ImportMapping): boolean {
 // (`records.some(fn)` = `any(fn(r) for r in records)`.)
 // `Record<string, unknown>[]` = `list[dict[str, Any]]`.
 export function needsNumberFormatConfirmation(mapping: ImportMapping, records: Record<string, unknown>[]): boolean {
-  const source = mapping.fields.weightKg?.source;
-  if (!source || mapping.transforms.numberFormatConfirmed) return false;
-  return records.some((r) => isAmbiguousNumber(readCell(r, source)));
+  const field = mapping.fields.weightKg;
+  if (!hasValueSource(field) || mapping.transforms.numberFormatConfirmed) return false;
+  // effectiveCell is exactly what applyMapping reads, so a default like "1,200" is checked too.
+  return records.some((r) => isAmbiguousNumber(effectiveCell(r, field)));
 }
 
 // ---------------------------------------------------------------------------
@@ -365,6 +364,21 @@ export function readCell(rec: Record<string, unknown>, source: string | null | u
   return typeof v === "string" ? v.trim() : "";
 }
 
+/**
+ * The value applyMapping uses for one field of one record: the mapped column's cell,
+ * or the field's default when that cell is missing or blank. Keep every check that
+ * asks "what will be imported?" on this function so it cannot drift from applyMapping.
+ */
+// Python: `return read_cell(rec, fm.source) or (fm.default or "").strip()`
+export function effectiveCell(rec: Record<string, unknown>, fm: z.infer<typeof fieldSchema> | undefined): string {
+  return readCell(rec, fm?.source) || fm?.default?.trim() || "";
+}
+
+/** True when a field can produce a value at all: it names a column or carries a non-blank default. */
+export function hasValueSource(fm: z.infer<typeof fieldSchema> | undefined): boolean {
+  return !!fm?.source || !!fm?.default?.trim();
+}
+
 // ---------------------------------------------------------------------------
 // 5. VOCABULARY RESOLVERS: translating a farm's words
 // ---------------------------------------------------------------------------
@@ -449,8 +463,7 @@ export function applyMapping(records: Record<string, unknown>[], mapping: Import
     // cell("tagId") = "the value in the farm's column that feeds tagId, or the field's default, or empty".
     // `a || b || c` returns the first non-empty value (Python: `a or b or c`).
     const cell = (field: ImportColumn): string => {
-      const fm = mapping.fields[field];
-      return readCell(rec, fm?.source) || fm?.default?.trim() || "";
+      return effectiveCell(rec, mapping.fields[field]);
     };
 
     // ---- date of birth: read it in the chosen style and rewrite it as ISO (yyyy-MM-dd)
