@@ -1,0 +1,15 @@
+Pig Tag,Castrated,Birth Date,Sex,Weight (kg),Breed
+PIG_001,No,2024-06-05,Boar,212,Duroc
+PIG_002,,2024-11-02,Sow,168,Mixed Breed
+PIG_003,,2023-07-27,Sow,169,Duroc
+PIG_004,,2023-09-03,Sow,209,Mixed Breed
+PIG_005,Yes,2025-05-22,Barrow,224,Mixed Breed
+PIG_006,No,2025-10-28,Boar,137,Mixed Breed
+PIG_007,,2025-06-28,Sow,204,Landrace
+PIG_008,No,2026-02-07,Boar,81,Landrace
+PIG_009,,2026-03-10,Gilt,59,Local
+PIG_010,Yes,2025-10-24,Barrow,142,Large White
+PIG_011,No,2025-10-16,Boar,142,Local
+PIG_012,No,2025-01-11,Boar,280,Landrace
+PIG_013,Yes,2026-03-10,Barrow,61,Local
+PIG_014,Yes,2026-02-04,Barrow,84,Local

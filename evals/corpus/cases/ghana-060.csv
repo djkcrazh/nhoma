@@ -1,0 +1,25 @@
+Pig ID,Breed,Birthday,Father,Mother ID,Sex,Wt (kg)
+NP-001,Local,19/12/2023,,,Male,203.6
+NP-002,Local,26/04/2024,,,Female,225.6
+NP-003,Duroc,18/03/2024,,,Female,250.6
+NP-004,Large White,20/07/2024,,,Female,248.2
+NP-005,Landrace,27/04/2026,,NP-004,Female,41.7
+NP-006,Mixed Breed,29/08/2025,,NP-003,Male,166.9
+NP-007,Mixed Breed,10/02/2025,,,Female,278.4
+NP-008,Mixed Breed,25/05/2025,NP-001,NP-003,Female,216.3
+NP-009,Duroc,06/01/2025,,NP-003,Female,280.0
+NP-010,Local,10/04/2025,NP-001,NP-004,Male,246.4
+NP-011,Duroc,27/04/2025,,NP-002,Male,240.4
+NP-012,Local,07/02/2026,,NP-002,Female,78.1
+NP-013,Mixed Breed,25/01/2025,NP-001,,Male,280.0
+NP-014,Local,13/01/2025,NP-001,NP-003,Female,280.0
+NP-015,Duroc,27/07/2025,NP-001,NP-003,Male,186.0
+NP-016,Landrace,12/07/2025,NP-001,NP-004,Male,198.3
+NP-017,Landrace,08/05/2026,,NP-002,Male,34.1
+NP-018,Landrace,13/03/2025,,,Male,264.3
+NP-019,Mixed Breed,10/04/2025,,NP-003,Female,247.3
+NP-020,Landrace,02/03/2025,,NP-004,Female,266.2
+NP-021,Duroc,12/03/2025,,NP-003,Male,263.2
+NP-022,Duroc,28/08/2025,,NP-003,Female,171.9
+NP-023,Local,01/07/2025,,NP-004,Female,204.4
+NP-024,Mixed Breed,24/05/2025,,NP-002,Female,226.2

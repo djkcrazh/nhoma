@@ -1,0 +1,54 @@
+Ear Tag,Sex,Remarks/Comments,Neutered,Sire No,Colour,Weaning Weight (kg),Breed,DOB
+GH-001,M,,N,,Black,9.7,Mixed Breed,2023-10-10
+GH-002,M,,N,,2,7.0,Mixed Breed,2024-12-18
+GH-003,F,,-,,White,6.1,Duroc,2024-01-07
+GH-004,F,sick – treated,-,,1,8.1,Landrace,2023-09-11
+GH-005,F,vaccinated,-,,A,8.7,Landrace,2024-12-29
+GH-006,F,,-,,Black,9.6,Large White,2024-08-28
+GH-007,F,,-,,2,7.4,Duroc,2023-09-03
+GH-008,F,,-,,1,8.7,Mixed Breed,2024-07-24
+GH-009,F,,-,,Black,8.7,Local,2025-02-19
+GH-010,M,,Y,GH-001,1,8.4,Mixed Breed,2025-05-30
+GH-011,F,sow’s first litter,-,,White,6.5,Local,2025-05-13
+GH-012,M,vaccinated,N,,2,8.5,Large White,2026-01-09
+GH-013,M,good mother,Y,GH-001,A,6.1,Large White,2025-10-24
+GH-014,M,sow’s first litter,N,,A,9.7,Landrace,2025-11-29
+GH-015,M,,Y,GH-001,3,6.3,Local,2025-08-31
+GH-016,M,pen 3,Y,GH-001,3,6.8,Large White,2026-01-24
+GH-017,F,,-,GH-002,Black,7.5,Large White,2026-04-22
+GH-018,M,,Y,GH-001,1,6.9,Local,2025-01-12
+GH-019,M,,N,,1,8.7,Mixed Breed,2026-03-26
+GH-020,M,,Y,GH-002,White,6.9,Local,2025-11-09
+GH-021,M,good mother,Y,,Black,8.8,Landrace,2025-07-14
+GH-022,M,weaned at 28 days,Y,,White,6.9,Duroc,2026-01-25
+GH-023,F,weaned at 28 days,-,GH-002,Black,9.3,Duroc,2025-05-13
+GH-024,F,vaccinated,-,GH-001,1,9.0,Duroc,2025-08-22
+GH-025,F,,-,,A,7.1,Mixed Breed,2025-04-04
+GH-026,F,pen 3,-,,Black,7.8,Large White,2025-12-25
+GH-027,M,,Y,GH-002,2,9.4,Mixed Breed,2025-03-17
+GH-028,M,,Y,,A,7.3,Large White,2026-05-24
+GH-029,M,vaccinated,Y,GH-002,Black,7.3,Duroc,2025-08-15
+GH-030,M,,N,GH-001,1,7.5,Mixed Breed,2025-08-22
+GH-031,F,,-,GH-002,1,7.5,Mixed Breed,2025-12-27
+GH-032,F,pen 3,-,GH-001,A,8.2,Mixed Breed,2025-06-19
+GH-033,F,pen 3,-,GH-001,A,8.1,Local,2025-01-09
+GH-034,M,sow’s first litter,N,,2,6.5,Duroc,2026-04-11
+GH-035,M,weaned at 28 days,N,,A,8.3,Mixed Breed,2025-03-15
+GH-036,M,sick – treated,N,,A,9.7,Mixed Breed,2025-08-21
+GH-037,M,good mother,N,GH-002,2,6.3,Large White,2025-01-27
+GH-038,M,,Y,,White,9.2,Duroc,2025-11-01
+GH-039,F,,-,GH-001,A,9.4,Mixed Breed,2026-05-22
+GH-040,M,,Y,,A,9.3,Mixed Breed,2025-04-15
+GH-041,M,,N,GH-002,1,7.7,Large White,2025-08-26
+GH-042,M,good mother,Y,,2,8.2,Landrace,2025-09-27
+GH-043,M,,Y,GH-001,White,8.5,Duroc,2025-04-16
+GH-044,F,,-,,1,10.0,Mixed Breed,2025-06-28
+GH-045,F,to be sold,-,,1,9.9,Duroc,2025-01-29
+GH-046,M,,N,,A,6.6,Large White,2025-01-15
+GH-047,M,,Y,GH-001,3,8.7,Mixed Breed,2025-10-17
+GH-048,F,,-,,1,6.5,Duroc,2025-12-16
+GH-049,F,,-,GH-002,Black,6.1,Large White,2025-01-18
+GH-050,F,pen 3,-,,White,6.8,Mixed Breed,2025-04-24
+GH-051,M,vaccinated,Y,,2,6.6,Local,2025-03-11
+GH-052,F,sick – treated,-,GH-001,A,8.1,Local,2025-07-19
+GH-053,M,sick – treated,N,,2,6.7,Local,2025-01-18

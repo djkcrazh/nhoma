@@ -105,6 +105,20 @@ describe("date order confirmation", () => {
     const m = withDates("dd/MM/yyyy", false);
     expect(needsDateOrderConfirmation({ ...m, fields: { ...m.fields, dateOfBirth: { source: null } } })).toBe(false);
   });
+
+  it("still asks when the date comes only from a default value (applyMapping reads defaults too)", () => {
+    const m = withDates("dd/MM/yyyy", false);
+    const defaultOnly: ImportMapping = { ...m, fields: { ...m.fields, dateOfBirth: { source: null, default: "03/04/2024" } } };
+    expect(needsDateOrderConfirmation(defaultOnly)).toBe(true);
+    // ...and it really is read in that ambiguous order, which is why it needs a person.
+    expect(applyMapping([{}], defaultOnly).rows[0].dateOfBirth).toBe("2024-04-03");
+    expect(needsDateOrderConfirmation({ ...defaultOnly, transforms: { ...defaultOnly.transforms, dateFormatConfirmed: true } })).toBe(false);
+  });
+
+  it("does not ask for a blank default", () => {
+    const m = withDates("dd/MM/yyyy", false);
+    expect(needsDateOrderConfirmation({ ...m, fields: { ...m.fields, dateOfBirth: { source: null, default: "  " } } })).toBe(false);
+  });
 });
 
 describe("parseDate", () => {
@@ -218,6 +232,21 @@ describe("number format confirmation", () => {
   it("is not required when weights are not mapped", () => {
     const m = withWeights(false);
     expect(needsNumberFormatConfirmation({ ...m, fields: { ...m.fields, weightKg: { source: null } } }, recs("1,200"))).toBe(false);
+  });
+
+  it("checks a default weight too: it is read with the same number format", () => {
+    const m = withWeights(false);
+    const defaultOnly: ImportMapping = { ...m, fields: { ...m.fields, weightKg: { source: null, default: "1,200" } } };
+    expect(needsNumberFormatConfirmation(defaultOnly, recs("", ""))).toBe(true);
+    expect(applyMapping([{}], defaultOnly).rows[0].weightKg).toBe("1200");
+    expect(needsNumberFormatConfirmation({ ...defaultOnly, transforms: { ...defaultOnly.transforms, numberFormatConfirmed: true } }, recs(""))).toBe(false);
+  });
+
+  it("checks the default that fills blank cells of a mapped column", () => {
+    const m = withWeights(false);
+    const withFallback: ImportMapping = { ...m, fields: { ...m.fields, weightKg: { source: "weightKg", default: "1,200" } } };
+    expect(needsNumberFormatConfirmation(withFallback, recs("85", ""))).toBe(true);
+    expect(needsNumberFormatConfirmation(withFallback, recs("85", "90"))).toBe(false); // the default is never used
   });
 });
 

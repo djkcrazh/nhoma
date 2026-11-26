@@ -1,0 +1,15 @@
+Ear Tag,Weight,Remarks/Comments,Breed,Date Weaned,Mother ID,M/F,Born On
+PIG_001,215,good mother,Duroc,11 Aug 2023,,Boar,14 Jul 2023
+PIG_002,187,sick – treated,Local,6 Jul 2024,,Sow,8 Jun 2024
+PIG_003,152,,Large White,4 May 2025,,Sow,6 Apr 2025
+PIG_004,256,,Landrace,16 Dec 2024,,Sow,18 Nov 2024
+PIG_005,224,,Duroc,20 Jun 2025,,Boar,23 May 2025
+PIG_006,98,pen 3,Landrace,10 Feb 2026,PIG_004,Barrow,13 Jan 2026
+PIG_007,61,vaccinated,Large White,16 Apr 2026,PIG_003,Boar,19 Mar 2026
+PIG_008,130,sow’s first litter,Duroc,16 Dec 2025,PIG_003,Gilt,18 Nov 2025
+PIG_009,212,,Landrace,5 Jul 2025,PIG_002,Sow,7 Jun 2025
+PIG_010,143,good mother,Landrace,4 Nov 2025,PIG_004,Barrow,7 Oct 2025
+PIG_011,170,,Mixed Breed,23 Sep 2025,PIG_004,Boar,26 Aug 2025
+PIG_012,250,sow’s first litter,Local,28 Apr 2025,PIG_004,Sow,31 Mar 2025
+PIG_013,174,good mother,Mixed Breed,20 Sep 2025,,Gilt,23 Aug 2025
+PIG_014,174,sow’s first litter,Local,16 Sep 2025,PIG_004,Gilt,19 Aug 2025

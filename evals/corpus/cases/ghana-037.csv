@@ -1,0 +1,32 @@
+ID,Gender,Genotype,Dam,Comments,Weight (kg),Birthday
+NP-001,Male,Large White,,sick – treated,248,10/01/2024
+NP-002,Female,Large White,,pen 3,254,24/10/2023
+NP-003,Female,Landrace,,vaccinated,248,07/07/2023
+NP-004,Female,Landrace,,pen 3,151,07/04/2025
+NP-005,Female,Large White,,,171,06/01/2024
+NP-006,Female,Local,,pen 3,280,15/01/2025
+NP-007,Female,Local,NP-004,good mother,53,26/03/2026
+NP-008,Female,Mixed Breed,,,79,16/02/2026
+NP-009,Male,Large White,NP-004,weaned at 28 days,278,05/02/2025
+NP-010,Male,Mixed Breed,NP-005,,117,07/12/2025
+NP-011,Female,Landrace,NP-005,to be sold,183,07/08/2025
+NP-012,Male,Mixed Breed,NP-002,,280,16/01/2025
+NP-013,Female,Large White,,sick – treated,56,01/04/2026
+NP-014,Female,Local,NP-002,,280,12/01/2025
+NP-015,Male,Large White,NP-005,sow’s first litter,259,29/03/2025
+NP-016,Female,Large White,NP-003,,227,21/05/2025
+NP-017,Male,Large White,NP-002,,183,06/08/2025
+NP-018,Male,Mixed Breed,NP-005,,195,21/07/2025
+NP-019,Female,Large White,,weaned at 28 days,150,12/10/2025
+NP-020,Female,Large White,NP-004,sick – treated,156,26/09/2025
+NP-021,Female,Mixed Breed,NP-004,weaned at 28 days,225,27/05/2025
+NP-022,Male,Duroc,NP-002,pen 3,235,06/05/2025
+NP-023,Female,Duroc,NP-005,,78,19/02/2026
+NP-024,Female,Local,NP-004,pen 3,235,04/05/2025
+NP-025,Male,Large White,NP-003,,235,30/04/2025
+NP-026,Male,Duroc,NP-003,vaccinated,136,27/10/2025
+NP-027,Male,Local,NP-003,,215,07/06/2025
+NP-028,Male,Local,,,140,24/10/2025
+NP-029,Male,Local,NP-003,sow’s first litter,76,09/02/2026
+NP-030,Female,Mixed Breed,NP-005,to be sold,139,20/10/2025
+NP-031,Male,Large White,NP-005,vaccinated,203,29/06/2025

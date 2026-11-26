@@ -16,7 +16,7 @@
 // =============================================================================
 
 import { describe, expect, it } from "vitest";
-import { decodeCsvBytes } from "./decode";
+import { decodeCsvBytes, isLegacyEncoding, previewDecoding } from "./decode";
 
 const hex = (h: string) => Uint8Array.from(Buffer.from(h, "hex"));
 const utf8 = (s: string) => new TextEncoder().encode(s);
@@ -93,6 +93,48 @@ describe("decodeCsvBytes", () => {
 
     it("does not call a single accent pair GB18030 (needs two pairs of evidence)", () => {
       expect(decodeCsvBytes(latin1("tagId,note\nPIG-1,éè\n")).encoding).toBe("windows-1252");
+    });
+  });
+
+  describe("a person's correction of the guess", () => {
+    // "créée" is E9 E9 in windows-1252, which is also a valid GBK character, so two notes fool the guesser.
+    const creee = latin1("tagId,note\nPIG-1,créée\nPIG-2,créée\n");
+
+    it("shows why a correction is needed: the guess reads valid French as Chinese", () => {
+      const guessed = decodeCsvBytes(creee);
+      expect(guessed.encoding).toBe("gb18030");
+      expect(guessed.text).not.toContain("créée");
+    });
+
+    it("decodes with the encoding the person picked instead of the guess", () => {
+      const fixed = decodeCsvBytes(creee, "windows-1252");
+      expect(fixed.encoding).toBe("windows-1252");
+      expect(fixed.text).toContain("PIG-1,créée");
+    });
+
+    it("lets a person pick GB18030 for a file the guess called windows-1252", () => {
+      expect(decodeCsvBytes(hex(CHINESE_GB18030), "windows-1252").encoding).toBe("windows-1252");
+      expect(decodeCsvBytes(latin1("tagId,note\nPIG-1,éè\n"), "gb18030").encoding).toBe("gb18030");
+    });
+
+    it("ignores the choice for files whose encoding is certain (UTF-8, BOMs)", () => {
+      expect(decodeCsvBytes(utf8("tagId,note\nPIG-1,créée\n"), "gb18030").encoding).toBe("utf-8");
+      expect(decodeCsvBytes(hex(UTF16LE_BOM), "gb18030").encoding).toBe("utf-16le");
+    });
+
+    it("previews the file's own non-ASCII text under each reading, and nothing else", () => {
+      expect(previewDecoding(creee, "windows-1252")).toEqual(["créée"]);
+      const asChinese = previewDecoding(creee, "gb18030");
+      expect(asChinese).toHaveLength(1);
+      expect(asChinese[0]).not.toBe("créée");
+      expect(previewDecoding(utf8("tagId,note\nPIG-1,plain\n"), "windows-1252")).toEqual([]);
+    });
+
+    it("tells guessed encodings from certain ones", () => {
+      expect(isLegacyEncoding("windows-1252")).toBe(true);
+      expect(isLegacyEncoding("gb18030")).toBe(true);
+      expect(isLegacyEncoding("utf-8")).toBe(false);
+      expect(isLegacyEncoding("utf-16le")).toBe(false);
     });
   });
 });

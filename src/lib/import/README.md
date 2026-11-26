@@ -78,7 +78,8 @@ def needs_number_format_confirmation(mapping, records) -> bool: ...
 # suggest.ts   (the baseline)
 def suggest_mapping(headers: list[str], records: list[dict]) -> MappingSuggestion: ...
     # {"mapping": ..., "unresolved": [...], "dateHint": ..., "numberHint": ...}
-def check_mapping(mapping, records) -> list[MappingProblem]: ...  # BLOCKING problems; [] means safe to continue
+def check_mapping(mapping, records, headers=None) -> list[MappingProblem]: ...  # BLOCKING problems; [] means safe to continue.
+    # Pass the file's real `headers`: a mapping that names a column the file lacks is flagged as `unknownColumn`.
 def mapping_warnings(mapping, records) -> list[MappingWarning]: ...
 
 # validate.ts

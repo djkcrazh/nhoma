@@ -1,0 +1,42 @@
+﻿Pig #,Comments,DOB,Gender,Dam
+PIG_001,,07/11/2024,Boar,
+PIG_002,vaccinated,05/04/2024,Sow,
+
+PIG_003,,02/02/2025,Sow,
+PIG_004,,15/10/2023,Sow,
+
+PIG_005,sick – treated,05/01/2024,Sow,
+PIG_006,to be sold,10/02/2025,Boar,PIG_004
+PIG_007,,29/05/2025,Boar,PIG_005
+PIG_008,sow’s first litter,12/04/2026,Barrow,
+PIG_009,,09/04/2026,Gilt,PIG_005
+PIG_010,good mother,16/04/2025,Sow,
+PIG_011,to be sold,17/02/2025,Sow,PIG_002
+PIG_012,pen 3,19/12/2025,Boar,PIG_002
+PIG_013,sow’s first litter,10/03/2025,Boar,PIG_003
+PIG_014,weaned at 28 days,11/02/2025,Sow,PIG_002
+
+PIG_015,to be sold,16/10/2025,Barrow,PIG_005
+PIG_016,,17/05/2026,Barrow,
+
+PIG_017,pen 3,03/06/2025,Sow,PIG_004
+PIG_018,to be sold,24/04/2026,Gilt,
+PIG_019,,08/04/2026,Gilt,PIG_002
+PIG_020,pen 3,22/05/2026,Gilt,PIG_002
+PIG_021,sick – treated,21/02/2025,Sow,
+PIG_022,,01/08/2025,Gilt,PIG_005
+PIG_023,sow’s first litter,21/05/2025,Boar,PIG_005
+PIG_024,,03/08/2025,Gilt,
+PIG_025,,07/05/2026,Barrow,
+PIG_026,sow’s first litter,02/07/2025,Boar,PIG_002
+PIG_027,to be sold,20/08/2025,Gilt,PIG_005
+PIG_028,vaccinated,19/03/2026,Gilt,PIG_005
+PIG_029,,27/12/2025,Boar,PIG_005
+PIG_030,good mother,14/09/2025,Barrow,PIG_002
+PIG_031,,15/06/2025,Barrow,PIG_004
+PIG_032,sow’s first litter,11/05/2026,Boar,
+PIG_033,vaccinated,19/04/2025,Sow,
+
+PIG_034,sick – treated,24/05/2025,Sow,PIG_003
+PIG_035,sick – treated,18/08/2025,Gilt,
+

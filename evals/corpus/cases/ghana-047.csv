@@ -1,0 +1,15 @@
+﻿Ear Tag No.,Sex,Born On,Breed,Dam ID,Weight (kg)
+A-0001,Male,20/03/2024,Mixed Breed,,222.2
+A-0002,Female,30/01/2024,Duroc,,259.0
+A-0003,Female,21/08/2024,Large White,,162.1
+A-0004,Female,20/11/2023,Landrace,,228.3
+A-0005,Female,14/02/2026,Mixed Breed,,76.2
+A-0006,Male,22/10/2025,Large White,A-0003,139.2
+A-0007,Male,09/12/2025,Local,,116.0
+A-0008,Male,08/05/2025,Large White,A-0003,228.7
+A-0009,Male,15/09/2025,Landrace,,160.0
+A-0010,Female,10/08/2025,Landrace,A-0002,175.6
+A-0011,Female,16/02/2025,Mixed Breed,A-0003,276.9
+A-0012,Female,11/02/2025,Landrace,A-0003,280.0
+A-0013,Male,08/10/2025,Duroc,A-0002,148.3
+A-0014,Male,29/05/2026,Local,A-0004,18.5

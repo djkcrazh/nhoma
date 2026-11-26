@@ -1,0 +1,61 @@
+﻿Pig Ref;Dam;Location;Born;Breed;Pen;Weight (lbs);Health Notes;Sex
+GH-001;;3;10/05/2024;Duroc;White;483,5;sick – treated;M
+GH-002;;White;01/29/2024;Mixed Breed;Black;458,8;weaned at 28 days;M
+GH-003;;1;03/10/2025;Large White;Black;551,4;sow’s first litter;M
+GH-004;;3;09/21/2024;Mixed Breed;A;557,1;to be sold;F
+GH-005;;White;04/27/2024;Local;Black;487,0;sick – treated;F
+GH-006;;A;07/14/2024;Mixed Breed;1;393,5;;F
+GH-007;;3;08/21/2024;Local;A;398,4;sow’s first litter;F
+GH-008;;2;05/11/2024;Duroc;Black;528,2;sow’s first litter;F
+GH-009;;3;07/22/2024;Large White;1;567,9;weaned at 28 days;F
+GH-010;;3;07/02/2023;Large White;Black;537,3;good mother;F
+GH-011;;Black;10/07/2025;Local;1;324,7;good mother;M
+GH-012;;1;04/08/2025;Local;A;541,9;to be sold;M
+GH-013;;2;05/14/2026;Landrace;Black;62,4;;M
+GH-014;GH-007;Black;02/06/2026;Duroc;Black;168,9;;M
+GH-015;GH-008;1;07/21/2025;Landrace;3;426,4;;M
+GH-016;GH-005;3;02/17/2026;Local;Black;172,0;weaned at 28 days;M
+GH-017;;Black;11/15/2025;Local;2;277,8;sow’s first litter;F
+GH-018;GH-010;1;03/12/2025;Landrace;1;589,5;pen 3;F
+GH-019;GH-004;Black;01/01/2026;Mixed Breed;3;223,1;good mother;M
+GH-020;GH-010;A;02/21/2025;Large White;A;600,8;;M
+GH-021;GH-008;White;02/01/2025;Local;A;617,3;;M
+GH-022;GH-006;2;01/27/2025;Mixed Breed;1;617,3;;M
+GH-023;GH-007;3;04/24/2026;Mixed Breed;Black;93,5;;M
+GH-024;GH-008;2;03/23/2025;Duroc;2;565,7;weaned at 28 days;M
+GH-025;;White;04/24/2026;Duroc;A;85,8;;F
+GH-026;GH-008;3;03/09/2026;Duroc;1;147,3;;M
+GH-027;GH-009;White;07/02/2025;Local;1;445,3;to be sold;M
+GH-028;GH-009;A;10/10/2025;Landrace;1;324,3;;F
+GH-029;GH-006;1;04/11/2026;Duroc;A;103,8;sow’s first litter;F
+GH-030;GH-006;1;02/15/2026;Landrace;1;165,6;pen 3;M
+GH-031;;White;01/25/2025;Mixed Breed;2;617,3;good mother;F
+GH-032;;White;08/20/2025;Duroc;Black;380,3;;F
+GH-033;GH-008;Black;01/12/2026;Duroc;A;207,9;;M
+GH-034;GH-010;Black;09/25/2025;Mixed Breed;1;342,8;vaccinated;F
+GH-035;;3;03/23/2025;Landrace;3;567,2;;F
+GH-036;;White;02/14/2025;Local;2;601,2;pen 3;F
+GH-037;GH-009;A;04/01/2025;Large White;White;568,6;sick – treated;M
+GH-038;;Black;01/23/2026;Landrace;3;199,3;to be sold;F
+GH-039;GH-006;Black;09/29/2025;Duroc;2;343,5;good mother;F
+GH-040;;1;01/10/2026;Local;3;217,6;sow’s first litter;F
+GH-041;GH-006;1;11/16/2025;Landrace;3;278,2;to be sold;F
+GH-042;GH-007;1;05/25/2025;Landrace;3;500,9;to be sold;M
+GH-043;GH-007;A;10/15/2025;Landrace;2;318,3;;M
+GH-044;GH-007;1;09/11/2025;Large White;3;358,7;;M
+GH-045;GH-005;3;09/28/2025;Large White;1;329,6;to be sold;F
+GH-046;GH-007;Black;05/23/2025;Local;White;480,2;;F
+GH-047;GH-007;2;05/17/2025;Local;2;492,3;sow’s first litter;M
+GH-048;GH-007;3;06/02/2025;Landrace;2;476,2;sow’s first litter;F
+GH-049;GH-005;White;01/20/2025;Local;1;617,3;vaccinated;M
+GH-050;;2;03/04/2026;Large White;3;151,5;good mother;M
+GH-051;GH-007;1;03/06/2026;Mixed Breed;A;148,4;good mother;M
+GH-052;;3;01/13/2025;Landrace;2;617,3;;F
+GH-053;GH-004;2;04/06/2025;Large White;2;548,1;good mother;M
+GH-054;;3;09/27/2025;Large White;Black;337,3;;F
+GH-055;;2;01/10/2026;Large White;1;206,8;to be sold;M
+GH-056;;White;05/03/2025;Landrace;Black;505,7;;M
+GH-057;;2;07/31/2025;Mixed Breed;2;403,7;good mother;F
+GH-058;;White;01/16/2025;Duroc;3;617,3;pen 3;M
+GH-059;;Black;11/09/2025;Landrace;2;293,4;;M
+GH-060;GH-004;A;10/23/2025;Local;2;302,7;sick – treated;F

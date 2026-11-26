@@ -1,0 +1,57 @@
+﻿Animal ID,DOB,Breed Type,Remarks,Cast.,Sex,Wt (kg),Dam
+NP-001,21/08/2024,Large White,to be sold,No,Male,182,
+NP-002,21/12/2023,Local,pen 3,No,Male,224,
+NP-003,02/04/2024,Local,sick – treated,No,Male,255,
+NP-004,06/11/2023,Local,pen 3,,Female,171,
+NP-005,26/06/2024,Local,,,Female,230,
+NP-006,14/12/2023,Mixed Breed,sick – treated,,Female,190,
+NP-007,08/03/2025,Duroc,to be sold,,Female,244,
+NP-008,07/05/2024,Duroc,to be sold,,Female,252,
+NP-009,03/07/2024,Large White,,,Female,199,
+NP-010,11/06/2025,Mixed Breed,,,Female,212,NP-004
+NP-011,20/05/2026,Mixed Breed,,,Female,31,NP-004
+NP-012,07/05/2025,Local,sow’s first litter,,Female,234,NP-005
+NP-013,02/01/2026,Large White,,No,Male,102,
+NP-014,21/12/2025,Duroc,good mother,,Female,109,NP-008
+NP-015,13/11/2025,Large White,,,Female,130,NP-005
+NP-016,23/12/2025,Mixed Breed,to be sold,Yes,Male,106,NP-007
+NP-017,07/04/2026,Landrace,,,Female,46,NP-004
+NP-018,15/01/2026,Duroc,,,Female,92,
+NP-019,24/02/2025,Mixed Breed,,,Female,273,NP-008
+NP-020,25/05/2026,Large White,,,Female,24,NP-009
+NP-021,17/01/2025,Duroc,,,Female,280,NP-008
+NP-022,06/01/2026,Local,sick – treated,,Female,103,NP-008
+NP-023,02/03/2026,Mixed Breed,sick – treated,,Female,65,
+NP-024,26/08/2025,Local,vaccinated,,Female,169,NP-006
+NP-025,11/05/2026,Landrace,good mother,No,Male,30,NP-006
+NP-026,15/08/2025,Large White,weaned at 28 days,No,Male,172,NP-006
+NP-027,29/01/2026,Duroc,sow’s first litter,,Female,91,NP-004
+NP-028,10/01/2025,Large White,to be sold,Yes,Male,280,NP-006
+NP-029,26/05/2025,Duroc,sow’s first litter,No,Male,224,NP-004
+NP-030,25/06/2025,Landrace,,Yes,Male,208,
+NP-031,13/07/2025,Mixed Breed,,No,Male,195,NP-007
+NP-032,13/11/2025,Duroc,good mother,,Female,131,NP-007
+NP-033,13/04/2026,Duroc,to be sold,No,Male,45,NP-004
+NP-034,12/06/2025,Mixed Breed,,,Female,216,NP-009
+NP-035,13/07/2025,Duroc,,,Female,201,NP-004
+NP-036,27/09/2025,Local,weaned at 28 days,No,Male,156,NP-008
+NP-037,25/10/2025,Local,to be sold,Yes,Male,136,NP-006
+NP-038,19/03/2026,Mixed Breed,,Yes,Male,57,NP-006
+NP-039,11/07/2025,Landrace,sow’s first litter,,Female,197,
+NP-040,16/09/2025,Local,sick – treated,No,Male,166,NP-005
+NP-041,01/06/2025,Landrace,vaccinated,,Female,220,NP-006
+NP-042,23/02/2026,Large White,sow’s first litter,No,Male,72,NP-009
+NP-043,15/01/2026,Local,sick – treated,,Female,93,NP-008
+NP-044,28/04/2026,Duroc,vaccinated,,Female,36,NP-006
+NP-045,30/07/2025,Mixed Breed,to be sold,,Female,187,NP-005
+NP-046,17/06/2025,Mixed Breed,vaccinated,Yes,Male,212,
+NP-047,09/11/2025,Mixed Breed,good mother,,Female,128,NP-005
+NP-048,01/03/2025,Duroc,good mother,Yes,Male,268,NP-008
+NP-049,01/04/2026,Duroc,sick – treated,,Female,51,NP-005
+NP-050,11/11/2025,Duroc,weaned at 28 days,No,Male,127,
+NP-051,20/03/2025,Large White,,,Female,261,NP-008
+NP-052,28/01/2025,Landrace,weaned at 28 days,Yes,Male,280,NP-006
+NP-053,24/03/2026,Duroc,to be sold,Yes,Male,58,NP-005
+NP-054,08/08/2025,Local,,Yes,Male,184,NP-009
+NP-055,13/04/2026,Large White,pen 3,,Female,42,NP-004
+NP-056,14/07/2025,Large White,vaccinated,,Female,199,

@@ -1,0 +1,47 @@
+﻿Pig Ref,Neutered,Pig Sex,Weight (kg),Breed,Sire,Date of Birth
+GH-001,No,Boar,234,Local,,2024-01-02
+GH-002,No,Boar,247,Local,,2024-05-05
+GH-003,-,Sow,195,Large White,,2023-11-18
+GH-004,-,Sow,209,Mixed Breed,,2024-01-23
+GH-005,-,Sow,236,Landrace,,2025-04-09
+GH-006,-,Sow,234,Mixed Breed,,2023-11-02
+GH-007,-,Sow,251,Large White,,2024-06-26
+GH-008,-,Gilt,134,Mixed Breed,,2025-11-05
+GH-009,Yes,Barrow,100,Local,GH-002,2026-01-08
+GH-010,No,Boar,174,Duroc,,2025-08-26
+GH-011,Yes,Barrow,117,Duroc,,2025-12-01
+GH-012,-,Gilt,114,Duroc,,2025-12-08
+GH-013,No,Boar,245,Large White,,2025-04-15
+GH-014,No,Boar,87,Mixed Breed,GH-002,2026-01-27
+GH-015,-,Gilt,188,Mixed Breed,,2025-07-25
+GH-016,No,Boar,82,Duroc,GH-001,2026-02-01
+GH-017,-,Gilt,33,Landrace,GH-001,2026-05-04
+GH-018,No,Boar,129,Mixed Breed,GH-001,2025-11-04
+GH-019,No,Boar,280,Duroc,GH-001,2025-02-17
+GH-020,-,Gilt,147,Landrace,,2025-10-17
+GH-021,Yes,Barrow,280,Duroc,,2025-02-07
+GH-022,Yes,Barrow,75,Duroc,,2026-02-16
+GH-023,-,Gilt,193,Landrace,GH-002,2025-07-13
+GH-024,-,Gilt,23,Mixed Breed,GH-001,2026-05-24
+GH-025,-,Sow,280,Large White,GH-001,2025-01-08
+GH-026,No,Boar,195,Landrace,,2025-07-15
+GH-027,No,Boar,198,Duroc,GH-001,2025-07-04
+GH-028,-,Gilt,111,Landrace,GH-001,2025-12-02
+GH-029,No,Boar,268,Mixed Breed,GH-002,2025-03-15
+GH-030,-,Gilt,127,Local,,2025-11-10
+GH-031,-,Gilt,19,Large White,,2026-05-27
+GH-032,-,Gilt,147,Mixed Breed,,2025-10-14
+GH-033,-,Sow,242,Landrace,GH-001,2025-04-28
+GH-034,-,Gilt,60,Duroc,GH-002,2026-03-15
+GH-035,-,Gilt,176,Landrace,,2025-08-17
+GH-036,-,Gilt,28,Large White,,2026-05-08
+GH-037,No,Boar,201,Large White,GH-002,2025-07-02
+GH-038,-,Gilt,146,Duroc,,2025-10-12
+GH-039,No,Boar,259,Large White,GH-002,2025-03-12
+GH-040,-,Gilt,108,Large White,,2025-12-23
+GH-041,Yes,Barrow,171,Landrace,GH-002,2025-08-19
+GH-042,No,Boar,225,Landrace,,2025-05-23
+GH-043,No,Boar,220,Mixed Breed,GH-002,2025-06-02
+GH-044,No,Boar,93,Duroc,,2026-01-19
+GH-045,-,Gilt,36,Large White,,2026-04-29
+GH-046,-,Sow,234,Landrace,GH-002,2025-05-11

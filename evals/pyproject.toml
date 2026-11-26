@@ -1,0 +1,13 @@
+[project]
+name = "nhoma-evals"
+version = "0.1.0"
+description = "Evaluations for the Nhoma CSV-import agent: synthetic corpus, graders, and arms to compare."
+requires-python = ">=3.10"
+dependencies = []              # the evaluation code itself uses only the standard library
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]            # needed only to run the tests of the evaluation code
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]          # so `import nhoma_evals` works from the tests

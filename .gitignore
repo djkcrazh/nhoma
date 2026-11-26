@@ -44,3 +44,9 @@ Archive.zip
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# python evaluations (evals/)
+evals/.venv/
+evals/runs/
+__pycache__/
+.pytest_cache/

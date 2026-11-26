@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { Modal } from "@/components/ui/Modal";
 import { importPigsAction } from "@/server/actions";
 import { Icon } from "@/components/ui/NhomaIcons";
+import { ImportEncodingPicker } from "./ImportEncodingPicker";
 import { ImportMappingStep } from "./ImportMappingStep";
 import type { RowResult } from "@/lib/import/validate";
 import {
@@ -33,8 +34,8 @@ import {
   MAX_IMPORT_PAYLOAD_BYTES,
   MAX_IMPORT_ROWS,
 } from "@/lib/import/columns";
-import { decodeCsvBytes, type CsvEncoding } from "@/lib/import/decode";
-import { isDateOrderSensitive, type ImportMapping } from "@/lib/import/mapping";
+import { decodeCsvBytes, isLegacyEncoding, type CsvEncoding, type LegacyCsvEncoding } from "@/lib/import/decode";
+import { hasValueSource, isDateOrderSensitive, type ImportMapping } from "@/lib/import/mapping";
 import { cleanRecords } from "@/lib/import/parse";
 import { suggestMapping, type MappingSuggestion } from "@/lib/import/suggest";
 
@@ -44,6 +45,12 @@ interface Report {
   invalid: number;
   results: RowResult[];
   imported: number;
+}
+
+/** What the server reported, plus the exact input it was computed from, so "Import" writes what was reviewed. */
+interface CheckedReport extends Report {
+  mapping: ImportMapping;
+  records: Record<string, string>[];
 }
 
 type Step = "pick" | "map" | "report";
@@ -66,7 +73,8 @@ export function ImportCsvModal({
   const [numberHint, setNumberHint] = useState<MappingSuggestion["numberHint"]>();
   const [fileName, setFileName] = useState("");
   const [encoding, setEncoding] = useState<CsvEncoding | null>(null);
-  const [report, setReport] = useState<Report | null>(null);
+  const [report, setReport] = useState<CheckedReport | null>(null);
+  const [bytes, setBytes] = useState<Uint8Array | null>(null); // the raw file, kept so a wrong encoding guess can be corrected
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -80,6 +88,7 @@ export function ImportCsvModal({
     setReport(null);
     setFileName("");
     setEncoding(null);
+    setBytes(null);
     setError(null);
   }
 
@@ -89,7 +98,7 @@ export function ImportCsvModal({
     try {
       const r = await importPigsAction(recs, m, true);
       if (r.ok) {
-        setReport(r.data as Report);
+        setReport({ ...(r.data as Report), mapping: m, records: recs });
         setStep("report");
       } else setError(r.error);
     } catch (e) {
@@ -111,44 +120,9 @@ export function ImportCsvModal({
       }
       // Read bytes ourselves: Papa.parse(File) assumes UTF-8, which garbles
       // accents and Chinese in Excel's default Windows CSV exports.
-      const decoded = decodeCsvBytes(new Uint8Array(await file.arrayBuffer()));
-      const parsed = Papa.parse<Record<string, string>>(decoded.text, {
-        header: true,
-        skipEmptyLines: "greedy",
-        transformHeader: (h) => h.trim(),
-      });
-
-      const quoteError = parsed.errors.find((e) => e.type === "Quotes");
-      if (quoteError) {
-        setError(`The file has a formatting problem near row ${(quoteError.row ?? 0) + 2}: ${quoteError.message}. Check for an unclosed quote.`);
-        return;
-      }
-      const fileHeaders = (parsed.meta.fields ?? []).filter(Boolean);
-      const rows = cleanRecords(parsed.data); // drops Papa's __parsed_extra on ragged rows
-      if (fileHeaders.length === 0 || rows.length === 0) {
-        setError("No data rows found. The first row should be the column names, followed by one pig per row.");
-        return;
-      }
-      if (rows.length > MAX_IMPORT_ROWS) {
-        setError(`This file has ${rows.length} rows. Import up to ${MAX_IMPORT_ROWS} rows at a time.`);
-        return;
-      }
-      if (new TextEncoder().encode(JSON.stringify(rows)).length > MAX_IMPORT_PAYLOAD_BYTES) {
-        setError("This file contains too much text to import at once. Split it into smaller files or shorten long notes.");
-        return;
-      }
-
-      const suggestion = suggestMapping(fileHeaders, rows);
-      setHeaders(fileHeaders);
-      setRecords(rows);
-      setMapping(suggestion.mapping);
-      setDateHint(suggestion.dateHint);
-      setNumberHint(suggestion.numberHint);
-      setEncoding(decoded.encoding);
-      // Fully matched files (including the default template) skip straight to
-      // the validation report; anything uncertain goes to the mapping screen.
-      if (suggestion.unresolved.length === 0) await runDryRun(rows, suggestion.mapping);
-      else setStep("map");
+      const raw = new Uint8Array(await file.arrayBuffer());
+      setBytes(raw);
+      await processBytes(raw);
     } catch (e) {
       console.error("CSV import failed to start", e);
       setError("Couldn't read that file. Make sure it's a CSV and try again.");
@@ -157,11 +131,71 @@ export function ImportCsvModal({
     }
   }
 
-  async function commit() {
-    if (!mapping) return;
+  /** Decode -> parse -> suggest a mapping -> dry run or mapping screen. Shared by a new file and an encoding change. */
+  async function processBytes(raw: Uint8Array, encodingOverride?: LegacyCsvEncoding) {
+    const decoded = decodeCsvBytes(raw, encodingOverride);
+    const parsed = Papa.parse<Record<string, string>>(decoded.text, {
+      header: true,
+      skipEmptyLines: "greedy",
+      transformHeader: (h) => h.trim(),
+    });
+
+    const quoteError = parsed.errors.find((e) => e.type === "Quotes");
+    if (quoteError) {
+      setError(`The file has a formatting problem near row ${(quoteError.row ?? 0) + 2}: ${quoteError.message}. Check for an unclosed quote.`);
+      return;
+    }
+    const fileHeaders = (parsed.meta.fields ?? []).filter(Boolean);
+    const rows = cleanRecords(parsed.data); // drops Papa's __parsed_extra on ragged rows
+    if (fileHeaders.length === 0 || rows.length === 0) {
+      setError("No data rows found. The first row should be the column names, followed by one pig per row.");
+      return;
+    }
+    if (rows.length > MAX_IMPORT_ROWS) {
+      setError(`This file has ${rows.length} rows. Import up to ${MAX_IMPORT_ROWS} rows at a time.`);
+      return;
+    }
+    if (new TextEncoder().encode(JSON.stringify(rows)).length > MAX_IMPORT_PAYLOAD_BYTES) {
+      setError("This file contains too much text to import at once. Split it into smaller files or shorten long notes.");
+      return;
+    }
+
+    const suggestion = suggestMapping(fileHeaders, rows);
+    setHeaders(fileHeaders);
+    setRecords(rows);
+    setMapping(suggestion.mapping);
+    setDateHint(suggestion.dateHint);
+    setNumberHint(suggestion.numberHint);
+    setEncoding(decoded.encoding);
+    // Fully matched files (including the default template) skip straight to
+    // the validation report; anything uncertain goes to the mapping screen.
+    if (suggestion.unresolved.length === 0) await runDryRun(rows, suggestion.mapping);
+    else setStep("map");
+  }
+
+  /** The person overrode the guessed character set: re-read the file from its original bytes. */
+  async function changeEncoding(next: LegacyCsvEncoding) {
+    if (!bytes) return;
     setBusy(true);
     try {
-      const r = await importPigsAction(records, mapping, false);
+      setReport(null);
+      setMapping(null);
+      setStep("pick"); // shows the loading skeleton until the re-read finishes
+      await processBytes(bytes, next);
+    } catch (e) {
+      console.error("CSV re-read failed", e);
+      setError("Couldn't read that file. Make sure it's a CSV and try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function commit() {
+    if (!report) return;
+    setBusy(true);
+    try {
+      // Send exactly what the report was computed from, not whatever the screen holds now.
+      const r = await importPigsAction(report.records, report.mapping, false);
       if (!r.ok) {
         toast.error(r.error);
         return;
@@ -172,8 +206,10 @@ export function ImportCsvModal({
       onOpenChange(false);
       reset();
     } catch (e) {
+      // A dropped connection does not tell us whether the server already saved the pigs.
       console.error("CSV import failed", e);
-      toast.error("Something went wrong. Nothing was imported — please try again.");
+      toast.error("Couldn't confirm whether the import finished. Check the herd before trying again.");
+      router.refresh(); // so the herd list shows what actually got saved
     } finally {
       setBusy(false);
     }
@@ -188,6 +224,12 @@ export function ImportCsvModal({
       Download template ↓
     </a>
   );
+
+  // Only files whose character set was guessed get the picker (UTF-8 and BOM'd files are certain).
+  const legacyPicker =
+    bytes && encoding && isLegacyEncoding(encoding) ? (
+      <ImportEncodingPicker bytes={bytes} encoding={encoding} onChange={(e) => void changeEncoding(e)} disabled={busy} />
+    ) : null;
 
   const skeleton = (
     <div className="space-y-2 py-6" aria-busy="true">
@@ -247,19 +289,23 @@ export function ImportCsvModal({
           </div>
         )
       ) : step === "map" && mapping ? (
-        <ImportMappingStep
-          headers={headers}
-          records={records}
-          mapping={mapping}
-          dateHint={dateHint}
-          numberHint={numberHint}
-          onChange={setMapping}
-          onContinue={() => runDryRun(records, mapping)}
-          onBack={reset}
-          busy={busy}
-        />
+        <div className="space-y-5">
+          {legacyPicker}
+          <ImportMappingStep
+            headers={headers}
+            records={records}
+            mapping={mapping}
+            dateHint={dateHint}
+            numberHint={numberHint}
+            onChange={setMapping}
+            onContinue={() => runDryRun(records, mapping)}
+            onBack={reset}
+            busy={busy}
+            />
+        </div>
       ) : step === "report" && report ? (
         <div className="space-y-4">
+          {legacyPicker}
           <div className="flex flex-wrap gap-3">
             <span className="status-badge status-badge--neutral">
               <span className="dot" />
@@ -275,14 +321,14 @@ export function ImportCsvModal({
                 {report.invalid} with errors
               </span>
             )}
-            {mapping?.fields.dateOfBirth?.source && isDateOrderSensitive(mapping.transforms.dateFormat) && (
+            {hasValueSource(report.mapping.fields.dateOfBirth) && isDateOrderSensitive(report.mapping.transforms.dateFormat) && (
               <span className="status-badge status-badge--neutral" title="Change this with Edit column matching">
                 <span className="dot" />
-                dates read {mapping.transforms.dateFormat.startsWith("dd") ? "day first" : "month first"} ({mapping.transforms.dateFormat})
+                dates read {report.mapping.transforms.dateFormat.startsWith("dd") ? "day first" : "month first"} ({report.mapping.transforms.dateFormat})
               </span>
             )}
-            {encoding && encoding !== "utf-8" && (
-              <span className="status-badge status-badge--neutral" title="Detected from the file's bytes">
+            {encoding && encoding !== "utf-8" && !isLegacyEncoding(encoding) && (
+              <span className="status-badge status-badge--neutral" title="Announced by the file itself">
                 <span className="dot" />
                 read as {encoding}
               </span>

@@ -1,0 +1,1503 @@
+{
+ "seed": 2026,
+ "cases": [
+  {
+   "id": "ghana-001",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:f_m",
+    "enc:cp1252",
+    "unseen_headers"
+   ],
+   "pigs": 49,
+   "csv_sha256": "d2b91a65783652b743704cde49be2d3f583e99100b3ea46931b898ab14811c85"
+  },
+  {
+   "id": "ghana-002",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers",
+    "junk_columns"
+   ],
+   "pigs": 20,
+   "csv_sha256": "5d3f0e597d946563f621c2af9cd4b6be89c65d478672cd608a95f0de012c8bfc"
+  },
+  {
+   "id": "ghana-003",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:f_m",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 47,
+   "csv_sha256": "8bd4967b5ad9aad3a73b375a9ab214ae7abc7a44439478f47ff9a13ca4672e56"
+  },
+  {
+   "id": "ghana-004",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers",
+    "no_weight",
+    "junk_columns"
+   ],
+   "pigs": 51,
+   "csv_sha256": "5c03e1b8338be9c2b38d4ce251494d28793ce5261ab0241b8fe6e530359ce37c"
+  },
+  {
+   "id": "ghana-005",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:f_m",
+    "enc:utf-8",
+    "unseen_headers",
+    "no_weight"
+   ],
+   "pigs": 34,
+   "csv_sha256": "9671220070c36cff0bc8b05996869d6033fb0b15c1b4bf43a30ccbd3e11ae0e2"
+  },
+  {
+   "id": "ghana-006",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 15,
+   "csv_sha256": "58923a48f0f49d2c77a42ee6958f85cd9da822cf2c825c59c88930d63d4c488e"
+  },
+  {
+   "id": "ghana-007",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd.MM.yyyy",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 13,
+   "csv_sha256": "9cf086a47c8b97c72047aafb36d61975366e7090dcdbec6dab83221e93786c73"
+  },
+  {
+   "id": "ghana-008",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "no_breed"
+   ],
+   "pigs": 55,
+   "csv_sha256": "2d88c1a20fed2153b2ee1ee61829f341431e76ad62ddbb59a3759c4ecd8327fa"
+  },
+  {
+   "id": "ghana-009",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 13,
+   "csv_sha256": "2f7a040f3091cd949b4b1f33a1e72fd3be49430400b57771d1026afb2bb0a46d"
+  },
+  {
+   "id": "ghana-010",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:f_m",
+    "enc:utf-8",
+    "unseen_headers",
+    "junk_columns"
+   ],
+   "pigs": 39,
+   "csv_sha256": "fea3242df78cbe011ecc3e3d59b34c05d3e0286780b4f708402647347dd829d6"
+  },
+  {
+   "id": "ghana-011",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:f_m",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 12,
+   "csv_sha256": "b78bdf80c92bcadf63c2cb136401be22971a1e3f8c39e95393cadfb99b369fbc"
+  },
+  {
+   "id": "ghana-012",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar_only",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 27,
+   "csv_sha256": "acc7641cc3201507d6716b39106ab2d19571e64e9a8f1defbb8b3316671ecfb2"
+  },
+  {
+   "id": "ghana-013",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers",
+    "blank_rows"
+   ],
+   "pigs": 55,
+   "csv_sha256": "b5842cfdefe24399baf3ea4bcba0d56a2eba71632dda60c4a0c47b6d6375c4ce"
+  },
+  {
+   "id": "ghana-014",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 45,
+   "csv_sha256": "5aac093ff547e9c9b28d05d7e6d4b4acb2d146827e79913b6ca339960dd7e04d"
+  },
+  {
+   "id": "ghana-015",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:cp1252",
+    "unseen_headers"
+   ],
+   "pigs": 28,
+   "csv_sha256": "155ede45ec3f958d81ddc003c576c746a27829d0fcaac2038c1d54d952ae45e8"
+  },
+  {
+   "id": "ghana-016",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "blank_rows",
+    "no_weight"
+   ],
+   "pigs": 44,
+   "csv_sha256": "37025d2760cf581b9933600ae19e1c4efec723ed66659be211339b41b960cede"
+  },
+  {
+   "id": "ghana-017",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd.MM.yyyy",
+    "sex:f_m",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 44,
+   "csv_sha256": "8773ae2bbae14c50f693dbded841d7df4a4a9877655296ee8d2cb071b76c8f7b"
+  },
+  {
+   "id": "ghana-018",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:f_m",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 43,
+   "csv_sha256": "fbcca73fc39e8eed3472991c42776b2703c56739093dccc6d98559f8405fd283"
+  },
+  {
+   "id": "ghana-019",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 46,
+   "csv_sha256": "506a4b3c75313586a8ff66b591d39accf769c680dbe609de2fd4528767872a75"
+  },
+  {
+   "id": "ghana-020",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 44,
+   "csv_sha256": "a9b85c59bc9c6fe424859f0008ac8560b19f960e37863aa6039c25b4582411c7"
+  },
+  {
+   "id": "ghana-021",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 49,
+   "csv_sha256": "05f79412c894df0460b2a4ee5d64c0526338725d8fba5c7911cb1f39861fcdc1"
+  },
+  {
+   "id": "ghana-022",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 60,
+   "csv_sha256": "17175f122af82d0fc37dd96fb5a6ef72017ad7474933a244546f7a7f51d5a0db"
+  },
+  {
+   "id": "ghana-023",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:f_m",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 52,
+   "csv_sha256": "a7a7bb4b738ea8fbba7241ed5280eb131e0dcda1b720fcff3fa4d1ba46a2b0b2"
+  },
+  {
+   "id": "ghana-024",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 51,
+   "csv_sha256": "7690176986824a727b43c8c5eb68950d9ffb5471a3a075622c7a2e3e569244aa"
+  },
+  {
+   "id": "ghana-025",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd.MM.yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 16,
+   "csv_sha256": "27d9a7d2bf70196235bef3c5dc4c73b1f22df825f3200d6a01ed33deaaa43257"
+  },
+  {
+   "id": "ghana-026",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 60,
+   "csv_sha256": "d1d2fb89302954bca4f891ae297d0b6f1bc7c628466eb7ff3a5ef05431c1aa05"
+  },
+  {
+   "id": "ghana-027",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 60,
+   "csv_sha256": "5d439744c62d1173871e6315ad328e58ed17e27f4d19bb5077acb4a70aed1a6b"
+  },
+  {
+   "id": "ghana-028",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 14,
+   "csv_sha256": "101bd589185880a71908c490c4e6141bc2a30d6ca8f9633b3b6d2217f842ae66"
+  },
+  {
+   "id": "ghana-029",
+   "category": "ghana",
+   "split": "dev",
+   "supported": false,
+   "tags": [
+    "date:dd-MM-yyyy",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "blank_rows",
+    "GAP"
+   ],
+   "pigs": 38,
+   "csv_sha256": "50e74d516b63c4f200aad6eca3bf5779359acb491cafa444200d54f4735347b4"
+  },
+  {
+   "id": "ghana-030",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 51,
+   "csv_sha256": "5a188318dbcd8a93cee8c3bf62ab9bb57fab69f191558090410e71923d35761a"
+  },
+  {
+   "id": "ghana-031",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:cp1252",
+    "unseen_headers",
+    "blank_rows"
+   ],
+   "pigs": 26,
+   "csv_sha256": "1bc347db8cf0354823e7ef58500dbc896aa7d79bc8f77b24bdca5bcb950fb5a8"
+  },
+  {
+   "id": "ghana-032",
+   "category": "ghana",
+   "split": "test",
+   "supported": false,
+   "tags": [
+    "date:d MMM yyyy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers",
+    "junk_columns",
+    "GAP"
+   ],
+   "pigs": 14,
+   "csv_sha256": "58e51f3086d7bc8c9b943b3fb321f18289ad649e64318924c33a37fecf930afb"
+  },
+  {
+   "id": "ghana-033",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers",
+    "junk_columns"
+   ],
+   "pigs": 20,
+   "csv_sha256": "0b9133d002256211582139509ec0cfc2492decb830c924f2bfc1322f5d3539f1"
+  },
+  {
+   "id": "ghana-034",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 49,
+   "csv_sha256": "08fd849f0a1aacc706b562be40d43f5b5b881f0aa38b9a77d7c003b952628503"
+  },
+  {
+   "id": "ghana-035",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 57,
+   "csv_sha256": "130b24de3a18a03951337fe05324525ec638a5441729fcc22e202adcd1160ec0"
+  },
+  {
+   "id": "ghana-036",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:sow_boar_only",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "no_weight",
+    "junk_columns"
+   ],
+   "pigs": 47,
+   "csv_sha256": "6ee9335634000d445771bdc3dda049aa3b7cc13e7f1a88a99b3f976f9455cc43"
+  },
+  {
+   "id": "ghana-037",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 31,
+   "csv_sha256": "c1d4a1fda5a10a70edd7497cd48b577cb3cef86b703184c6119d180e3173cf04"
+  },
+  {
+   "id": "ghana-038",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 57,
+   "csv_sha256": "8c00ca7bfcb5a76926ecac3c8ceb46e3327eb6a4b03c82654b2bc2aa8b295a34"
+  },
+  {
+   "id": "ghana-039",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:f_m",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "no_weight"
+   ],
+   "pigs": 30,
+   "csv_sha256": "08e7d49d99452708d705fa95bd3887bb457c377874f48aa6a920b9b15578717f"
+  },
+  {
+   "id": "ghana-040",
+   "category": "ghana",
+   "split": "test",
+   "supported": false,
+   "tags": [
+    "date:dd/MM/yy",
+    "sex:sow_boar_only",
+    "enc:cp1252",
+    "blank_rows",
+    "GAP"
+   ],
+   "pigs": 47,
+   "csv_sha256": "f2f96b5687f4f2ba7f5897813fea01fdd5eece9c0cf2243603bf6c2b1114a8e5"
+  },
+  {
+   "id": "ghana-041",
+   "category": "ghana",
+   "split": "dev",
+   "supported": false,
+   "tags": [
+    "date:dd-MM-yyyy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers",
+    "GAP"
+   ],
+   "pigs": 45,
+   "csv_sha256": "fcda343299db026ef888941bce6ecfa57ebbe5043b9558c95c9196a1306afe4c"
+  },
+  {
+   "id": "ghana-042",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers",
+    "no_weight",
+    "junk_columns"
+   ],
+   "pigs": 42,
+   "csv_sha256": "b55e9a13c8822750148f3298d4558a46d9ff0c47812111ff0bd600048c298609"
+  },
+  {
+   "id": "ghana-043",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar_only",
+    "enc:utf-8-sig"
+   ],
+   "pigs": 46,
+   "csv_sha256": "5017638e7e2670e57389157afee889435bfbc54b815eef65ca17aed2571b311b"
+  },
+  {
+   "id": "ghana-044",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8-sig"
+   ],
+   "pigs": 32,
+   "csv_sha256": "e554c09c0bd2dc81baa537922368bbf1e9679748d9f5cba8d9b4693e55c3e5a5"
+  },
+  {
+   "id": "ghana-045",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar_only",
+    "enc:utf-8",
+    "unseen_headers",
+    "no_breed",
+    "no_weight",
+    "junk_columns"
+   ],
+   "pigs": 22,
+   "csv_sha256": "2a6ce652ce335676ea8c203d7f3aea62c7f91fb267cfc4fea3d85b834ad695ce"
+  },
+  {
+   "id": "ghana-046",
+   "category": "ghana",
+   "split": "test",
+   "supported": false,
+   "tags": [
+    "date:dd-MM-yyyy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers",
+    "junk_columns",
+    "GAP"
+   ],
+   "pigs": 21,
+   "csv_sha256": "efde3d9b15e44516732a99bd33321e320d087a78dff6c9a4c10434dfc4d7b6cd"
+  },
+  {
+   "id": "ghana-047",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 14,
+   "csv_sha256": "ee552d13b1b2d19e0341f38dbbc0654b63870c4435304f15d7751d3c6a09b7f3"
+  },
+  {
+   "id": "ghana-048",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 36,
+   "csv_sha256": "b4de71e954c93c6a50f684b4a470124ccd4824e30692d4d44234e90c424daaa2"
+  },
+  {
+   "id": "ghana-049",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:f_m",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 59,
+   "csv_sha256": "431e19538678710f72659237a13a83cc9d434b7779e04ac305025071679912cd"
+  },
+  {
+   "id": "ghana-050",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:cp1252",
+    "unseen_headers"
+   ],
+   "pigs": 34,
+   "csv_sha256": "52ec06058e4b3a4ac0bb0787cd6573be847d18fa856ca250d93d424f22a41479"
+  },
+  {
+   "id": "ghana-051",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:f_m",
+    "enc:utf-8",
+    "unseen_headers",
+    "blank_rows",
+    "junk_columns"
+   ],
+   "pigs": 27,
+   "csv_sha256": "62142d1a5cf9cc788bb77240071a8d0a49b379da5b714998f1242fc73e0745bb"
+  },
+  {
+   "id": "ghana-052",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "no_weight",
+    "junk_columns"
+   ],
+   "pigs": 14,
+   "csv_sha256": "cd3934b5a0a180ce1348532b111cae2f3ac0035b01b5b2f250ace7a943aacf11"
+  },
+  {
+   "id": "ghana-053",
+   "category": "ghana",
+   "split": "dev",
+   "supported": false,
+   "tags": [
+    "date:dd-MM-yyyy",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "GAP"
+   ],
+   "pigs": 54,
+   "csv_sha256": "0eb887148ef27e858f5633a9f9778c12d8853a94f08de926e460655970ca8218"
+  },
+  {
+   "id": "ghana-054",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:f_m",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 42,
+   "csv_sha256": "6b193be5b87c72dffd8acedffacb349ca311484518a9fb3108a2e7b5231e6f94"
+  },
+  {
+   "id": "ghana-055",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar_only",
+    "enc:cp1252",
+    "unseen_headers",
+    "blank_rows"
+   ],
+   "pigs": 18,
+   "csv_sha256": "c999a800cdef2d48124e3b3005198429b5f7d9cd2d76b0f5ff39d4f1bc1e1d2e"
+  },
+  {
+   "id": "ghana-056",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar_only",
+    "enc:utf-8",
+    "unseen_headers",
+    "junk_columns"
+   ],
+   "pigs": 55,
+   "csv_sha256": "182d8e288a76775b6e6f8dea9a3a6afb20d36546c4e3ebfc00c0e7d064439bff"
+  },
+  {
+   "id": "ghana-057",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 56,
+   "csv_sha256": "ecb5900f73e96844fc774c72fe7ee07514ca36dbac03cd61f4daed10e79ce66f"
+  },
+  {
+   "id": "ghana-058",
+   "category": "ghana",
+   "split": "dev",
+   "supported": false,
+   "tags": [
+    "date:dd-MM-yyyy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers",
+    "GAP"
+   ],
+   "pigs": 53,
+   "csv_sha256": "759e84fd16b3fb4dd58936cb74adf2b1c6f7e8ad939260bda9e1ab14e4cb4a6f"
+  },
+  {
+   "id": "ghana-059",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar_only",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 40,
+   "csv_sha256": "465dbcc6cd96b8e1041a2749c3aebe3d420e2dfecf551156a7c0a30909fc7aee"
+  },
+  {
+   "id": "ghana-060",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 24,
+   "csv_sha256": "428976993ec1883b9bb05b9b59ebe37d9ce54d48d19373abdc169e593022d63c"
+  },
+  {
+   "id": "ghana-061",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "blank_rows",
+    "no_breed",
+    "no_weight"
+   ],
+   "pigs": 35,
+   "csv_sha256": "e0ae8ef1c17627881e46c2c3d9b47d643046e3513b42f7ca6d4d27712916c131"
+  },
+  {
+   "id": "ghana-062",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "blank_rows"
+   ],
+   "pigs": 26,
+   "csv_sha256": "4c33155a1c443fa951eac685796e5456c9994aaf9090fb90b7414e5e6b6d2d97"
+  },
+  {
+   "id": "ghana-063",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 32,
+   "csv_sha256": "b23f93ecaf91b77b7a3468c8a5197660e863d7ec3f46a8974b758c9d8dc2a7bb"
+  },
+  {
+   "id": "ghana-064",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 57,
+   "csv_sha256": "18ba7072c379568860daa3fd1d29c9444be06540a5bcc8583603ff2e5aea2a09"
+  },
+  {
+   "id": "ghana-065",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 25,
+   "csv_sha256": "12ed29c5fa557467d9d8ff1db94ac108bad159d51f7e02d71c0e31bfda19b17a"
+  },
+  {
+   "id": "ghana-066",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:f_m",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 35,
+   "csv_sha256": "b1115868afcef5a586af246098bbe53ee7e1844d799988baae9ff90d64a79ced"
+  },
+  {
+   "id": "ghana-067",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 29,
+   "csv_sha256": "f3c40c7dfcf120c3fd7008095ab72aabbed565f6294b8556495a2e49bdbdbf07"
+  },
+  {
+   "id": "ghana-068",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 52,
+   "csv_sha256": "e842c732265b2ab63cf40e1dcfeee0073d9d5ca4d28ebe422539adca2f2266ba"
+  },
+  {
+   "id": "ghana-069",
+   "category": "ghana",
+   "split": "dev",
+   "supported": false,
+   "tags": [
+    "date:dd-MM-yyyy",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "GAP"
+   ],
+   "pigs": 32,
+   "csv_sha256": "a41c2fa40e230acc286c43267f66a7ca9d8e8588808a7d11b904e50ca4e65e06"
+  },
+  {
+   "id": "ghana-070",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:cp1252",
+    "unseen_headers",
+    "no_breed"
+   ],
+   "pigs": 43,
+   "csv_sha256": "af8808cae571b0ecaed8e0e5a993303672259a451d750641ac1621033581cf4f"
+  },
+  {
+   "id": "ghana-071",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd.MM.yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers",
+    "blank_rows"
+   ],
+   "pigs": 39,
+   "csv_sha256": "ef65b8019bcedead2da998ba45743d550f421cb6ea81334d96c4f2b8bd934c95"
+  },
+  {
+   "id": "ghana-072",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 40,
+   "csv_sha256": "cc6c64f4d980724680d493b42b308b4c1aadda14e7b998b638a758c367f95338"
+  },
+  {
+   "id": "ghana-073",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:f_m",
+    "enc:utf-8",
+    "unseen_headers",
+    "no_weight",
+    "junk_columns"
+   ],
+   "pigs": 53,
+   "csv_sha256": "07d9716c545a59f8d758a0235be28ce4e7a250ae680049f031c46744c90c18b1"
+  },
+  {
+   "id": "ghana-074",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 13,
+   "csv_sha256": "ff1abc269a9b6f1b10d5572055ac427886a55134b9e644f223c908aa26fe606b"
+  },
+  {
+   "id": "ghana-075",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 19,
+   "csv_sha256": "80e6cc59a1e78a032d29c9a6fdab725a84fea92378da0282a47891f274161802"
+  },
+  {
+   "id": "ghana-076",
+   "category": "ghana",
+   "split": "test",
+   "supported": false,
+   "tags": [
+    "date:dd-MM-yyyy",
+    "sex:f_m",
+    "enc:cp1252",
+    "unseen_headers",
+    "GAP"
+   ],
+   "pigs": 28,
+   "csv_sha256": "96a43d35b614ce354706af4f2e6bca0965d7141c83fd57b3f4ce347c3e2db2b4"
+  },
+  {
+   "id": "ghana-077",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers"
+   ],
+   "pigs": 46,
+   "csv_sha256": "1006216fdf9ff14db099c44db9b4bb048b042be9967ce9d7b890570b46a90339"
+  },
+  {
+   "id": "ghana-078",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd.MM.yyyy",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "no_breed",
+    "junk_columns"
+   ],
+   "pigs": 35,
+   "csv_sha256": "73df8b331b97d9eb7055a122f7efd72a5caa6393a08f2365786b8f9563ab8d83"
+  },
+  {
+   "id": "ghana-079",
+   "category": "ghana",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:female_male",
+    "enc:utf-8-sig"
+   ],
+   "pigs": 41,
+   "csv_sha256": "aead2fece092e5937c32bfb5035deb72a57290ba57963b5d5e6376761aae7458"
+  },
+  {
+   "id": "ghana-080",
+   "category": "ghana",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd.MM.yyyy",
+    "sex:female_male",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "blank_rows"
+   ],
+   "pigs": 55,
+   "csv_sha256": "f217321dfda806b24f53d4b583d1fe52adce9ca0e376f6191530cca8165d36ac"
+  },
+  {
+   "id": "stress-001",
+   "category": "stress",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:with_hog",
+    "enc:utf-8",
+    "unseen_headers",
+    "shuffled",
+    "no_weight",
+    "junk_columns"
+   ],
+   "pigs": 58,
+   "csv_sha256": "f0a03f76d4fab0d610e5e6ae4658dccd79d5d1e1ceb94e15b597a588c4bdbe4e"
+  },
+  {
+   "id": "stress-002",
+   "category": "stress",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:MM/dd/yyyy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers",
+    "lb",
+    "blank_rows"
+   ],
+   "pigs": 29,
+   "csv_sha256": "27b824422f9c82243be55dac85673b6269bbd49411d65b5b2cf0fbee8a0e897f"
+  },
+  {
+   "id": "stress-003",
+   "category": "stress",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd.MM.yyyy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers",
+    "lb",
+    "blank_rows",
+    "no_weight"
+   ],
+   "pigs": 28,
+   "csv_sha256": "6e90ae9fa6b2431b31d7a056bfb8fd790cc3b6b7714324ff8590c0d5bc307d6e"
+  },
+  {
+   "id": "stress-004",
+   "category": "stress",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:f_m",
+    "enc:utf-8",
+    "unseen_headers",
+    "junk_columns"
+   ],
+   "pigs": 56,
+   "csv_sha256": "1b4910dafd3e880b132ac2f94f2c8247291001a1682a5078816d889adf0c83c7"
+  },
+  {
+   "id": "stress-005",
+   "category": "stress",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:MM/dd/yyyy",
+    "sex:with_hog",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "blank_rows"
+   ],
+   "pigs": 47,
+   "csv_sha256": "b2674ecb17af7356078b8f3681226839feb41149707da05343e4228e2c90d7a1"
+  },
+  {
+   "id": "stress-006",
+   "category": "stress",
+   "split": "dev",
+   "supported": false,
+   "tags": [
+    "date:dd-MMM-yy",
+    "sex:female_male",
+    "enc:utf-8",
+    "unseen_headers",
+    "ragged_rows",
+    "no_weight",
+    "junk_columns",
+    "GAP"
+   ],
+   "pigs": 35,
+   "csv_sha256": "7af3414a7f98f4cf1a75dab0f78592a50021ebc65436bda7eee51564dfda4607"
+  },
+  {
+   "id": "stress-007",
+   "category": "stress",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:MM/dd/yyyy",
+    "sex:f_m",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "lb",
+    "eu_numbers",
+    "semicolon",
+    "junk_columns"
+   ],
+   "pigs": 60,
+   "csv_sha256": "95635fe20f53fccc9df81fd0f04b76fbdbaeb14e528a8ee33efd980e1e3005ea"
+  },
+  {
+   "id": "stress-008",
+   "category": "stress",
+   "split": "dev",
+   "supported": false,
+   "tags": [
+    "date:dd/MM/yy",
+    "sex:with_hog",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "no_breed",
+    "junk_columns",
+    "GAP"
+   ],
+   "pigs": 32,
+   "csv_sha256": "a08306a8c8cf47dd393c87725155d873d50cea985e04775d0dfb27cdd40bfaa5"
+  },
+  {
+   "id": "stress-009",
+   "category": "stress",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:MM/dd/yyyy",
+    "sex:f_m",
+    "enc:utf-8",
+    "unseen_headers",
+    "lb",
+    "blank_rows"
+   ],
+   "pigs": 25,
+   "csv_sha256": "e57cd7bc8db234ca72045cdf17245610d8bb108cd2dcde82fb6ff497e62d25f2"
+  },
+  {
+   "id": "stress-010",
+   "category": "stress",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:dd/MM/yyyy",
+    "sex:with_hog",
+    "enc:utf-8",
+    "unseen_headers",
+    "lb",
+    "junk_columns"
+   ],
+   "pigs": 58,
+   "csv_sha256": "2666c5a4b3491a064f6043186c7fcf42eb9fb48e67785f80f3843543be492e23"
+  },
+  {
+   "id": "stress-011",
+   "category": "stress",
+   "split": "dev",
+   "supported": false,
+   "tags": [
+    "date:iso",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers",
+    "title_row",
+    "GAP"
+   ],
+   "pigs": 22,
+   "csv_sha256": "dec1848eb5d5cb2b21461c105fe769a024ebb7f58c74842244aeb24b3527658e"
+  },
+  {
+   "id": "stress-012",
+   "category": "stress",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:with_hog",
+    "enc:cp1252",
+    "unseen_headers",
+    "lb",
+    "shuffled",
+    "no_breed",
+    "no_weight"
+   ],
+   "pigs": 16,
+   "csv_sha256": "154d638e60f4976c057897dcbc8b26d6dad800309c47fb8f8d9b2aeece455ce4"
+  },
+  {
+   "id": "stress-013",
+   "category": "stress",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:with_hog",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "no_breed"
+   ],
+   "pigs": 22,
+   "csv_sha256": "c1512dde5bf073b9956be621167b1d2f226eda0e4c2a7a53633585c1942e794e"
+  },
+  {
+   "id": "stress-014",
+   "category": "stress",
+   "split": "dev",
+   "supported": false,
+   "tags": [
+    "date:MM/dd/yyyy",
+    "sex:female_male",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "eu_numbers",
+    "semicolon",
+    "title_row",
+    "junk_columns",
+    "GAP"
+   ],
+   "pigs": 30,
+   "csv_sha256": "fd180d8d51eaf0ef12916be75fec6012015190c030a01fdce1403efbcf4479ba"
+  },
+  {
+   "id": "stress-015",
+   "category": "stress",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:iso",
+    "sex:f_m",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "lb",
+    "shuffled",
+    "no_weight"
+   ],
+   "pigs": 53,
+   "csv_sha256": "0aa32688f038b2d30bcfeb0a8e46bf0697121edfe27977f076acb5f2d8feeb26"
+  },
+  {
+   "id": "stress-016",
+   "category": "stress",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:MM/dd/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers"
+   ],
+   "pigs": 47,
+   "csv_sha256": "af7ff9e69d50ff9f19dbb8a17f482a26df0d0702ffc4cfdf3b881a589cba8b9d"
+  },
+  {
+   "id": "stress-017",
+   "category": "stress",
+   "split": "test",
+   "supported": false,
+   "tags": [
+    "date:iso",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "eu_numbers",
+    "title_row",
+    "no_breed",
+    "GAP"
+   ],
+   "pigs": 49,
+   "csv_sha256": "802e26bef46e9f14d44a5f1cb58d29ee95791a630dff1ae9f6371e8fe154469f"
+  },
+  {
+   "id": "stress-018",
+   "category": "stress",
+   "split": "dev",
+   "supported": false,
+   "tags": [
+    "date:dd-MMM-yy",
+    "sex:sow_boar",
+    "enc:utf-8",
+    "unseen_headers",
+    "shuffled",
+    "GAP"
+   ],
+   "pigs": 27,
+   "csv_sha256": "68351c581ea82b59b476a5823681f78abb9fd7af0a671942246c6f52047210ad"
+  },
+  {
+   "id": "stress-019",
+   "category": "stress",
+   "split": "dev",
+   "supported": true,
+   "tags": [
+    "date:MM/dd/yyyy",
+    "sex:with_hog",
+    "enc:utf-8",
+    "unseen_headers",
+    "lb",
+    "blank_rows",
+    "no_weight"
+   ],
+   "pigs": 49,
+   "csv_sha256": "e4b25fc3afa2d3cb1f05dccd36bb7149ebea50bc172badc09da7393c9c07fc4c"
+  },
+  {
+   "id": "stress-020",
+   "category": "stress",
+   "split": "test",
+   "supported": true,
+   "tags": [
+    "date:MM/dd/yyyy",
+    "sex:sow_boar",
+    "enc:utf-8-sig",
+    "unseen_headers",
+    "eu_numbers",
+    "blank_rows",
+    "no_weight",
+    "junk_columns"
+   ],
+   "pigs": 30,
+   "csv_sha256": "6a8d5a460c871724d3a32e969b1a21b22834d5aac67c1d56e887294c2c879ec6"
+  }
+ ]
+}

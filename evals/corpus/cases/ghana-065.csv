@@ -1,0 +1,26 @@
+Pig Number,Date of Farrowing,Breed,Gender,Weight (kg),Neutered,Sire
+PIG_001,18/01/2025,Local,Boar,213.3,No,
+PIG_002,31/03/2025,Landrace,Sow,215.1,,
+PIG_003,12/11/2024,Duroc,Sow,179.4,,
+PIG_004,16/10/2024,Mixed Breed,Sow,230.2,,
+PIG_005,03/04/2026,Mixed Breed,Barrow,53.0,Yes,PIG_001
+PIG_006,08/08/2025,Local,Gilt,179.1,,PIG_001
+PIG_007,01/04/2025,Mixed Breed,Boar,254.5,No,
+PIG_008,25/06/2025,Local,Barrow,202.9,Yes,
+PIG_009,25/01/2026,Landrace,Gilt,87.1,,
+PIG_010,18/11/2025,Mixed Breed,Gilt,126.9,,PIG_001
+PIG_011,10/11/2025,Landrace,Barrow,129.8,Yes,PIG_001
+PIG_012,28/05/2026,Local,Boar,23.5,No,
+PIG_013,25/09/2025,Local,Gilt,148.3,,PIG_001
+PIG_014,11/05/2025,Duroc,Barrow,233.6,Yes,PIG_001
+PIG_015,05/02/2025,Local,Barrow,279.7,Yes,PIG_001
+PIG_016,16/06/2025,Mixed Breed,Sow,211.1,,
+PIG_017,23/05/2026,Mixed Breed,Boar,25.4,No,
+PIG_018,10/05/2025,Landrace,Barrow,231.9,Yes,
+PIG_019,10/03/2026,Mixed Breed,Gilt,62.0,,PIG_001
+PIG_020,16/01/2026,Local,Barrow,92.6,Yes,PIG_001
+PIG_021,23/01/2025,Landrace,Barrow,280.0,Yes,
+PIG_022,04/12/2025,Landrace,Gilt,110.4,,PIG_001
+PIG_023,02/09/2025,Mixed Breed,Barrow,165.4,Yes,
+PIG_024,03/02/2025,Landrace,Boar,280.0,No,
+PIG_025,28/03/2025,Large White,Barrow,258.0,Yes,
